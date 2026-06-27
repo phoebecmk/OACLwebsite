@@ -1,0 +1,2049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ocean Apex Consultancy Ltd. — Company Secretarial Services</title>
+<!--
+  SECURITY HEADERS (set these on the web server — not replicable via meta):
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Permissions-Policy: payment=*, camera=(), microphone=()
+  Referrer-Policy: strict-origin-when-cross-origin
+-->
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<!--
+  Content-Security-Policy (tighten in production by removing 'unsafe-inline'
+  and replacing with nonces generated server-side per request):
+  default-src 'self';
+  script-src  'self' https://js.stripe.com;
+  style-src   'self' https://fonts.googleapis.com;
+  font-src    https://fonts.gstatic.com;
+  frame-src   https://js.stripe.com https://hooks.stripe.com;
+  connect-src https://api.stripe.com;
+  img-src     'self' data:;
+-->
+<!-- Stripe.js — must load before any Stripe calls; loaded from Stripe CDN for PCI compliance -->
+<script src="https://js.stripe.com/v3/"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0A1628;--navy-mid:#0F2244;--navy-light:#1A3A6B;
+  --gold:#C08A36;--gold-h:#D4A456;--gold-pale:#F9F4EC;
+  --white:#FFFFFF;--off:#F6F7FA;
+  --g100:#EDF0F5;--g300:#B0BBCA;--g500:#64748B;--g800:#2D3748;
+  --red:#c0392b;--green:#1a7a4a;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Inter',-apple-system,sans-serif;
+  --max:1180px;--navh:72px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--navy);background:var(--white);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ──────────────── NAV ──────────────── */
+nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--navh);background:var(--navy);border-bottom:1px solid rgba(192,138,54,.18);display:flex;align-items:center}
+.nav-inner{max-width:var(--max);margin:0 auto;padding:0 48px;width:100%;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:12px;cursor:pointer;text-decoration:none}
+.logo-box{width:38px;height:38px;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:17px;font-weight:600;color:var(--gold);flex-shrink:0}
+.logo-name{color:var(--white);font-size:14px;font-weight:500;line-height:1.3}
+.logo-tag{color:var(--g300);font-size:11px;font-weight:300;letter-spacing:.4px}
+.nav-links{display:flex;gap:36px;list-style:none}
+.nav-links a{color:var(--g300);font-size:13.5px;font-weight:400;text-decoration:none;letter-spacing:.2px;transition:color .2s}
+.nav-links a:hover{color:var(--white)}
+.nav-right{display:flex;align-items:center;gap:14px}
+
+/* cart icon */
+.cart-btn{position:relative;background:transparent;border:none;cursor:pointer;padding:8px;color:var(--g300);transition:color .2s;display:flex;align-items:center}
+.cart-btn:hover{color:var(--white)}
+.cart-btn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6}
+.cart-badge{
+  position:absolute;top:2px;right:2px;min-width:17px;height:17px;padding:0 4px;
+  background:var(--gold);color:var(--navy);font-size:10px;font-weight:700;
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  opacity:0;transform:scale(.7);transition:opacity .2s,transform .2s;
+}
+.cart-badge.show{opacity:1;transform:scale(1)}
+.btn-nav{background:var(--gold);color:var(--navy);font-family:var(--sans);font-size:12.5px;font-weight:600;letter-spacing:.6px;padding:10px 22px;text-decoration:none;cursor:pointer;border:none;transition:background .2s;white-space:nowrap}
+.btn-nav:hover{background:var(--gold-h)}
+
+/* ──────────────── CART DRAWER ──────────────── */
+.cart-overlay{position:fixed;inset:0;z-index:400;background:rgba(10,22,40,.55);opacity:0;pointer-events:none;transition:opacity .3s}
+.cart-overlay.on{opacity:1;pointer-events:all}
+.cart-drawer{
+  position:fixed;top:0;right:0;bottom:0;z-index:401;
+  width:420px;max-width:100vw;background:var(--white);
+  display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform .32s cubic-bezier(.4,0,.2,1);
+  box-shadow:-8px 0 48px rgba(10,22,40,.18);
+}
+.cart-drawer.open{transform:translateX(0)}
+.cart-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 28px;border-bottom:1px solid var(--g100);flex-shrink:0;
+}
+.cart-head h2{font-family:var(--serif);font-size:24px;font-weight:500;color:var(--navy)}
+.cart-head-meta{font-size:12px;color:var(--g300);margin-top:2px}
+.cart-close{background:transparent;border:none;cursor:pointer;color:var(--g300);font-size:22px;line-height:1;transition:color .15s;padding:4px}
+.cart-close:hover{color:var(--navy)}
+.cart-body{flex:1;overflow-y:auto;padding:20px 28px}
+.cart-empty{text-align:center;padding:60px 20px}
+.cart-empty p{font-size:14px;color:var(--g300);margin-top:12px}
+.cart-item{display:flex;align-items:flex-start;gap:14px;padding:16px 0;border-bottom:1px solid var(--g100)}
+.cart-item:last-child{border-bottom:none}
+.ci-dot{width:8px;height:8px;background:var(--gold);border-radius:50%;flex-shrink:0;margin-top:6px}
+.ci-info{flex:1;min-width:0}
+.ci-name{font-size:13.5px;font-weight:500;color:var(--navy);line-height:1.35}
+.ci-freq{font-size:11px;color:var(--g300);margin-top:2px}
+.ci-price{font-family:var(--serif);font-size:17px;color:var(--gold);white-space:nowrap;flex-shrink:0}
+.ci-controls{display:flex;align-items:center;gap:6px;margin-top:8px}
+.ci-qty-btn{width:24px;height:24px;background:var(--g100);border:none;cursor:pointer;font-size:14px;font-weight:600;color:var(--g500);display:flex;align-items:center;justify-content:center;transition:background .15s}
+.ci-qty-btn:hover{background:var(--g300);color:var(--navy)}
+.ci-qty{font-size:13px;font-weight:500;color:var(--navy);min-width:20px;text-align:center}
+.ci-remove{background:transparent;border:none;cursor:pointer;font-size:12px;color:var(--g300);margin-left:auto;transition:color .15s;text-decoration:underline;text-underline-offset:2px}
+.ci-remove:hover{color:var(--red)}
+.cart-foot{padding:20px 28px;border-top:1px solid var(--g100);flex-shrink:0;background:var(--white)}
+.cart-subtotal{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.cart-subtotal-lbl{font-size:12px;color:var(--g500);letter-spacing:.3px}
+.cart-subtotal-val{font-family:var(--serif);font-size:22px;color:var(--navy);font-weight:400}
+.cart-note{font-size:11px;color:var(--g300);margin-bottom:18px;line-height:1.5}
+.btn-checkout{width:100%;padding:16px;background:var(--gold);color:var(--navy);font-family:var(--sans);font-size:13.5px;font-weight:700;letter-spacing:.5px;border:none;cursor:pointer;transition:background .2s}
+.btn-checkout:hover{background:var(--gold-h)}
+.cart-or{text-align:center;font-size:11.5px;color:var(--g300);margin-top:14px;cursor:pointer}
+.cart-or a{color:var(--gold);text-decoration:none}
+.cart-or a:hover{text-decoration:underline}
+
+/* ──────────────── TOAST ──────────────── */
+.toast{
+  position:fixed;bottom:28px;right:28px;z-index:500;
+  background:var(--navy);color:var(--white);
+  padding:13px 20px;font-size:13px;font-weight:500;
+  display:flex;align-items:center;gap:10px;
+  transform:translateY(20px);opacity:0;
+  transition:transform .25s,opacity .25s;pointer-events:none;
+  box-shadow:0 8px 32px rgba(10,22,40,.25);
+}
+.toast.show{transform:translateY(0);opacity:1}
+.toast-check{width:18px;height:18px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--navy);font-weight:700;flex-shrink:0}
+
+/* ──────────────── PAGES ──────────────── */
+.page{display:none}.page.active{display:block}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 48px}
+.eyebrow{font-size:10.5px;font-weight:600;letter-spacing:2.2px;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.eyebrow.light{color:var(--gold-h)}
+.sec-title{font-family:var(--serif);font-weight:400;line-height:1.12;font-size:clamp(34px,4.5vw,58px);color:var(--navy);margin-bottom:20px}
+.sec-title.light{color:var(--white)}
+.sec-lead{font-size:16px;font-weight:300;color:var(--g500);line-height:1.75;max-width:580px;margin-bottom:56px}
+.gold-bar{width:44px;height:1px;background:var(--gold);margin-bottom:36px}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--navy);font-family:var(--sans);font-size:13px;font-weight:600;letter-spacing:.5px;padding:15px 30px;border:none;cursor:pointer;text-decoration:none;transition:background .2s}
+.btn-primary:hover{background:var(--gold-h)}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.28);color:var(--white);font-family:var(--sans);font-size:13px;font-weight:400;padding:15px 30px;background:transparent;cursor:pointer;text-decoration:none;transition:border-color .2s}
+.btn-outline:hover{border-color:var(--white)}
+.btn-ghost{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--navy);color:var(--navy);font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:.4px;padding:9px 18px;background:transparent;cursor:pointer;text-decoration:none;transition:all .15s;white-space:nowrap}
+.btn-ghost:hover{background:var(--navy);color:var(--white)}
+.btn-atc{display:inline-flex;align-items:center;gap:6px;background:var(--navy);color:var(--white);font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:.4px;padding:10px 18px;border:none;cursor:pointer;transition:background .15s;white-space:nowrap}
+.btn-atc:hover{background:var(--navy-light)}
+.btn-atc svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
+
+/* ── HERO ── */
+.hero{min-height:100vh;background:var(--navy);display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;padding:calc(var(--navh)+100px) 48px 100px}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 75% 40%,rgba(192,138,54,.07) 0%,transparent 60%),radial-gradient(ellipse 50% 60% at 10% 90%,rgba(26,58,107,.5) 0%,transparent 55%);pointer-events:none}
+.hero-vline{position:absolute;top:0;right:220px;width:1px;height:100%;background:linear-gradient(to bottom,transparent 0%,rgba(192,138,54,.35) 30%,rgba(192,138,54,.35) 70%,transparent 100%)}
+.hero-content{max-width:var(--max);margin:0 auto;width:100%;position:relative;z-index:1}
+.hero h1{font-family:var(--serif);font-size:clamp(46px,6.5vw,88px);font-weight:400;color:var(--white);line-height:1.05;margin-bottom:28px;max-width:680px}
+.hero h1 em{font-style:italic;color:var(--gold-h)}
+.hero-sub{font-size:16.5px;font-weight:300;color:rgba(255,255,255,.58);max-width:500px;line-height:1.75;margin-bottom:52px}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.hero-note{font-size:12px;color:rgba(255,255,255,.3);letter-spacing:.3px;margin-top:40px}
+
+/* ── TRUST STRIP ── */
+.trust-strip{background:var(--navy-mid);border-top:1px solid rgba(192,138,54,.2);border-bottom:1px solid rgba(192,138,54,.2);padding:22px 48px}
+.trust-row{max-width:var(--max);margin:0 auto;display:flex;gap:0;flex-wrap:wrap}
+.trust-item{display:flex;flex-direction:column;gap:3px;padding:0 36px 0 0;margin-right:36px;border-right:1px solid rgba(255,255,255,.07)}
+.trust-item:last-child{border-right:none}
+.ti-label{font-size:9.5px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:var(--gold)}
+.ti-val{font-size:12.5px;font-weight:300;color:rgba(255,255,255,.65)}
+
+/* ── SERVICES GRID ── */
+.sec{padding:96px 48px}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--g100)}
+.svc-card{background:var(--white);padding:44px 36px;border-top:3px solid transparent;transition:border-color .2s}
+.svc-card:hover{border-top-color:var(--gold)}
+.svc-icon{width:42px;height:42px;margin-bottom:22px;border:1px solid var(--g100);display:flex;align-items:center;justify-content:center;color:var(--gold)}
+.svc-icon svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.5}
+.svc-card h3{font-family:var(--serif);font-size:22px;font-weight:500;color:var(--navy);margin-bottom:10px}
+.svc-card p{font-size:13.5px;line-height:1.75;color:var(--g500);margin-bottom:22px}
+.svc-card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto}
+.svc-price{font-family:var(--serif);font-size:15px;color:var(--gold);font-weight:500}
+
+/* ── WHY / PILLARS ── */
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:48px}
+.why-item{border-left:2px solid var(--gold);padding-left:22px}
+.why-item h4{font-family:var(--serif);font-size:20px;font-weight:500;color:var(--navy);margin-bottom:10px}
+.why-item p{font-size:13.5px;line-height:1.75;color:var(--g500)}
+
+/* ── PROCESS ── */
+.proc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative}
+.proc-grid::before{content:'';position:absolute;top:28px;left:16.6%;right:16.6%;height:1px;background:rgba(192,138,54,.25)}
+.proc-step{padding:0 40px 0 0}
+.proc-num{font-family:var(--serif);font-size:52px;font-weight:300;color:var(--gold);line-height:1;margin-bottom:20px;border-bottom:1px solid rgba(192,138,54,.2);padding-bottom:16px;display:inline-block}
+.proc-step h4{font-family:var(--serif);font-size:20px;font-weight:500;color:var(--white);margin-bottom:10px}
+.proc-step p{font-size:13.5px;color:rgba(255,255,255,.5);line-height:1.75}
+
+/* ── PRICING TABLE ── */
+.curr-toggle{display:inline-flex;background:var(--g100);padding:4px;margin-bottom:44px}
+.curr-btn{padding:9px 24px;font-family:var(--sans);font-size:12.5px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--g500);transition:all .15s}
+.curr-btn.on{background:var(--navy);color:var(--white)}
+.ptable{width:100%;border-collapse:collapse}
+.ptable thead th{font-size:10px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase;color:var(--g300);padding:12px 20px;text-align:left;border-bottom:1px solid var(--g100)}
+.ptable tbody td{padding:18px 20px;font-size:14px;color:var(--navy);border-bottom:1px solid var(--g100);vertical-align:middle}
+.ptable tbody tr:hover td{background:var(--off)}
+.tdesc{font-size:11.5px;color:var(--g300);font-weight:400;margin-top:3px}
+.tprice{font-family:var(--serif);font-size:18px;font-weight:500;color:var(--gold);white-space:nowrap}
+.tfreq{font-size:12.5px;color:var(--g500)}
+.ptable .td-action{text-align:right}
+
+/* ── CTA BAND ── */
+.cta-band{background:var(--navy-mid);padding:80px 48px;border-top:1px solid rgba(192,138,54,.15);border-bottom:1px solid rgba(192,138,54,.15)}
+.cta-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap}
+.cta-left h2{font-family:var(--serif);font-size:clamp(30px,4vw,46px);font-weight:400;color:var(--white);line-height:1.15;margin-bottom:10px}
+.cta-left p{font-size:15px;font-weight:300;color:rgba(255,255,255,.5);max-width:420px;line-height:1.7}
+.cta-right{display:flex;flex-direction:column;gap:12px;align-items:flex-start;flex-shrink:0}
+.cta-contact{font-size:12.5px;color:rgba(255,255,255,.4)}
+
+/* ── FOOTER ── */
+footer{background:var(--navy);padding:64px 48px 32px}
+.foot-inner{max-width:var(--max);margin:0 auto}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:64px;margin-bottom:48px}
+.foot-brand p{font-size:12.5px;color:rgba(255,255,255,.38);line-height:1.75;margin-top:14px;max-width:300px}
+.foot-col h5{font-size:9.5px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.foot-col a{display:block;font-size:13px;color:rgba(255,255,255,.45);text-decoration:none;margin-bottom:9px;transition:color .2s}
+.foot-col a:hover{color:var(--white)}
+.foot-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.foot-bottom p{font-size:11.5px;color:rgba(255,255,255,.28)}
+
+/* ── SERVICES DETAIL PAGE ── */
+.svc-hero{background:var(--navy);padding:calc(var(--navh)+72px) 48px 72px}
+.svc-hero-inner{max-width:var(--max);margin:0 auto}
+.svc-hero h1{font-family:var(--serif);font-size:clamp(38px,5vw,68px);font-weight:400;color:var(--white);line-height:1.1;margin-bottom:18px;max-width:640px}
+.svc-hero h1 em{font-style:italic;color:var(--gold-h)}
+.svc-hero p{font-size:16px;font-weight:300;color:rgba(255,255,255,.55);max-width:500px;line-height:1.75;margin-bottom:32px}
+.svc-detail-wrap{padding:80px 48px}
+.svc-detail-inner{max-width:var(--max);margin:0 auto}
+.svc-row{display:grid;grid-template-columns:1fr 340px;gap:72px;padding:72px 0;border-bottom:1px solid var(--g100);align-items:start}
+.svc-row:first-child{padding-top:0}
+.svc-row:last-child{border-bottom:none}
+.svc-left h2{font-family:var(--serif);font-size:clamp(28px,3.5vw,42px);font-weight:400;color:var(--navy);margin-bottom:14px}
+.svc-left p{font-size:14px;line-height:1.8;color:var(--g500);margin-bottom:18px}
+.incl{list-style:none}
+.incl li{font-size:13.5px;color:var(--g800);padding:9px 0;border-bottom:1px solid var(--g100);display:flex;align-items:center;gap:12px}
+.incl li::before{content:'';width:4px;height:4px;background:var(--gold);border-radius:50%;flex-shrink:0}
+.price-card{background:var(--off);padding:36px;border-top:3px solid var(--gold);position:sticky;top:calc(var(--navh)+20px)}
+.price-main{font-family:var(--serif);font-size:42px;font-weight:400;color:var(--navy);line-height:1;margin-bottom:6px}
+.price-lbl{font-size:10.5px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase;color:var(--g300);margin-bottom:20px}
+.price-note{font-size:12.5px;color:var(--g500);line-height:1.7;margin-bottom:20px}
+.price-card-btns{display:flex;flex-direction:column;gap:10px}
+.btn-full{width:100%;justify-content:center}
+.turnaround{font-size:11.5px;color:var(--g300);margin-top:12px;text-align:center}
+
+/* ── ENQUIRY PAGE ── */
+.order-wrap{padding:calc(var(--navh)+64px) 48px 80px}
+.order-inner{max-width:1000px;margin:0 auto}
+.order-grid{display:grid;grid-template-columns:1fr 340px;gap:48px;align-items:start;margin-top:48px}
+.form-block{margin-bottom:40px}
+.form-block h3{font-family:var(--serif);font-size:22px;font-weight:500;color:var(--navy);margin-bottom:22px;padding-bottom:12px;border-bottom:1px solid var(--g100)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.fgroup{margin-bottom:18px}
+.fgroup label{display:block;font-size:10.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--g500);margin-bottom:7px}
+.fgroup input,.fgroup select,.fgroup textarea{width:100%;padding:13px 15px;font-family:var(--sans);font-size:14px;border:1px solid var(--g100);color:var(--navy);background:var(--white);outline:none;transition:border-color .15s;-webkit-appearance:none;appearance:none}
+.fgroup select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748B' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.fgroup input:focus,.fgroup select:focus,.fgroup textarea:focus{border-color:var(--gold)}
+.fgroup textarea{min-height:96px;resize:vertical}
+.pay-opts{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.pay-opt{border:1px solid var(--g100);padding:15px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:all .15s}
+.pay-opt.sel{border-color:var(--gold);background:var(--gold-pale)}
+.pay-opt input[type=radio]{accent-color:var(--gold);flex-shrink:0}
+.pay-opt-lbl{font-size:13.5px;font-weight:500;color:var(--navy)}
+.pay-opt-sub{font-size:11.5px;color:var(--g300);margin-top:1px}
+.pay-detail{display:none;margin-top:14px}.pay-detail.on{display:block}
+.bank-box{background:var(--off);padding:20px;border-left:3px solid var(--gold)}
+.bank-box p{font-size:13px;color:var(--g500);line-height:1.9}
+.bank-box strong{color:var(--navy);font-weight:600}
+.crypto-list{display:flex;flex-direction:column;gap:10px}
+.crypto-row{background:var(--off);padding:14px 16px;display:flex;align-items:flex-start;gap:14px}
+.crypto-tag{background:var(--navy);color:var(--white);font-size:10px;font-weight:700;letter-spacing:1px;padding:4px 8px;white-space:nowrap;flex-shrink:0;margin-top:1px}
+.crypto-addr{font-family:'Courier New',monospace;font-size:11.5px;color:var(--g500);word-break:break-all;line-height:1.5}
+.stripe-note{background:var(--off);padding:16px;font-size:13px;color:var(--g500);line-height:1.7;border-left:3px solid var(--g100)}
+.summ-card{background:var(--off);padding:32px;border-top:3px solid var(--gold);position:sticky;top:calc(var(--navh)+20px)}
+.summ-card h3{font-family:var(--serif);font-size:20px;color:var(--navy);margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--g100)}
+.summ-item{display:flex;justify-content:space-between;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--g100);gap:12px}
+.summ-name{font-size:12.5px;color:var(--navy);font-weight:500;line-height:1.4}
+.summ-price{font-family:var(--serif);font-size:16px;color:var(--gold);white-space:nowrap}
+.summ-total{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0;margin-top:4px}
+.summ-tlbl{font-size:12px;font-weight:600;color:var(--navy);letter-spacing:.3px}
+.summ-tprice{font-family:var(--serif);font-size:26px;color:var(--navy)}
+.summ-note{font-size:11px;color:var(--g300);margin-top:4px;line-height:1.6}
+.summ-contact{margin-top:22px;padding-top:22px;border-top:1px solid var(--g100)}
+.summ-contact-lbl{font-size:10px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:var(--navy);margin-bottom:10px}
+.summ-contact p{font-size:12.5px;color:var(--g500);line-height:1.9}
+.summ-contact a{color:var(--gold);text-decoration:none}
+
+/* ── FIELD VALIDATION STATES ── */
+.fgroup.v-error input,.fgroup.v-error select,.fgroup.v-error textarea{border-color:var(--red)!important;background:#fff8f8}
+.fgroup.v-ok input,.fgroup.v-ok select{border-color:var(--green)!important}
+.fgroup.v-error input:focus,.fgroup.v-error select:focus{outline:none}
+.v-msg{font-size:11px;margin-top:5px;display:none;line-height:1.4}
+.fgroup.v-error .v-msg{display:block;color:var(--red)}
+.fgroup.v-ok .v-msg{display:block;color:var(--green)}
+
+/* ── PAYMENT STATUS PANELS ── */
+.pay-status-panel{
+  display:none;margin-top:16px;padding:18px 20px;
+  border-left:4px solid var(--red);background:#fff8f8;
+  animation:fadeIn .25s ease;
+}
+.pay-status-panel.psp-pending{border-color:var(--gold);background:#fffdf5}
+.pay-status-panel.psp-network{border-color:#6366f1;background:#f8f8ff}
+.pay-status-panel.psp-timeout{border-color:var(--g500);background:var(--off)}
+.pay-status-panel.show{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.psp-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.psp-icon{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;background:var(--red);color:var(--white)}
+.psp-pending .psp-icon{background:var(--gold);color:var(--navy)}
+.psp-network .psp-icon{background:#6366f1;color:var(--white)}
+.psp-timeout .psp-icon{background:var(--g500);color:var(--white)}
+.psp-title{font-size:13.5px;font-weight:600;color:var(--navy)}
+.psp-body{font-size:12.5px;color:var(--g500);line-height:1.65}
+.psp-code{font-family:'Courier New',monospace;font-size:10.5px;color:var(--g300);margin-top:6px}
+.psp-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.btn-retry{padding:9px 20px;background:var(--navy);color:var(--white);font-family:var(--sans);font-size:12px;font-weight:600;border:none;cursor:pointer;transition:background .15s}
+.btn-retry:hover{background:var(--navy-light)}
+.btn-retry-ghost{padding:9px 20px;border:1px solid var(--g300);color:var(--g500);font-family:var(--sans);font-size:12px;font-weight:500;background:transparent;cursor:pointer;transition:all .15s}
+.btn-retry-ghost:hover{border-color:var(--navy);color:var(--navy)}
+
+/* ── RATE-LIMIT COOLDOWN BANNER ── */
+.rate-banner{
+  display:none;padding:10px 14px;background:var(--off);border:1px solid var(--g100);
+  font-size:12px;color:var(--g500);text-align:center;margin-top:10px;
+}
+.rate-banner.show{display:block}
+.rate-countdown{font-weight:600;color:var(--navy)}
+
+/* ── COMPLIANCE BADGE STRIP ── */
+.compliance-strip{
+  display:flex;gap:14px;flex-wrap:wrap;align-items:center;
+  padding:14px 0;margin-top:16px;border-top:1px solid var(--g100);
+}
+.comp-badge{
+  display:flex;align-items:center;gap:6px;
+  font-size:10.5px;color:var(--g300);letter-spacing:.3px;
+}
+.comp-badge svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.8;flex-shrink:0}
+.svc-check-list{display:flex;flex-direction:column;gap:8px;margin-bottom:4px}
+.sci{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--g100);cursor:pointer;transition:border-color .15s,background .15s;-webkit-user-select:none;user-select:none}
+.sci:hover{border-color:var(--g300)}
+.sci.checked{border-color:var(--gold);background:var(--gold-pale)}
+.sci input[type=checkbox]{width:16px;height:16px;accent-color:var(--gold);flex-shrink:0;cursor:pointer;margin:0}
+.sci-info{flex:1;min-width:0}
+.sci-name{font-size:13.5px;font-weight:500;color:var(--navy);display:block;line-height:1.3}
+.sci-desc{font-size:11px;color:var(--g300);margin-top:2px;display:block}
+.sci-price{font-family:var(--serif);font-size:15px;color:var(--gold);white-space:nowrap;flex-shrink:0}
+
+/* ── CHECKOUT PAGE ── */
+.chk-wrap{padding:calc(var(--navh)+56px) 48px 80px;min-height:100vh}
+.chk-inner{max-width:1080px;margin:0 auto}
+.chk-head{margin-bottom:48px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.chk-head-left h1{font-family:var(--serif);font-size:clamp(30px,3.5vw,46px);font-weight:400;color:var(--navy);margin-bottom:6px}
+.chk-head-left p{font-size:14px;color:var(--g500)}
+.chk-secure{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--g300)}
+.chk-secure svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8}
+.chk-grid{display:grid;grid-template-columns:1fr 380px;gap:48px;align-items:start}
+
+/* Payment form */
+.chk-form-section{margin-bottom:36px}
+.chk-form-section h3{font-family:var(--serif);font-size:20px;font-weight:500;color:var(--navy);margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--g100)}
+
+/* Stripe element containers */
+.stripe-field-wrap{background:var(--white);border:1px solid var(--g100);padding:14px 15px;transition:border-color .15s;margin-bottom:14px}
+.stripe-field-wrap:focus-within{border-color:var(--gold)}
+.stripe-field-label{font-size:10.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--g500);margin-bottom:8px;display:block}
+.stripe-two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.stripe-card-icons{display:flex;gap:6px;margin-bottom:14px;align-items:center}
+.stripe-card-icons span{font-size:11px;color:var(--g300);margin-right:4px}
+.card-icon{height:22px;border-radius:3px;border:1px solid var(--g100);padding:2px 6px;display:flex;align-items:center;font-size:10px;font-weight:700;color:var(--g500);background:var(--white)}
+.stripe-error{color:var(--red);font-size:12px;margin-top:8px;display:none}
+.stripe-error.show{display:block}
+
+/* Pay button states */
+.pay-btn{
+  width:100%;padding:18px;margin-top:8px;
+  background:var(--gold);color:var(--navy);
+  font-family:var(--sans);font-size:14px;font-weight:700;letter-spacing:.5px;
+  border:none;cursor:pointer;transition:background .2s;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.pay-btn:hover:not(:disabled){background:var(--gold-h)}
+.pay-btn:disabled{opacity:.7;cursor:not-allowed}
+.pay-btn .spinner{width:16px;height:16px;border:2px solid rgba(10,22,40,.25);border-top-color:var(--navy);border-radius:50%;animation:spin .7s linear infinite;display:none}
+.pay-btn.loading .spinner{display:block}
+.pay-btn.loading .pay-btn-text{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pay-btn-text{}
+.pay-legal{font-size:11px;color:var(--g300);text-align:center;margin-top:12px;line-height:1.6}
+.pay-legal a{color:var(--gold);text-decoration:none}
+.stripe-badge{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:14px;font-size:11px;color:var(--g300)}
+.stripe-badge svg{width:44px;fill:var(--g300)}
+
+/* Checkout order summary */
+.chk-summ{background:var(--off);padding:32px;border-top:3px solid var(--gold);position:sticky;top:calc(var(--navh)+20px)}
+.chk-summ h3{font-family:var(--serif);font-size:20px;color:var(--navy);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--g100)}
+.chk-summ-items{margin-bottom:8px}
+.chk-si{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--g100);gap:10px}
+.chk-si:last-child{border-bottom:none}
+.chk-si-name{font-size:12.5px;color:var(--navy);font-weight:500;line-height:1.4}
+.chk-si-qty{font-size:11px;color:var(--g300)}
+.chk-si-price{font-family:var(--serif);font-size:15px;color:var(--gold);white-space:nowrap;flex-shrink:0}
+.chk-divider{height:1px;background:var(--g100);margin:14px 0}
+.chk-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.chk-row-lbl{font-size:12.5px;color:var(--g500)}
+.chk-row-val{font-size:13px;color:var(--navy);font-weight:500}
+.chk-total-row{display:flex;justify-content:space-between;align-items:baseline;padding-top:12px;margin-top:4px;border-top:1.5px solid var(--navy)}
+.chk-total-lbl{font-size:13px;font-weight:600;color:var(--navy)}
+.chk-total-val{font-family:var(--serif);font-size:26px;color:var(--navy)}
+.chk-summ-note{font-size:11px;color:var(--g300);margin-top:12px;line-height:1.6}
+.chk-curr-toggle{display:flex;gap:0;background:var(--g100);padding:3px;margin-bottom:20px;width:fit-content}
+.chk-curr-btn{padding:6px 18px;font-family:var(--sans);font-size:12px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--g500);transition:all .15s}
+.chk-curr-btn.on{background:var(--navy);color:var(--white)}
+.chk-edit-cart{font-size:12px;color:var(--gold);cursor:pointer;text-decoration:none;background:transparent;border:none;margin-top:16px;display:block;text-align:center}
+.chk-edit-cart:hover{text-decoration:underline}
+.chk-empty{text-align:center;padding:80px 40px}
+.chk-empty h2{font-family:var(--serif);font-size:32px;color:var(--navy);margin-bottom:12px}
+.chk-empty p{font-size:14px;color:var(--g500);margin-bottom:28px}
+
+/* ── CONFIRM PAGE ── */
+.confirm-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 48px}
+.confirm-inner{max-width:540px;text-align:center}
+.confirm-check{width:72px;height:72px;background:var(--gold);margin:0 auto 32px;display:flex;align-items:center;justify-content:center;color:var(--navy);font-size:30px;font-weight:700}
+.confirm-inner h1{font-family:var(--serif);font-size:44px;font-weight:400;color:var(--navy);margin-bottom:14px}
+.confirm-inner p{font-size:15px;color:var(--g500);line-height:1.75;margin-bottom:12px}
+.confirm-inner .btn-primary{margin:28px auto 0;display:inline-flex}
+.confirm-ref{font-size:12px;color:var(--g300);margin-top:20px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .chk-grid{grid-template-columns:1fr}
+  .chk-summ{position:static}
+}
+@media(max-width:900px){
+  .nav-links{display:none}
+  .nav-inner,.wrap,.hero,.trust-strip,.sec,.svc-hero,.svc-detail-wrap,.order-wrap,.chk-wrap,footer{padding-left:24px;padding-right:24px}
+  .hero{padding-top:calc(var(--navh)+60px)}
+  .svc-grid{grid-template-columns:1fr 1fr}
+  .why-grid{grid-template-columns:1fr 1fr;gap:32px}
+  .proc-grid{grid-template-columns:1fr;gap:36px}.proc-grid::before{display:none}
+  .foot-grid{grid-template-columns:1fr;gap:36px}
+  .svc-row{grid-template-columns:1fr}
+  .order-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .cta-inner{flex-direction:column;gap:28px}
+  .trust-strip{padding:16px 24px}
+  .trust-item{padding:0 20px 0 0;margin-right:20px}
+  .cart-drawer{width:100vw}
+}
+@media(max-width:600px){
+  .svc-grid{grid-template-columns:1fr}
+  .why-grid{grid-template-columns:1fr}
+  .stripe-two{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════ NAV ════════════════ -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="go('home')">
+      <div class="logo-box">OA</div>
+      <div>
+        <div class="logo-name">Ocean Apex Consultancy Ltd.</div>
+        <div class="logo-tag">TCSP Licence TC008172 · Hong Kong</div>
+      </div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#" onclick="go('home');return false">Home</a></li>
+      <li><a href="#" onclick="go('services');return false">Services</a></li>
+      <li><a href="#" onclick="go('services');return false">Pricing</a></li>
+      <li><a href="#" onclick="goCta();return false">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <!-- Cart icon -->
+      <button class="cart-btn" onclick="openCart()" title="View cart" aria-label="Shopping cart">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-badge" id="cart-badge">0</span>
+      </button>
+      <button class="btn-nav" onclick="go('order')">Get a Quote</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════════ CART OVERLAY ════════════════ -->
+<div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+
+<!-- ════════════════ CART DRAWER ════════════════ -->
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-head">
+    <div>
+      <h2>Your Cart</h2>
+      <div class="cart-head-meta" id="cart-head-meta">0 services selected</div>
+    </div>
+    <button class="cart-close" onclick="closeCart()">×</button>
+  </div>
+  <div class="cart-body" id="cart-body">
+    <div class="cart-empty">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#B0BBCA" stroke-width="1.2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <p>Your cart is empty.<br>Add services to get started.</p>
+    </div>
+  </div>
+  <div class="cart-foot" id="cart-foot" style="display:none">
+    <div class="cart-subtotal">
+      <span class="cart-subtotal-lbl">Total</span>
+      <span class="cart-subtotal-val" id="cart-total-display">HKD 0</span>
+    </div>
+    <p class="cart-note">Government filing fees and disbursements excluded. Final receipt issued by email.</p>
+    <button class="btn-checkout" onclick="goCheckout()">Proceed to Checkout →</button>
+    <p class="cart-or">Need a custom quote instead? <a href="#" onclick="closeCart();go('order');return false">Send an enquiry</a></p>
+  </div>
+</div>
+
+<!-- ════════════════ TOAST ════════════════ -->
+<div class="toast" id="toast">
+  <div class="toast-check">✓</div>
+  <span id="toast-msg">Added to cart</span>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- PAGE: HOME                                      -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+
+  <section class="hero">
+    <div class="hero-vline"></div>
+    <div class="hero-content">
+      <div class="eyebrow light">TCSP Licensed · Company Secretarial Services</div>
+      <h1>Your Compliance<br>Foundation<br>in <em>Hong Kong</em></h1>
+      <p class="hero-sub">TCSP-licensed company secretarial services for international investors and SMEs establishing a presence in Hong Kong and offshore jurisdictions.</p>
+      <div class="hero-ctas">
+        <button class="btn-primary" onclick="go('services')">Explore Services</button>
+        <button class="btn-outline" onclick="openCart()">View Cart</button>
+      </div>
+      <p class="hero-note">3–7 day incorporation turnaround &nbsp;·&nbsp; BVI, Cayman & Singapore entities available</p>
+    </div>
+  </section>
+
+  <div class="trust-strip">
+    <div class="trust-row">
+      <div class="trust-item"><span class="ti-label">Licence</span><span class="ti-val">TCSP TC008172</span></div>
+      <div class="trust-item"><span class="ti-label">Incorporation</span><span class="ti-val">3–7 Business Days</span></div>
+      <div class="trust-item"><span class="ti-label">Jurisdictions</span><span class="ti-val">HK · BVI · Cayman · Singapore</span></div>
+      <div class="trust-item"><span class="ti-label">Markets Served</span><span class="ti-val">USA · Europe · Southeast Asia</span></div>
+      <div class="trust-item"><span class="ti-label">Office</span><span class="ti-val">Sheung Wan, Hong Kong</span></div>
+    </div>
+  </div>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="eyebrow">Core Services</div>
+      <h2 class="sec-title">Corporate governance,<br>handled with precision</h2>
+      <div class="gold-bar"></div>
+      <div class="svc-grid">
+
+        <div class="svc-card">
+          <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2z"/><path d="M12 22V12M2 7l10 5 10-5"/></svg></div>
+          <h3>Company Incorporation</h3>
+          <p>Full Hong Kong private company setup — CR registration, statutory documents, AML-compliant KYC. BVI, Cayman, and Singapore structures also available.</p>
+          <div class="svc-card-foot">
+            <span class="svc-price">HKD 8,000</span>
+            <button class="btn-atc" onclick="addToCart('incorporation')"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="svc-card">
+          <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M9 12h6M9 16h6M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z"/></svg></div>
+          <h3>Annual Compliance</h3>
+          <p>Ongoing company secretary retainer, annual return (NAR1) filing, statutory records maintenance, and board resolution preparation for continued good standing.</p>
+          <div class="svc-card-foot">
+            <span class="svc-price">HKD 2,500 / yr</span>
+            <button class="btn-atc" onclick="addToCart('secretary')"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="svc-card">
+          <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <h3>Registered Office</h3>
+          <p>Professional registered address in Sheung Wan with mail receipt, document scanning, and forwarding services — a statutory requirement for every HK company.</p>
+          <div class="svc-card-foot">
+            <span class="svc-price">HKD 4,000 / yr</span>
+            <button class="btn-atc" onclick="addToCart('address')"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="svc-card">
+          <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+          <h3>Corporate Changes</h3>
+          <p>Director and shareholder filings, share transfers, and significant controllers register updates submitted to the Companies Registry on your behalf.</p>
+          <div class="svc-card-foot">
+            <span class="svc-price">HKD 1,000 / filing</span>
+            <button class="btn-atc" onclick="addToCart('changes')"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="svc-card">
+          <div class="svc-icon"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+          <h3>Bank Account Assistance</h3>
+          <p>Guided corporate bank account application, including document preparation, memorandum drafting, and liaison with relationship managers in Hong Kong.</p>
+          <div class="svc-card-foot">
+            <span class="svc-price">HKD 7,000</span>
+            <button class="btn-atc" onclick="addToCart('banking')"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="svc-card" style="background:var(--navy)">
+          <h3 style="color:var(--white);font-style:italic;margin-top:8px">Need a custom package?</h3>
+          <p style="color:rgba(255,255,255,.45);margin-top:12px">Complex structures, offshore entities, or bundled services — our consultants will price your specific requirements.</p>
+          <button class="btn-primary" onclick="go('order')" style="margin-top:8px">Request a Quote →</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" style="background:var(--off);padding-top:80px;padding-bottom:80px">
+    <div class="wrap">
+      <div class="eyebrow">Why Ocean Apex</div>
+      <h2 class="sec-title">Built for international<br>investors entering Hong Kong</h2>
+      <div class="gold-bar"></div>
+      <div class="why-grid">
+        <div class="why-item"><h4>Licensed & Regulated</h4><p>Operating under TCSP Licence TC008172. Compliance-first at every stage of engagement.</p></div>
+        <div class="why-item"><h4>Fast Turnaround</h4><p>HK company incorporated in 3–7 business days from KYC completion, with proactive compliance reminders year-round.</p></div>
+        <div class="why-item"><h4>Transparent Pricing</h4><p>Fixed fees in HKD and USD, confirmed in writing before any work begins. No hidden disbursements.</p></div>
+        <div class="why-item"><h4>Multi-Jurisdiction</h4><p>HK, BVI, Cayman, and Singapore structures from a single contact with consistent KYC and AML standards.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" style="background:var(--navy);padding-top:88px;padding-bottom:88px">
+    <div class="wrap">
+      <div class="eyebrow light">How It Works</div>
+      <h2 class="sec-title light">From cart to incorporated<br>in days</h2>
+      <div class="gold-bar"></div>
+      <div class="proc-grid">
+        <div class="proc-step">
+          <div class="proc-num">01</div>
+          <h4>Add Services to Cart</h4>
+          <p>Select the services you need, adjust quantities where applicable, and proceed to our secure checkout in minutes.</p>
+        </div>
+        <div class="proc-step">
+          <div class="proc-num">02</div>
+          <h4>Pay Securely Online</h4>
+          <p>Complete payment via Stripe (card), bank transfer, or cryptocurrency. A written confirmation and engagement letter is issued immediately.</p>
+        </div>
+        <div class="proc-step">
+          <div class="proc-num">03</div>
+          <h4>Entity Active & Compliant</h4>
+          <p>We file, you receive your statutory documents. We then remain your company secretary for all ongoing compliance obligations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="eyebrow">Fee Schedule</div>
+      <h2 class="sec-title">Transparent pricing,<br>fixed before work begins</h2>
+      <div class="gold-bar"></div>
+      <div class="curr-toggle">
+        <button class="curr-btn on" onclick="setCurr('HKD',this)">HKD</button>
+        <button class="curr-btn" onclick="setCurr('USD',this)">USD</button>
+      </div>
+      <table class="ptable">
+        <thead>
+          <tr><th>Service</th><th>Frequency</th><th>Fee</th><th class="td-action"></th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>New Company Incorporation</strong><div class="tdesc">HK Private Limited Company · full statutory setup</div></td>
+            <td class="tfreq">One-time</td>
+            <td class="tprice" data-hkd="HKD 8,000" data-usd="USD 1,026">HKD 8,000</td>
+            <td class="td-action"><button class="btn-atc" onclick="addToCart('incorporation')">+ Add to Cart</button></td>
+          </tr>
+          <tr>
+            <td><strong>Annual Company Secretary Retainer</strong><div class="tdesc">Statutory records, CR correspondence</div></td>
+            <td class="tfreq">Annual</td>
+            <td class="tprice" data-hkd="HKD 2,500" data-usd="USD 321">HKD 2,500</td>
+            <td class="td-action"><button class="btn-atc" onclick="addToCart('secretary')">+ Add to Cart</button></td>
+          </tr>
+          <tr>
+            <td><strong>Annual Return (NAR1) Filing</strong><div class="tdesc">Government statutory filing</div></td>
+            <td class="tfreq">Annual</td>
+            <td class="tprice" data-hkd="HKD 850" data-usd="USD 109">HKD 850</td>
+            <td class="td-action"><button class="btn-atc" onclick="addToCart('nar1')">+ Add to Cart</button></td>
+          </tr>
+          <tr>
+            <td><strong>Registered Office Address</strong><div class="tdesc">Sheung Wan, Hong Kong · mail &amp; forwarding</div></td>
+            <td class="tfreq">Annual</td>
+            <td class="tprice" data-hkd="HKD 4,000" data-usd="USD 513">HKD 4,000</td>
+            <td class="td-action"><button class="btn-atc" onclick="addToCart('address')">+ Add to Cart</button></td>
+          </tr>
+          <tr>
+            <td><strong>Corporate Changes</strong><div class="tdesc">Director / shareholder / SCR filings</div></td>
+            <td class="tfreq">Per filing</td>
+            <td class="tprice" data-hkd="HKD 1,000" data-usd="USD 128">HKD 1,000</td>
+            <td class="td-action"><button class="btn-atc" onclick="addToCart('changes')">+ Add to Cart</button></td>
+          </tr>
+          <tr>
+            <td><strong>Significant Controllers Register</strong><div class="tdesc">SCR initial setup &amp; preparation</div></td>
+            <td class="tfreq">One-time</td>
+            <td class="tprice" data-hkd="HKD 1,100" data-usd="USD 141">HKD 1,100</td>
+            <td class="td-action"><button class="btn-atc" onclick="addToCart('scr')">+ Add to Cart</button></td>
+          </tr>
+          <tr>
+            <td><strong>Bank Account Assistance</strong><div class="tdesc">HK corporate account application support</div></td>
+            <td class="tfreq">One-time</td>
+            <td class="tprice" data-hkd="HKD 7,000" data-usd="USD 897">HKD 7,000</td>
+            <td class="td-action"><button class="btn-atc" onclick="addToCart('banking')">+ Add to Cart</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:11.5px;color:var(--g300);margin-top:14px">All fees exclusive of government filing fees and disbursements. USD converted at HKD 7.80. Fees confirmed in writing prior to work commencing.</p>
+    </div>
+  </section>
+
+  <div class="cta-band" id="contact">
+    <div class="cta-inner">
+      <div class="cta-left">
+        <div class="eyebrow light">Ready to proceed?</div>
+        <h2>Establish your Hong Kong<br>presence today</h2>
+        <p>Add services to your cart and pay securely online, or send us an enquiry for a custom quote within 24 hours.</p>
+      </div>
+      <div class="cta-right">
+        <button class="btn-primary" onclick="go('services')">Browse All Services →</button>
+        <a href="mailto:info@ocean-apex.com" class="btn-outline">info@ocean-apex.com</a>
+        <p class="cta-contact">+852 2111 0270 &nbsp;·&nbsp; +852 2111 2030</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="foot-inner">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <div class="nav-logo" style="cursor:default"><div class="logo-box">OA</div><div><div class="logo-name">Ocean Apex Consultancy Ltd.</div><div class="logo-tag">Company Secretary Services</div></div></div>
+          <p>TCSP-licensed corporate governance specialists serving international investors and SMEs seeking Hong Kong and offshore entity solutions.</p>
+          <p style="margin-top:10px">Unit B, 5/F, Wing Sing Commercial Centre<br>12–16 Wing Lok Street, Sheung Wan, Hong Kong</p>
+        </div>
+        <div class="foot-col">
+          <h5>Services</h5>
+          <a href="#" onclick="addToCart('incorporation');return false">Company Incorporation</a>
+          <a href="#" onclick="addToCart('secretary');return false">Annual Compliance</a>
+          <a href="#" onclick="addToCart('address');return false">Registered Office</a>
+          <a href="#" onclick="addToCart('changes');return false">Corporate Changes</a>
+          <a href="#" onclick="addToCart('banking');return false">Bank Account Assistance</a>
+        </div>
+        <div class="foot-col">
+          <h5>Contact</h5>
+          <a href="tel:+85221110270">+852 2111 0270</a>
+          <a href="tel:+85221112030">+852 2111 2030</a>
+          <a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a>
+          <a href="#" onclick="go('order');return false">Request a Quote</a>
+          <a href="https://www.ocean-apex.com/tc" target="_blank">Terms &amp; Conditions</a>
+          <a href="https://www.ocean-apex.com/privacy-policy" target="_blank">Privacy Policy</a>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <p>© 2025 Ocean Apex Consultancy Ltd. All rights reserved.</p>
+        <p>TCSP Licence TC008172 &nbsp;·&nbsp; Category A Licence A-B-24-01-05179</p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- PAGE: SERVICES DETAIL                          -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="page-services" class="page">
+  <div class="svc-hero">
+    <div class="svc-hero-inner">
+      <div class="eyebrow light">Our Services</div>
+      <h1>End-to-end company<br>secretarial services for<br><em>global investors</em></h1>
+      <p>From initial incorporation to annual compliance. Select any service below and add it directly to your cart.</p>
+      <button class="btn-primary" onclick="openCart()">View Cart →</button>
+    </div>
+  </div>
+  <div class="svc-detail-wrap">
+    <div class="svc-detail-inner">
+
+      <div class="svc-row">
+        <div class="svc-left">
+          <div class="eyebrow">Incorporation</div>
+          <h2>New Company Formation</h2>
+          <p>A complete Hong Kong private limited company setup, managed from name availability check through to Certificate of Incorporation. All Companies Registry correspondence handled; full first statutory documents produced.</p>
+          <p>Also available for BVI, Cayman Islands, and Singapore entities.</p>
+          <ul class="incl">
+            <li>Company name availability check</li>
+            <li>Articles of Association preparation</li>
+            <li>CR1 / NNC1 filing with Companies Registry</li>
+            <li>Business Registration Certificate</li>
+            <li>First board resolutions &amp; share certificates</li>
+            <li>Significant Controllers Register setup</li>
+            <li>AML/KYC due diligence (TCSP compliance)</li>
+          </ul>
+        </div>
+        <div>
+          <div class="price-card">
+            <div class="price-main" id="p-inc">HKD 8,000</div>
+            <div class="price-lbl">Fixed fee</div>
+            <p class="price-note">Government fees (CR HKD 1,720 + BR HKD 250) are additional disbursements billed separately.</p>
+            <div class="price-card-btns">
+              <button class="btn-primary btn-full" onclick="addToCart('incorporation')">Add to Cart →</button>
+              <button class="btn-ghost btn-full" onclick="go('order')" style="justify-content:center">Get a Custom Quote</button>
+            </div>
+          </div>
+          <p class="turnaround">Turnaround: 3–7 business days from KYC completion</p>
+        </div>
+      </div>
+
+      <div class="svc-row">
+        <div class="svc-left">
+          <div class="eyebrow">Annual Retainer</div>
+          <h2>Annual Compliance Package</h2>
+          <p>Comprehensive annual company secretary service covering all statutory maintenance obligations under the Hong Kong Companies Ordinance.</p>
+          <ul class="incl">
+            <li>Company Secretary designation (statutory requirement)</li>
+            <li>Annual Return (NAR1) preparation &amp; filing</li>
+            <li>Statutory register maintenance</li>
+            <li>Annual compliance calendar &amp; proactive reminders</li>
+            <li>Board resolution templates</li>
+            <li>Companies Registry correspondence handling</li>
+          </ul>
+        </div>
+        <div>
+          <div class="price-card">
+            <div class="price-main" id="p-sec">HKD 2,500</div>
+            <div class="price-lbl">Per year</div>
+            <p class="price-note">Includes basic secretary retainer (HKD 2,000) and NAR1 filing (HKD 500) — billed together annually. Can be bundled with registered office.</p>
+            <div class="price-card-btns">
+              <button class="btn-primary btn-full" onclick="addToCart('secretary')">Add to Cart →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="svc-row">
+        <div class="svc-left">
+          <div class="eyebrow">Registered Address</div>
+          <h2>Registered Office Address</h2>
+          <p>Every HK company must maintain a registered office address in the territory. We provide a professional Sheung Wan address with mail handling included.</p>
+          <ul class="incl">
+            <li>Registered address: Wing Lok Street, Sheung Wan</li>
+            <li>Receipt of statutory notices &amp; official mail</li>
+            <li>Scanning &amp; digital forwarding</li>
+            <li>Annual renewal handled automatically</li>
+          </ul>
+        </div>
+        <div>
+          <div class="price-card">
+            <div class="price-main" id="p-addr">HKD 4,000</div>
+            <div class="price-lbl">Per year</div>
+            <p class="price-note">Can be bundled with annual secretary retainer at a reduced combined rate. Contact us for bundle pricing.</p>
+            <div class="price-card-btns">
+              <button class="btn-primary btn-full" onclick="addToCart('address')">Add to Cart →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="svc-row">
+        <div class="svc-left">
+          <div class="eyebrow">Corporate Changes</div>
+          <h2>Director &amp; Shareholder Filings</h2>
+          <p>Changes to directors, shareholders, or the significant controllers register require timely notification to the Companies Registry. We handle all forms, resolutions, and documentation.</p>
+          <ul class="incl">
+            <li>Director appointment (ND2A) &amp; resignation (ND2B)</li>
+            <li>Shareholder transfers &amp; updated register</li>
+            <li>Significant Controllers Register (SCR) updates</li>
+            <li>Change of company name or address filings</li>
+            <li>Board resolutions for all changes</li>
+          </ul>
+        </div>
+        <div>
+          <div class="price-card">
+            <div class="price-main" id="p-chg">HKD 1,000</div>
+            <div class="price-lbl">Per filing</div>
+            <p class="price-note">Price is per filing. Add multiple to your cart if you need several changes processed simultaneously.</p>
+            <div class="price-card-btns">
+              <button class="btn-primary btn-full" onclick="addToCart('changes')">Add to Cart →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="svc-row">
+        <div class="svc-left">
+          <div class="eyebrow">Banking Support</div>
+          <h2>Bank Account Assistance</h2>
+          <p>Opening a corporate bank account in Hong Kong has become increasingly rigorous for international applicants. We guide you through the entire process and liaise with relationship managers on your behalf.</p>
+          <ul class="incl">
+            <li>Bank selection advisory</li>
+            <li>Application document preparation &amp; KYC pack</li>
+            <li>Business background memorandum drafting</li>
+            <li>Liaison with bank relationship managers</li>
+            <li>Follow-up on pending applications</li>
+          </ul>
+        </div>
+        <div>
+          <div class="price-card">
+            <div class="price-main" id="p-bank">HKD 7,000</div>
+            <div class="price-lbl">Fixed fee</div>
+            <p class="price-note">Account approval is at the bank's sole discretion. This service covers the application and liaison process only.</p>
+            <div class="price-card-btns">
+              <button class="btn-primary btn-full" onclick="addToCart('banking')">Add to Cart →</button>
+              <button class="btn-ghost btn-full" onclick="go('order')" style="justify-content:center">Get a Custom Quote</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="foot-inner">
+      <div class="foot-grid">
+        <div class="foot-brand"><div class="nav-logo" style="cursor:default"><div class="logo-box">OA</div><div><div class="logo-name">Ocean Apex Consultancy Ltd.</div><div class="logo-tag">Company Secretary Services</div></div></div><p>Unit B, 5/F, Wing Sing Commercial Centre, 12–16 Wing Lok Street, Sheung Wan, Hong Kong</p></div>
+        <div class="foot-col"><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="openCart();return false">View Cart</a><a href="#" onclick="go('order');return false">Get a Quote</a></div>
+        <div class="foot-col"><h5>Contact</h5><a href="tel:+85221110270">+852 2111 0270</a><a href="tel:+85221112030">+852 2111 2030</a><a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a></div>
+      </div>
+      <div class="foot-bottom"><p>© 2025 Ocean Apex Consultancy Ltd. All rights reserved.</p><p>TCSP Licence TC008172 &nbsp;·&nbsp; Category A Licence A-B-24-01-05179</p></div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- PAGE: CHECKOUT (Stripe)                        -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="page-checkout" class="page">
+  <div class="chk-wrap">
+    <div class="chk-inner">
+
+      <!-- Empty cart state -->
+      <div class="chk-empty" id="chk-empty" style="display:none">
+        <h2>Your cart is empty</h2>
+        <p>Add services to your cart before checking out.</p>
+        <button class="btn-primary" onclick="go('services')">Browse Services →</button>
+      </div>
+
+      <!-- Checkout content -->
+      <div id="chk-content">
+        <div class="chk-head">
+          <div class="chk-head-left">
+            <h1>Secure Checkout</h1>
+            <p>Card details are processed directly by Stripe and never touch our servers. PCI DSS Level 1 compliant.</p>
+          </div>
+          <div class="chk-secure">
+            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            TLS 1.3 · 256-bit AES
+          </div>
+        </div>
+
+        <div class="chk-grid">
+          <!-- Left: payment form -->
+          <div>
+
+            <!-- Contact -->
+            <div class="chk-form-section">
+              <h3>Contact Details</h3>
+              <div class="form-row">
+                <div class="fgroup" id="fg-fname">
+                  <label>First Name *</label>
+                  <input type="text" id="chk-fname" placeholder="John" autocomplete="given-name"
+                    onblur="validateField('chk-fname','fg-fname','name')">
+                  <span class="v-msg">Please enter your first name.</span>
+                </div>
+                <div class="fgroup" id="fg-lname">
+                  <label>Last Name *</label>
+                  <input type="text" id="chk-lname" placeholder="Smith" autocomplete="family-name"
+                    onblur="validateField('chk-lname','fg-lname','name')">
+                  <span class="v-msg">Please enter your last name.</span>
+                </div>
+              </div>
+              <div class="fgroup" id="fg-email">
+                <label>Email Address *</label>
+                <input type="email" id="chk-email" placeholder="john.smith@company.com" autocomplete="email"
+                  onblur="validateField('chk-email','fg-email','email')">
+                <span class="v-msg">Please enter a valid email address.</span>
+              </div>
+              <div class="fgroup">
+                <label>Company / Organisation (optional)</label>
+                <input type="text" id="chk-company" placeholder="Your company name" autocomplete="organization">
+              </div>
+            </div>
+
+            <!-- Card payment -->
+            <div class="chk-form-section">
+              <h3>Payment Details</h3>
+
+              <div class="stripe-card-icons">
+                <span>Accepted:</span>
+                <div class="card-icon" style="color:#1a1f71;font-weight:900;font-size:11px">VISA</div>
+                <div class="card-icon" style="color:#eb001b;font-size:8px;letter-spacing:.5px">MASTER<br>CARD</div>
+                <div class="card-icon" style="color:#2e77bc;font-size:9px">AMEX</div>
+                <div class="card-icon" style="font-size:9px;color:var(--g500)">& more</div>
+              </div>
+
+              <!-- Stripe Card Element — Stripe.js injects here; card data never reaches our server -->
+              <div class="stripe-field-wrap" id="stripe-field-outer">
+                <span class="stripe-field-label">Card Number · Expiry · CVC</span>
+                <div id="stripe-card-element" style="min-height:22px">
+                  <div id="stripe-loading" style="font-size:13px;color:var(--g300);padding:4px 0">Loading secure payment form…</div>
+                </div>
+              </div>
+              <div id="stripe-error" class="stripe-error"></div>
+
+              <div class="fgroup" id="fg-cardname" style="margin-top:14px">
+                <label>Name on Card *</label>
+                <input type="text" id="chk-cardname" placeholder="John Smith" autocomplete="cc-name"
+                  onblur="validateField('chk-cardname','fg-cardname','name')">
+                <span class="v-msg">Please enter the name shown on your card.</span>
+              </div>
+
+              <!-- ── PAYMENT STATUS PANELS ── -->
+              <!-- Declined / generic error -->
+              <div class="pay-status-panel" id="psp-error">
+                <div class="psp-head">
+                  <div class="psp-icon">✕</div>
+                  <span class="psp-title">Payment Failed</span>
+                </div>
+                <div class="psp-body" id="psp-error-msg">Your card was declined. Please check your details and try again.</div>
+                <div class="psp-code" id="psp-error-code"></div>
+                <div class="psp-actions">
+                  <button class="btn-retry" onclick="retryPayment()">Try Again</button>
+                  <button class="btn-retry-ghost" onclick="openCart()">Edit Cart</button>
+                </div>
+              </div>
+
+              <!-- Network / connection error -->
+              <div class="pay-status-panel psp-network" id="psp-network">
+                <div class="psp-head">
+                  <div class="psp-icon">⚡</div>
+                  <span class="psp-title">Connection Error</span>
+                </div>
+                <div class="psp-body">Unable to reach the payment server. Please check your internet connection and try again.</div>
+                <div class="psp-actions">
+                  <button class="btn-retry" onclick="retryPayment()">Retry Payment</button>
+                </div>
+              </div>
+
+              <!-- Request timeout -->
+              <div class="pay-status-panel psp-timeout" id="psp-timeout">
+                <div class="psp-head">
+                  <div class="psp-icon">⏱</div>
+                  <span class="psp-title">Request Timed Out</span>
+                </div>
+                <div class="psp-body">The payment request took too long to respond. Your card has <strong>not</strong> been charged. Please try again or contact us directly.</div>
+                <div class="psp-actions">
+                  <button class="btn-retry" onclick="retryPayment()">Try Again</button>
+                  <button class="btn-retry-ghost" onclick="goCta()">Contact Us</button>
+                </div>
+              </div>
+
+              <!-- Pending / delayed processing -->
+              <div class="pay-status-panel psp-pending" id="psp-pending">
+                <div class="psp-head">
+                  <div class="psp-icon">…</div>
+                  <span class="psp-title">Payment Pending</span>
+                </div>
+                <div class="psp-body">Your payment has been submitted and is awaiting final confirmation from your bank. We will email you at <strong id="psp-pending-email"></strong> once it clears — this usually takes a few minutes.</div>
+                <div class="psp-code" id="psp-pending-ref"></div>
+              </div>
+
+              <!-- Rate-limit cooldown -->
+              <div class="rate-banner" id="rate-banner">
+                Too many attempts. Please wait <span class="rate-countdown" id="rate-countdown">30</span>s before trying again.
+              </div>
+
+              <button class="pay-btn" id="pay-btn" onclick="handlePayment()">
+                <span class="pay-btn-text" id="pay-btn-text">Pay HKD 0</span>
+                <div class="spinner" id="pay-spinner"></div>
+              </button>
+
+              <p class="pay-legal">
+                By paying you agree to our <a href="https://www.ocean-apex.com/tc" target="_blank">Terms &amp; Conditions</a> and <a href="https://www.ocean-apex.com/privacy-policy" target="_blank">Privacy Policy</a>.
+                A written engagement letter and receipt will be emailed immediately upon payment confirmation.
+              </p>
+
+              <!-- Stripe + compliance badges -->
+              <div class="stripe-badge">
+                <svg viewBox="0 0 60 25" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M5.4 8.4c0-.9.7-1.2 1.9-1.2 1.7 0 3.8.5 5.5 1.4V4.1C11.1 3.4 9.3 3 7.3 3 3.1 3 .3 5.2.3 8.6c0 5.3 7.3 4.5 7.3 6.8 0 1-.9 1.4-2.1 1.4-1.8 0-4.2-.8-6-1.8v4.6c2 .9 4.1 1.3 6 1.3 4.3 0 7.3-2.1 7.3-5.6-.1-5.7-7.4-4.7-7.4-6.9zM21.3 0l-5.3 1.1v4.3l-2.9.6v3.9h2.9v7.6c0 3.2 2.1 4.4 5.1 4.4 1.4 0 3-.3 4.2-.9v-4c-.7.3-1.5.5-2.3.5-1.1 0-1.7-.4-1.7-1.5V10h4V6h-4V0zm8.9 6h-5.4l5.6 15.8-3.5 7.7h5.2L42.6 6h-5.4L33.9 17.5 30.2 6zm18.5-.3c-1.9 0-3.1.9-3.8 1.5l-.3-1.2h-4.8v26.4l5.4-1.1.1-6.5c.7.5 1.8 1.2 3.4 1.2 3.5 0 6.7-2.8 6.7-8.9 0-5.5-3.2-9.4-6.7-9.4zm-1.2 14.4c-1.1 0-1.8-.4-2.3-1l-.1-7.5c.5-.6 1.2-1 2.4-1 1.8 0 3.1 2 3.1 4.7 0 2.8-1.2 4.8-3.1 4.8z"/></svg>
+                Secured by Stripe
+              </div>
+              <div class="compliance-strip">
+                <div class="comp-badge">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>PCI DSS Level 1
+                </div>
+                <div class="comp-badge">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>256-bit AES Encryption
+                </div>
+                <div class="comp-badge">
+                  <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Stripe Radar Fraud Protection
+                </div>
+                <div class="comp-badge">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>No card data stored
+                </div>
+              </div>
+
+              <!-- Developer integration note -->
+              <div style="margin-top:20px;padding:14px;background:#fff8f0;border:1px dashed var(--gold);font-size:11.5px;color:var(--g500);line-height:1.6">
+                <strong style="color:var(--navy)">⚙ Developer integration note:</strong><br>
+                Replace <code style="background:var(--g100);padding:1px 4px">STRIPE_PK</code> in the script with your Stripe publishable key. The backend security implementation (PaymentIntent creation, webhook signature verification, refund handling, idempotency, rate limiting, and logging) is fully documented in the inline JS comments below.
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: order summary -->
+          <div>
+            <div class="chk-summ">
+              <h3>Order Summary</h3>
+
+              <div class="chk-curr-toggle">
+                <button class="chk-curr-btn on" onclick="setChkCurr('HKD',this)">HKD</button>
+                <button class="chk-curr-btn" onclick="setChkCurr('USD',this)">USD</button>
+              </div>
+
+              <div class="chk-summ-items" id="chk-summ-items"></div>
+
+              <div class="chk-divider"></div>
+              <div class="chk-row">
+                <span class="chk-row-lbl">Subtotal</span>
+                <span class="chk-row-val" id="chk-subtotal">HKD 0</span>
+              </div>
+              <div class="chk-row">
+                <span class="chk-row-lbl">Govt. fees &amp; disbursements</span>
+                <span class="chk-row-val">Billed separately</span>
+              </div>
+              <div class="chk-total-row">
+                <span class="chk-total-lbl">Total Due Today</span>
+                <span class="chk-total-val" id="chk-total">HKD 0</span>
+              </div>
+              <p class="chk-summ-note">A written engagement letter and VAT receipt will be sent to your email immediately upon payment confirmation.</p>
+
+              <button class="chk-edit-cart" onclick="closeCart();openCart()">← Edit cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- PAGE: ENQUIRY FORM                             -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="page-order" class="page">
+  <div class="order-wrap">
+    <div class="order-inner">
+      <div class="eyebrow">Custom Quote Enquiry</div>
+      <h1 style="font-family:var(--serif);font-size:clamp(32px,4vw,54px);font-weight:400;color:var(--navy);margin-bottom:8px">Request a Quote</h1>
+      <p style="font-size:15px;color:var(--g500);max-width:480px;line-height:1.7">For complex structures, offshore entities, or bundled packages — our consultants will respond with a fixed fee proposal within 24 hours.</p>
+      <div class="order-grid">
+        <div>
+          <div class="form-block">
+            <h3>Services Required</h3>
+            <p style="font-size:13px;color:var(--g500);margin-bottom:16px;line-height:1.6">Select all services you'd like a quote for. Our consultants will provide a single combined proposal.</p>
+            <div class="svc-check-list" id="svc-check-list">
+              <label class="sci" onclick="updSumm()">
+                <input type="checkbox" value="incorporation">
+                <div class="sci-info">
+                  <span class="sci-name">New Company Incorporation (HK)</span>
+                  <span class="sci-desc">Full CR registration, KYC &amp; statutory documents</span>
+                </div>
+                <span class="sci-price">HKD 8,000</span>
+              </label>
+              <label class="sci" onclick="updSumm()">
+                <input type="checkbox" value="secretary">
+                <div class="sci-info">
+                  <span class="sci-name">Annual Company Secretary Retainer</span>
+                  <span class="sci-desc">Statutory records, NAR1 filing &amp; CR correspondence</span>
+                </div>
+                <span class="sci-price">HKD 2,500 / yr</span>
+              </label>
+              <label class="sci" onclick="updSumm()">
+                <input type="checkbox" value="nar1">
+                <div class="sci-info">
+                  <span class="sci-name">Annual Return (NAR1) Filing</span>
+                  <span class="sci-desc">Government statutory annual return</span>
+                </div>
+                <span class="sci-price">HKD 850 / yr</span>
+              </label>
+              <label class="sci" onclick="updSumm()">
+                <input type="checkbox" value="address">
+                <div class="sci-info">
+                  <span class="sci-name">Registered Office Address</span>
+                  <span class="sci-desc">Sheung Wan address with mail receipt &amp; forwarding</span>
+                </div>
+                <span class="sci-price">HKD 4,000 / yr</span>
+              </label>
+              <label class="sci" onclick="updSumm()">
+                <input type="checkbox" value="changes">
+                <div class="sci-info">
+                  <span class="sci-name">Corporate Changes</span>
+                  <span class="sci-desc">Director / shareholder / SCR filings</span>
+                </div>
+                <span class="sci-price">HKD 1,000 / filing</span>
+              </label>
+              <label class="sci" onclick="updSumm()">
+                <input type="checkbox" value="scr">
+                <div class="sci-info">
+                  <span class="sci-name">Significant Controllers Register Setup</span>
+                  <span class="sci-desc">Initial SCR preparation &amp; registration</span>
+                </div>
+                <span class="sci-price">HKD 1,100</span>
+              </label>
+              <label class="sci" onclick="updSumm()">
+                <input type="checkbox" value="banking">
+                <div class="sci-info">
+                  <span class="sci-name">Bank Account Assistance</span>
+                  <span class="sci-desc">HK corporate account application &amp; liaison</span>
+                </div>
+                <span class="sci-price">HKD 7,000</span>
+              </label>
+            </div>
+            <div class="fgroup" style="margin-top:20px">
+              <label>Notes &amp; Requirements</label>
+              <textarea placeholder="Describe your requirements — company name, directors, shareholder structure, preferred bank, jurisdiction (HK / BVI / Cayman / Singapore), or any other detail."></textarea>
+            </div>
+          </div>
+          <div class="form-block">
+            <h3>Your Details</h3>
+            <div class="form-row">
+              <div class="fgroup"><label>First Name</label><input type="text" id="enq-fname" placeholder="John"></div>
+              <div class="fgroup"><label>Last Name</label><input type="text" placeholder="Smith"></div>
+            </div>
+            <div class="fgroup"><label>Email Address</label><input type="email" id="enq-email" placeholder="john.smith@company.com"></div>
+            <div class="form-row">
+              <div class="fgroup"><label>Phone / WhatsApp</label><input type="tel" placeholder="+1 555 000 0000"></div>
+              <div class="fgroup">
+                <label>Country of Residence</label>
+                <select><option value="">Select country…</option><option>United States</option><option>United Kingdom</option><option>Germany</option><option>France</option><option>Netherlands</option><option>Switzerland</option><option>Australia</option><option>Singapore</option><option>Hong Kong</option><option>Other</option></select>
+              </div>
+            </div>
+          </div>
+          <div class="form-block">
+            <h3>Preferred Payment Method</h3>
+            <div class="pay-opts">
+              <label class="pay-opt" id="opt-card" onclick="selPay('card',event)"><input type="radio" name="pay" value="card"><div><div class="pay-opt-lbl">💳&ensp;Credit / Debit Card (Stripe)</div><div class="pay-opt-sub">Secure payment link sent after quote approval</div></div></label>
+              <label class="pay-opt" id="opt-bank" onclick="selPay('bank',event)"><input type="radio" name="pay" value="bank"><div><div class="pay-opt-lbl">🏦&ensp;Bank Transfer / Wire</div><div class="pay-opt-sub">USD or HKD wire to our Hong Kong account</div></div></label>
+              <label class="pay-opt" id="opt-crypto" onclick="selPay('crypto',event)"><input type="radio" name="pay" value="crypto"><div><div class="pay-opt-lbl">₿&ensp;Cryptocurrency</div><div class="pay-opt-sub">USDT (TRC20/ERC20), Bitcoin, Ethereum</div></div></label>
+            </div>
+            <div class="pay-detail" id="pd-card"><div class="stripe-note">A secure Stripe payment link will be emailed after your quote is approved. No card details required now.</div></div>
+            <div class="pay-detail" id="pd-bank"><div class="bank-box"><p><strong>Account Name:</strong> Ocean Apex Consultancy Limited<br><strong>Bank:</strong> [Your Bank Name]<br><strong>HKD Account No.:</strong> [Insert]<br><strong>USD Account No.:</strong> [Insert]<br><strong>SWIFT / BIC:</strong> [Insert]</p></div><p style="font-size:11.5px;color:var(--g300);margin-top:10px">Include your name and service in the reference. Send remittance to <strong>info@ocean-apex.com</strong>.</p></div>
+            <div class="pay-detail" id="pd-crypto"><div class="crypto-list"><div class="crypto-row"><span class="crypto-tag">USDT TRC20</span><span class="crypto-addr">[Insert TRC-20 wallet address]</span></div><div class="crypto-row"><span class="crypto-tag">USDT ERC20</span><span class="crypto-addr">[Insert ERC-20 wallet address]</span></div><div class="crypto-row"><span class="crypto-tag">BTC</span><span class="crypto-addr">[Insert Bitcoin wallet address]</span></div><div class="crypto-row"><span class="crypto-tag">ETH</span><span class="crypto-addr">[Insert Ethereum wallet address]</span></div></div></div>
+          </div>
+          <button class="btn-primary" style="width:100%;justify-content:center;padding:18px;font-size:14px" onclick="submitEnquiry()">Submit Enquiry →</button>
+          <p style="font-size:11.5px;color:var(--g300);margin-top:12px;text-align:center">By submitting you agree to our <a href="https://www.ocean-apex.com/tc" target="_blank" style="color:var(--gold)">Terms</a> and <a href="https://www.ocean-apex.com/privacy-policy" target="_blank" style="color:var(--gold)">Privacy Policy</a>.</p>
+        </div>
+        <div>
+          <div class="summ-card">
+            <h3>Your Enquiry</h3>
+            <div id="summ-items"><div class="summ-item"><span class="summ-name" style="color:var(--g300)">No service selected</span><span class="summ-price" style="color:var(--g300)">—</span></div></div>
+            <div class="summ-total"><span class="summ-tlbl">Estimate from</span><span class="summ-tprice" id="summ-total">—</span></div>
+            <p class="summ-note">Exact fee confirmed in our written proposal.</p>
+            <div class="summ-contact"><p class="summ-contact-lbl">Prefer to speak first?</p><p>+852 2111 0270<br>+852 2111 2030<br><a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a></p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- PAGE: CONFIRM                                  -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="page-confirm" class="page">
+  <div class="confirm-wrap">
+    <div class="confirm-inner">
+
+      <!-- ── PAYMENT CONFIRMED STATE ── -->
+      <div id="conf-payment">
+        <div class="confirm-check">✓</div>
+        <h1>Payment Confirmed</h1>
+        <p id="confirm-msg">Thank you for your payment. A written engagement letter and receipt have been sent to your email. Our team will be in touch within one business day to begin your service.</p>
+        <p>For urgent matters: <strong>+852 2111 0270</strong></p>
+        <p class="confirm-ref" id="confirm-ref"></p>
+        <button class="btn-primary" onclick="go('home')">Return to Home →</button>
+      </div>
+
+      <!-- ── ENQUIRY RECEIVED STATE ── -->
+      <div id="conf-enquiry" style="display:none">
+        <div class="confirm-check" style="background:var(--navy-mid)">✉</div>
+        <h1>Request Received</h1>
+        <p id="enquiry-msg">Thank you for your enquiry. We've received your request and a consultant will reach out to you with a fixed fee proposal within 24 business hours.</p>
+        <p style="margin-bottom:20px">In the meantime, feel free to contact us directly:</p>
+        <p style="font-size:14px;color:var(--g500);line-height:2">
+          <strong style="color:var(--navy)">+852 2111 0270</strong> &nbsp;·&nbsp; <strong style="color:var(--navy)">+852 2111 2030</strong><br>
+          <a href="mailto:info@ocean-apex.com" style="color:var(--gold)">info@ocean-apex.com</a>
+        </p>
+        <button class="btn-primary" onclick="go('home')" style="margin-top:16px">Return to Home →</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ JAVASCRIPT ═══════════════════════════════════ -->
+<script>
+// ════════════════════════════════════════════════
+// STRIPE CONFIGURATION
+// ════════════════════════════════════════════════
+// ⚠️  Replace with your actual Stripe Publishable Key before going live.
+// Get it from: https://dashboard.stripe.com/apikeys
+const STRIPE_PK = 'pk_test_REPLACE_WITH_YOUR_PUBLISHABLE_KEY';
+
+let stripe, cardElement;
+
+function initStripe() {
+  if (stripe) return; // already initialised
+  try {
+    stripe = Stripe(STRIPE_PK);
+    const els = stripe.elements({
+      fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap' }],
+    });
+    cardElement = els.create('card', {
+      hidePostalCode: true,
+      style: {
+        base: {
+          fontSize: '15px',
+          fontFamily: '"Inter", -apple-system, sans-serif',
+          fontWeight: '400',
+          color: '#0A1628',
+          '::placeholder': { color: '#B0BBCA' },
+          iconColor: '#C08A36',
+        },
+        invalid: { color: '#c0392b', iconColor: '#c0392b' },
+      },
+    });
+    cardElement.mount('#stripe-card-element');
+    document.getElementById('stripe-loading').remove();
+    cardElement.on('change', function(e) {
+      const err = document.getElementById('stripe-error');
+      if (e.error) { err.textContent = e.error.message; err.classList.add('show'); }
+      else          { err.textContent = '';              err.classList.remove('show'); }
+    });
+  } catch(e) {
+    console.warn('Stripe init failed — replace STRIPE_PK with your real key:', e.message);
+    document.getElementById('stripe-loading').textContent = 'Enter your Stripe publishable key to enable card payments.';
+  }
+}
+
+// ════════════════════════════════════════════════
+// SERVICE CATALOGUE  (edit prices here)
+// ════════════════════════════════════════════════
+const catalog = {
+  incorporation: { name: 'New Company Incorporation (HK)', hkd: 8000,  usd: 1026, freq: 'one-time' },
+  secretary:     { name: 'Annual Company Secretary Retainer', hkd: 2500, usd: 321,  freq: '/yr' },
+  nar1:          { name: 'Annual Return (NAR1) Filing',       hkd: 850,  usd: 109,  freq: '/yr' },
+  address:       { name: 'Registered Office Address',         hkd: 4000, usd: 513,  freq: '/yr' },
+  changes:       { name: 'Corporate Changes (filing)',         hkd: 1000, usd: 128,  freq: '/filing' },
+  scr:           { name: 'SCR Setup',                         hkd: 1100, usd: 141,  freq: 'one-time' },
+  banking:       { name: 'Bank Account Assistance',           hkd: 7000, usd: 897,  freq: 'one-time' },
+};
+
+// ════════════════════════════════════════════════
+// CART STATE
+// ════════════════════════════════════════════════
+let cart = []; // [{id, name, hkd, usd, freq, qty}]
+let cur = 'HKD';
+let chkCur = 'HKD';
+
+function addToCart(id) {
+  const svc = catalog[id];
+  if (!svc) return;
+  const existing = cart.find(i => i.id === id);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ id, ...svc, qty: 1 });
+  }
+  renderCart();
+  showToast('Added: ' + svc.name.split(' ').slice(0,3).join(' ') + '…');
+  updateBadge();
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(i => i.id !== id);
+  renderCart();
+  updateBadge();
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(i => i.id === id);
+  if (!item) return;
+  item.qty = Math.max(1, item.qty + delta);
+  renderCart();
+  updateBadge();
+}
+
+function getTotal(currency) {
+  return cart.reduce((sum, i) => sum + (currency === 'HKD' ? i.hkd : i.usd) * i.qty, 0);
+}
+
+function fmtPrice(amount, currency) {
+  return currency + ' ' + amount.toLocaleString();
+}
+
+function updateBadge() {
+  const total = cart.reduce((s, i) => s + i.qty, 0);
+  const badge = document.getElementById('cart-badge');
+  badge.textContent = total;
+  badge.classList.toggle('show', total > 0);
+}
+
+function renderCart() {
+  const body = document.getElementById('cart-body');
+  const foot = document.getElementById('cart-foot');
+  const meta = document.getElementById('cart-head-meta');
+  const totalItems = cart.reduce((s, i) => s + i.qty, 0);
+  meta.textContent = totalItems + (totalItems === 1 ? ' service selected' : ' services selected');
+
+  if (cart.length === 0) {
+    body.innerHTML = '<div class="cart-empty"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#B0BBCA" stroke-width="1.2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><p>Your cart is empty.<br>Add services to get started.</p></div>';
+    foot.style.display = 'none';
+    return;
+  }
+
+  let html = '';
+  cart.forEach(item => {
+    const price = fmtPrice((cur === 'HKD' ? item.hkd : item.usd) * item.qty, cur);
+    html += `<div class="cart-item">
+      <div class="ci-dot"></div>
+      <div class="ci-info">
+        <div class="ci-name">${item.name}</div>
+        <div class="ci-freq">${item.freq}</div>
+        <div class="ci-controls">
+          <button class="ci-qty-btn" onclick="changeQty('${item.id}',-1)">−</button>
+          <span class="ci-qty">${item.qty}</span>
+          <button class="ci-qty-btn" onclick="changeQty('${item.id}',1)">+</button>
+          <button class="ci-remove" onclick="removeFromCart('${item.id}')">Remove</button>
+        </div>
+      </div>
+      <div class="ci-price">${price}</div>
+    </div>`;
+  });
+  body.innerHTML = html;
+
+  const total = fmtPrice(getTotal(cur), cur);
+  document.getElementById('cart-total-display').textContent = total;
+  foot.style.display = 'block';
+}
+
+// ════════════════════════════════════════════════
+// CART DRAWER
+// ════════════════════════════════════════════════
+function openCart() {
+  document.getElementById('cart-drawer').classList.add('open');
+  document.getElementById('cart-overlay').classList.add('on');
+  document.body.style.overflow = 'hidden';
+  renderCart();
+}
+
+function closeCart() {
+  document.getElementById('cart-drawer').classList.remove('open');
+  document.getElementById('cart-overlay').classList.remove('on');
+  document.body.style.overflow = '';
+}
+
+// ════════════════════════════════════════════════
+// TOAST
+// ════════════════════════════════════════════════
+let toastTimer;
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+// ════════════════════════════════════════════════
+// PAGE NAVIGATION
+// ════════════════════════════════════════════════
+function go(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  if (id === 'checkout') {
+    populateCheckout();
+    initStripe();
+  }
+}
+
+function goCta() {
+  go('home');
+  setTimeout(() => {
+    const el = document.getElementById('contact');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }, 80);
+}
+
+function goCheckout() {
+  closeCart();
+  go('checkout');
+}
+
+// ════════════════════════════════════════════════
+// CHECKOUT PAGE
+// ════════════════════════════════════════════════
+function populateCheckout() {
+  const empty = document.getElementById('chk-empty');
+  const content = document.getElementById('chk-content');
+
+  if (cart.length === 0) {
+    empty.style.display = 'block';
+    content.style.display = 'none';
+    return;
+  }
+  empty.style.display = 'none';
+  content.style.display = 'block';
+
+  renderChkSummary();
+}
+
+function renderChkSummary() {
+  const c = chkCur;
+  let html = '';
+  cart.forEach(item => {
+    const linePrice = (c === 'HKD' ? item.hkd : item.usd) * item.qty;
+    html += `<div class="chk-si">
+      <div><div class="chk-si-name">${item.name}</div><div class="chk-si-qty">Qty: ${item.qty} · ${item.freq}</div></div>
+      <div class="chk-si-price">${fmtPrice(linePrice, c)}</div>
+    </div>`;
+  });
+  document.getElementById('chk-summ-items').innerHTML = html;
+
+  const total = getTotal(c);
+  const totalStr = fmtPrice(total, c);
+  document.getElementById('chk-subtotal').textContent = totalStr;
+  document.getElementById('chk-total').textContent = totalStr;
+  document.getElementById('pay-btn-text').textContent = 'Pay ' + totalStr;
+}
+
+function setChkCurr(c, btn) {
+  chkCur = c;
+  document.querySelectorAll('.chk-curr-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderChkSummary();
+}
+
+// ════════════════════════════════════════════════
+// FIELD VALIDATION
+// ════════════════════════════════════════════════
+function validateField(inputId, groupId, type) {
+  const el = document.getElementById(inputId);
+  const grp = document.getElementById(groupId);
+  if (!el || !grp) return true;
+  const val = el.value.trim();
+  let ok = false;
+  if (type === 'name')  ok = val.length >= 2;
+  if (type === 'email') ok = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val);
+  grp.classList.toggle('v-error', !ok);
+  grp.classList.toggle('v-ok',    ok && val.length > 0);
+  return ok;
+}
+
+function validateChkForm() {
+  const a = validateField('chk-fname',    'fg-fname',    'name');
+  const b = validateField('chk-lname',    'fg-lname',    'name');
+  const c = validateField('chk-email',    'fg-email',    'email');
+  const d = validateField('chk-cardname', 'fg-cardname', 'name');
+  return a && b && c && d;
+}
+
+// ════════════════════════════════════════════════
+// PAYMENT STATUS HELPERS
+// ════════════════════════════════════════════════
+function hideAllPsp() {
+  ['psp-error','psp-network','psp-timeout','psp-pending'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('show');
+  });
+}
+
+function showPayError(msg, code) {
+  hideAllPsp();
+  document.getElementById('psp-error-msg').textContent = msg;
+  document.getElementById('psp-error-code').textContent = code ? 'Error code: ' + code : '';
+  document.getElementById('psp-error').classList.add('show');
+  setPayBtnLoading(false);
+}
+
+function showNetworkError() {
+  hideAllPsp();
+  document.getElementById('psp-network').classList.add('show');
+  setPayBtnLoading(false);
+}
+
+function showTimeoutError() {
+  hideAllPsp();
+  document.getElementById('psp-timeout').classList.add('show');
+  setPayBtnLoading(false);
+}
+
+function showPending(email, ref) {
+  hideAllPsp();
+  document.getElementById('psp-pending-email').textContent = email;
+  document.getElementById('psp-pending-ref').textContent   = 'Reference: ' + ref;
+  document.getElementById('psp-pending').classList.add('show');
+  setPayBtnLoading(false);
+}
+
+function retryPayment() {
+  hideAllPsp();
+  document.getElementById('stripe-error').textContent = '';
+  document.getElementById('stripe-error').classList.remove('show');
+}
+
+// ════════════════════════════════════════════════
+// RATE LIMITING  (client-side guard; enforce on server too)
+// ════════════════════════════════════════════════
+const RATE_LIMIT_MS   = 30000; // 30 s between attempts
+let   lastAttemptTime = 0;
+let   rateCdTimer;
+
+function isRateLimited() {
+  const now  = Date.now();
+  const diff = now - lastAttemptTime;
+  if (lastAttemptTime > 0 && diff < RATE_LIMIT_MS) {
+    startRateCooldown(Math.ceil((RATE_LIMIT_MS - diff) / 1000));
+    return true;
+  }
+  return false;
+}
+
+function startRateCooldown(seconds) {
+  const banner   = document.getElementById('rate-banner');
+  const cdEl     = document.getElementById('rate-countdown');
+  let   remaining = seconds;
+  banner.classList.add('show');
+  cdEl.textContent = remaining;
+  clearInterval(rateCdTimer);
+  rateCdTimer = setInterval(() => {
+    remaining--;
+    cdEl.textContent = remaining;
+    if (remaining <= 0) { clearInterval(rateCdTimer); banner.classList.remove('show'); }
+  }, 1000);
+}
+
+// ════════════════════════════════════════════════
+// IDEMPOTENCY KEY  (regenerated each fresh attempt)
+// ════════════════════════════════════════════════
+function generateIdempotencyKey() {
+  const arr = new Uint8Array(16);
+  (window.crypto || window.msCrypto).getRandomValues(arr);
+  return 'idem_' + Array.from(arr, b => b.toString(16).padStart(2,'0')).join('');
+}
+let currentIdempotencyKey = generateIdempotencyKey();
+
+// ════════════════════════════════════════════════
+// STRIPE ERROR CODE → USER MESSAGE MAP
+// ════════════════════════════════════════════════
+const STRIPE_MESSAGES = {
+  card_declined:        'Your card was declined. Please try a different card or contact your bank.',
+  insufficient_funds:   'Insufficient funds on this card. Please use a different payment method.',
+  lost_card:            'This card has been reported lost. Please use a different card.',
+  stolen_card:          'This card has been reported stolen. Please use a different card.',
+  expired_card:         'Your card has expired. Please use a card with a valid expiry date.',
+  incorrect_cvc:        'The security code (CVC) is incorrect. Please check the 3–4 digit code on your card.',
+  incorrect_number:     'The card number is incorrect. Please check and re-enter.',
+  incorrect_zip:        'The billing postcode does not match your card records.',
+  processing_error:     'A processing error occurred. Please try again in a moment.',
+  do_not_honor:         'Your bank has declined this transaction. Please contact your bank or use a different card.',
+  rate_limit:           'Too many requests. Please wait 30 seconds before trying again.',
+  authentication_required: 'Additional authentication is required. Please complete the 3D Secure check.',
+};
+
+function stripeErrorMessage(error) {
+  if (!error) return 'An unexpected error occurred. Please try again.';
+  const decline = error.decline_code;
+  if (decline && STRIPE_MESSAGES[decline]) return STRIPE_MESSAGES[decline];
+  const code = error.code;
+  if (code && STRIPE_MESSAGES[code]) return STRIPE_MESSAGES[code];
+  return error.message || 'An unexpected error occurred. Please try again.';
+}
+
+// ════════════════════════════════════════════════
+// STRIPE PAYMENT HANDLER  (production-ready pattern)
+// ════════════════════════════════════════════════
+const PAYMENT_TIMEOUT_MS = 30000; // 30 s hard timeout
+let   paymentTimeoutId;
+
+async function handlePayment() {
+  // 1 ── Rate-limit guard
+  if (isRateLimited()) return;
+
+  // 2 ── Form validation
+  if (!validateChkForm()) {
+    document.getElementById('stripe-error').textContent = 'Please complete all required fields highlighted above.';
+    document.getElementById('stripe-error').classList.add('show');
+    return;
+  }
+
+  // 3 ── Network check
+  if (!navigator.onLine) { showNetworkError(); return; }
+
+  const email    = document.getElementById('chk-email').value.trim();
+  const fname    = document.getElementById('chk-fname').value.trim();
+  const cardName = document.getElementById('chk-cardname').value.trim();
+
+  // 4 ── Clear previous errors, set loading state, record attempt time
+  hideAllPsp();
+  document.getElementById('stripe-error').textContent = '';
+  document.getElementById('stripe-error').classList.remove('show');
+  setPayBtnLoading(true);
+  lastAttemptTime = Date.now();
+
+  // 5 ── Refresh idempotency key for this attempt
+  currentIdempotencyKey = generateIdempotencyKey();
+
+  // 6 ── Hard timeout watchdog
+  paymentTimeoutId = setTimeout(() => {
+    showTimeoutError();
+  }, PAYMENT_TIMEOUT_MS);
+
+  try {
+    // ══════════════════════════════════════════════════════════════
+    // BACKEND INTEGRATION — STEP A: Create PaymentIntent on server
+    // ══════════════════════════════════════════════════════════════
+    // Replace the mock below with a real fetch to your server.
+    // The server must:
+    //   • Validate the amount against the cart (never trust client-side totals)
+    //   • Use the idempotency key to prevent duplicate charges
+    //   • Return { clientSecret, paymentIntentId }
+    //
+    // ── Node.js / Express example ─────────────────────────────────
+    // app.post('/create-payment-intent', rateLimit, async (req, res) => {
+    //   const { amount, currency, services, customerEmail, idempotencyKey } = req.body;
+    //
+    //   // Server-side amount validation — NEVER trust the client
+    //   const validatedAmount = await validateCartAmount(services); // your DB lookup
+    //   if (validatedAmount !== amount) return res.status(400).json({ error: 'Amount mismatch' });
+    //
+    //   const paymentIntent = await stripe.paymentIntents.create({
+    //     amount: validatedAmount * 100,   // Stripe uses smallest currency unit
+    //     currency: currency.toLowerCase(),// 'hkd' or 'usd'
+    //     automatic_payment_methods: { enabled: true },
+    //     receipt_email: customerEmail,
+    //     metadata: {
+    //       services:   JSON.stringify(services),
+    //       customer:   customerEmail,
+    //       source:     'ocean-apex-web',
+    //       created_at: new Date().toISOString(),
+    //     },
+    //   }, { idempotencyKey });            // prevents duplicate charges on retries
+    //
+    //   // Log to your transaction ledger
+    //   await db.transactions.insert({
+    //     paymentIntentId: paymentIntent.id,
+    //     amount: validatedAmount,
+    //     currency,
+    //     status: 'pending',
+    //     email: customerEmail,
+    //     services,
+    //     createdAt: new Date(),
+    //   });
+    //
+    //   res.json({ clientSecret: paymentIntent.client_secret, paymentIntentId: paymentIntent.id });
+    // });
+    // ──────────────────────────────────────────────────────────────
+
+    // ══════════════════════════════════════════════════════════════
+    // BACKEND INTEGRATION — STEP B: Confirm payment on client
+    // ══════════════════════════════════════════════════════════════
+    // const res = await fetch('/create-payment-intent', {
+    //   method:  'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body:    JSON.stringify({
+    //     amount:        getTotal(chkCur),
+    //     currency:      chkCur,
+    //     services:      cart.map(i => ({ id: i.id, name: i.name, qty: i.qty })),
+    //     customerEmail: email,
+    //     idempotencyKey: currentIdempotencyKey,
+    //   }),
+    // });
+    // if (!res.ok) throw new Error('server_error');
+    // const { clientSecret } = await res.json();
+    //
+    // const result = await stripe.confirmCardPayment(clientSecret, {
+    //   payment_method: {
+    //     card: cardElement,
+    //     billing_details: { name: cardName, email },
+    //   },
+    // });
+    //
+    // if (result.error) {
+    //   const msg = stripeErrorMessage(result.error);
+    //   // Handle 3DS / authentication_required inline:
+    //   if (result.error.code === 'authentication_required') {
+    //     // Stripe automatically shows the 3DS modal; re-confirm after.
+    //   }
+    //   showPayError(msg, result.error.code || result.error.decline_code);
+    //   return;
+    // }
+    //
+    // // Handle PaymentIntent status
+    // const status = result.paymentIntent.status;
+    // if (status === 'succeeded') { /* proceed to confirm page */ }
+    // if (status === 'processing') { showPending(email, result.paymentIntent.id); return; }
+    // if (status === 'requires_action') { /* Stripe handles 3DS redirect */ }
+    // ──────────────────────────────────────────────────────────────
+
+    // ── PROTOTYPE: simulate 1.8 s processing ──────────────────────
+    await new Promise(r => setTimeout(r, 1800));
+    // In ~10% of prototype runs show a "pending" state for testing:
+    const forcePending = (Math.random() < 0.0); // set to 0.1 to demo pending state
+    if (forcePending) {
+      const pendRef = 'PI-' + Date.now().toString(36).toUpperCase();
+      showPending(email, pendRef);
+      clearTimeout(paymentTimeoutId);
+      return;
+    }
+    // ──────────────────────────────────────────────────────────────
+
+    clearTimeout(paymentTimeoutId);
+
+    // Payment succeeded
+    const ref = 'OAC-' + Date.now().toString(36).toUpperCase();
+    document.getElementById('conf-payment').style.display = 'block';
+    document.getElementById('conf-enquiry').style.display  = 'none';
+    document.getElementById('confirm-msg').textContent =
+      'Thank you, ' + fname + '. Your payment for ' + fmtPrice(getTotal(chkCur), chkCur) +
+      ' has been received. A written engagement letter and receipt will be sent to ' + email + ' within minutes.';
+    document.getElementById('confirm-ref').textContent = 'Reference: ' + ref;
+    cart = [];
+    updateBadge();
+    renderCart();
+    setPayBtnLoading(false);
+    go('confirm');
+
+  } catch (err) {
+    clearTimeout(paymentTimeoutId);
+    if (!navigator.onLine || err.message === 'Failed to fetch' || err.message === 'NetworkError') {
+      showNetworkError();
+    } else {
+      showPayError('An unexpected error occurred. Please try again or contact us directly.', err.message);
+    }
+  }
+}
+
+function setPayBtnLoading(on) {
+  const btn = document.getElementById('pay-btn');
+  if (!btn) return;
+  btn.disabled = on;
+  btn.classList.toggle('loading', on);
+}
+
+// ════════════════════════════════════════════════
+// BACKEND SECURITY — WEBHOOK HANDLER
+// ════════════════════════════════════════════════
+//
+// Set up a POST /stripe-webhook endpoint on your server.
+// All test cases (succeeded, failed, pending, dispute, refund) are handled here.
+//
+// ── Node.js / Express example ─────────────────────────────────────
+// const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET; // from Stripe Dashboard
+//
+// app.post('/stripe-webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+//   let event;
+//   try {
+//     // ① Signature verification — CRITICAL: prevents spoofed webhook events
+//     event = stripe.webhooks.constructEvent(req.body, req.headers['stripe-signature'], endpointSecret);
+//   } catch (err) {
+//     console.error('Webhook signature verification failed:', err.message);
+//     return res.status(400).send('Webhook Error: ' + err.message);
+//   }
+//
+//   const pi = event.data.object; // PaymentIntent or Charge
+//
+//   switch (event.type) {
+//
+//     // ── Successful transaction ─────────────────────────────────
+//     case 'payment_intent.succeeded':
+//       await db.transactions.update({ paymentIntentId: pi.id }, { status: 'succeeded', succeededAt: new Date() });
+//       await email.send({ to: pi.receipt_email, template: 'payment_receipt', data: pi.metadata });
+//       await email.send({ to: 'accounts@ocean-apex.com', template: 'new_payment_alert', data: pi });
+//       break;
+//
+//     // ── Failed transaction ─────────────────────────────────────
+//     case 'payment_intent.payment_failed':
+//       const reason = pi.last_payment_error?.decline_code || pi.last_payment_error?.code;
+//       await db.transactions.update({ paymentIntentId: pi.id }, { status: 'failed', failReason: reason });
+//       // Do NOT email customer here — the client-side already showed an error message.
+//       // Log for fraud monitoring:
+//       await fraudLog.record({ paymentIntentId: pi.id, reason, ip: pi.metadata.ip });
+//       break;
+//
+//     // ── Pending / processing ───────────────────────────────────
+//     case 'payment_intent.processing':
+//       await db.transactions.update({ paymentIntentId: pi.id }, { status: 'processing' });
+//       await email.send({ to: pi.receipt_email, template: 'payment_pending' });
+//       break;
+//
+//     // ── Chargeback / dispute created ───────────────────────────
+//     case 'charge.dispute.created':
+//       const charge = pi;
+//       await db.disputes.insert({
+//         chargeId: charge.id, amount: charge.amount, reason: charge.reason,
+//         evidence_due_by: new Date(charge.evidence_details.due_by * 1000),
+//       });
+//       await email.send({ to: 'compliance@ocean-apex.com', template: 'chargeback_alert', data: charge });
+//       // You have until evidence_due_by to submit counter-evidence via Stripe Dashboard
+//       break;
+//
+//     // ── Refund issued ──────────────────────────────────────────
+//     case 'charge.refunded':
+//       await db.transactions.update({ chargeId: pi.id }, { status: 'refunded', refundedAt: new Date() });
+//       await email.send({ to: pi.billing_details.email, template: 'refund_confirmation', data: pi });
+//       break;
+//
+//     default:
+//       console.log('Unhandled event type:', event.type);
+//   }
+//
+//   res.json({ received: true }); // Always return 200 quickly
+// });
+//
+// ── REFUND ENDPOINT ───────────────────────────────────────────────
+// app.post('/refund', authMiddleware, async (req, res) => {
+//   const { paymentIntentId, reason } = req.body;
+//   const refund = await stripe.refunds.create({ payment_intent: paymentIntentId, reason });
+//   await db.transactions.update({ paymentIntentId }, { status: 'refunded' });
+//   res.json({ refundId: refund.id, status: refund.status });
+// });
+//
+// ── SERVER-SIDE RATE LIMITING (use with Redis or similar) ─────────
+// const rateLimit = require('express-rate-limit');
+// const limiter = rateLimit({
+//   windowMs: 60 * 1000,   // 1 minute window
+//   max: 5,                 // max 5 payment attempts per IP per minute
+//   message: { error: 'rate_limit', message: 'Too many payment attempts. Please try again later.' },
+//   standardHeaders: true,
+//   legacyHeaders: false,
+// });
+// app.use('/create-payment-intent', limiter);
+//
+// ── RECONCILIATION ────────────────────────────────────────────────
+// Run nightly: fetch all Stripe PaymentIntents from the last 24h and
+// compare status with your local db.transactions table.
+// Flag any discrepancy (e.g. Stripe shows 'succeeded' but local shows 'pending').
+//
+// const stripe_pis = await stripe.paymentIntents.list({ created: { gte: yesterday }, limit: 100 });
+// for (const pi of stripe_pis.data) {
+//   const local = await db.transactions.findOne({ paymentIntentId: pi.id });
+//   if (!local || local.status !== pi.status) await alertOps(pi);
+// }
+// ─────────────────────────────────────────────────────────────────
+
+// ════════════════════════════════════════════════
+// CURRENCY TOGGLES (home pricing table)
+// ════════════════════════════════════════════════
+const svcsPagePrices = {
+  HKD: { inc:'HKD 8,000', sec:'HKD 2,500', addr:'HKD 4,000', chg:'HKD 1,000', bank:'HKD 7,000' },
+  USD: { inc:'USD 1,026', sec:'USD 321',   addr:'USD 513',   chg:'USD 128',   bank:'USD 897'   },
+};
+
+function setCurr(c, btn) {
+  cur = c;
+  document.querySelectorAll('.curr-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.tprice').forEach(td => {
+    td.textContent = td.dataset[c.toLowerCase()];
+  });
+  const p = svcsPagePrices[c];
+  if (document.getElementById('p-inc')) {
+    document.getElementById('p-inc').textContent = p.inc;
+    document.getElementById('p-sec').textContent = p.sec;
+    document.getElementById('p-addr').textContent = p.addr;
+    document.getElementById('p-chg').textContent = p.chg;
+    document.getElementById('p-bank').textContent = p.bank;
+  }
+  renderCart();
+}
+
+// ════════════════════════════════════════════════
+// ENQUIRY PAGE helpers
+// ════════════════════════════════════════════════
+const svcData = {
+  incorporation:{ name:'New Company Incorporation (HK)', hkd:'HKD 8,000',    usd:'USD 1,026',   hkdNum:8000,  usdNum:1026 },
+  secretary:    { name:'Annual Company Secretary',       hkd:'HKD 2,500/yr', usd:'USD 321/yr',  hkdNum:2500,  usdNum:321  },
+  nar1:         { name:'Annual Return (NAR1) Filing',    hkd:'HKD 850/yr',   usd:'USD 109/yr',  hkdNum:850,   usdNum:109  },
+  address:      { name:'Registered Office Address',      hkd:'HKD 4,000/yr', usd:'USD 513/yr',  hkdNum:4000,  usdNum:513  },
+  changes:      { name:'Corporate Changes (per filing)', hkd:'HKD 1,000',    usd:'USD 128',     hkdNum:1000,  usdNum:128  },
+  scr:          { name:'SCR Setup',                      hkd:'HKD 1,100',    usd:'USD 141',     hkdNum:1100,  usdNum:141  },
+  banking:      { name:'Bank Account Assistance',        hkd:'HKD 7,000',    usd:'USD 897',     hkdNum:7000,  usdNum:897  },
+};
+
+function updSumm() {
+  // Defer to next tick so checkbox state updates before we read it
+  setTimeout(() => {
+    const checked = [...document.querySelectorAll('#svc-check-list .sci input[type=checkbox]:checked')];
+    // Sync visual .checked class
+    document.querySelectorAll('#svc-check-list .sci').forEach(el => {
+      el.classList.toggle('checked', el.querySelector('input').checked);
+    });
+
+    const items = document.getElementById('summ-items');
+    const tot   = document.getElementById('summ-total');
+
+    if (checked.length === 0) {
+      items.innerHTML = '<div class="summ-item"><span class="summ-name" style="color:var(--g300)">No services selected</span><span class="summ-price" style="color:var(--g300)">—</span></div>';
+      tot.textContent = '—';
+      return;
+    }
+
+    let html = '';
+    let totalNum = 0;
+    checked.forEach(cb => {
+      const s = svcData[cb.value];
+      if (!s) return;
+      const price = cur === 'HKD' ? s.hkd : s.usd;
+      totalNum += cur === 'HKD' ? s.hkdNum : s.usdNum;
+      html += `<div class="summ-item"><span class="summ-name">${s.name}</span><span class="summ-price">${price}</span></div>`;
+    });
+    items.innerHTML = html;
+    tot.textContent = cur + ' ' + totalNum.toLocaleString() + (checked.length > 1 ? '+' : '');
+  }, 0);
+}
+
+function submitEnquiry() {
+  const fname = (document.getElementById('enq-fname')?.value || '').trim();
+  // Show the enquiry-received state on the confirm page
+  document.getElementById('conf-payment').style.display = 'none';
+  document.getElementById('conf-enquiry').style.display  = 'block';
+  if (fname) {
+    document.getElementById('enquiry-msg').textContent =
+      'Thank you, ' + fname + '. We\'ve received your request and a consultant will reach out to you with a fixed fee proposal within 24 business hours.';
+  }
+  go('confirm');
+}
+
+function selPay(method, e) {
+  document.querySelectorAll('.pay-opt').forEach(o => o.classList.remove('sel'));
+  document.querySelectorAll('.pay-detail').forEach(d => d.classList.remove('on'));
+  document.getElementById('opt-' + method)?.classList.add('sel');
+  document.getElementById('pd-' + method)?.classList.add('on');
+}
+</script>
+</body>
+</html>
