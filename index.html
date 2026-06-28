@@ -55,7 +55,20 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--navh);backgroun
 .nav-links{display:flex;gap:36px;list-style:none}
 .nav-links a{color:var(--g300);font-size:13.5px;font-weight:400;text-decoration:none;letter-spacing:.2px;transition:color .2s}
 .nav-links a:hover{color:var(--white)}
-.nav-right{display:flex;align-items:center;gap:14px}
+.nav-right{display:flex;align-items:center;gap:10px}
+/* currency select */
+.curr-select{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(192,138,54,.3);
+  color:var(--g300);font-family:var(--sans);font-size:12.5px;font-weight:500;
+  padding:7px 30px 7px 12px;cursor:pointer;outline:none;
+  -webkit-appearance:none;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23B0BBCA' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 10px center;
+  transition:border-color .2s;
+}
+.curr-select:hover{border-color:rgba(192,138,54,.6);color:var(--white)}
+.curr-select option{background:var(--navy);color:var(--white)}
 
 /* cart icon */
 .cart-btn{position:relative;background:transparent;border:none;cursor:pointer;padding:8px;color:var(--g300);transition:color .2s;display:flex;align-items:center}
@@ -433,15 +446,68 @@ footer{background:var(--navy);padding:64px 48px 32px}
 .confirm-inner .btn-primary{margin:28px auto 0;display:inline-flex}
 .confirm-ref{font-size:12px;color:var(--g300);margin-top:20px}
 
+/* ── HAMBURGER BUTTON ── */
+.hamburger{
+  display:none;background:transparent;border:none;cursor:pointer;
+  padding:8px;color:var(--g300);transition:color .2s;
+  flex-direction:column;justify-content:center;align-items:center;gap:5px;
+  width:38px;height:38px;flex-shrink:0;
+}
+.hamburger:hover{color:var(--white)}
+.hamburger span{display:block;width:20px;height:1.5px;background:currentColor;transition:transform .25s,opacity .25s}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* ── MOBILE NAV OVERLAY ── */
+.mobile-nav{
+  position:fixed;inset:0;z-index:298;background:var(--navy);
+  display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);
+  padding-top:var(--navh);overflow-y:auto;
+}
+.mobile-nav.open{transform:translateX(0)}
+.mobile-nav-links{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 40px;gap:4px}
+.mobile-nav-links a{
+  display:block;padding:18px 0;
+  font-family:var(--serif);font-size:28px;font-weight:400;
+  color:rgba(255,255,255,.6);text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,.06);transition:color .15s;
+}
+.mobile-nav-links a:hover,.mobile-nav-links a:active{color:var(--white)}
+.mobile-nav-foot{padding:32px 40px;border-top:1px solid rgba(255,255,255,.08)}
+.mn-cta{
+  width:100%;padding:17px;background:var(--gold);color:var(--navy);
+  font-family:var(--sans);font-size:14px;font-weight:700;letter-spacing:.5px;
+  border:none;cursor:pointer;transition:background .2s;
+}
+.mn-cta:hover{background:var(--gold-h)}
+.mn-contact{margin-top:18px;font-size:12.5px;color:rgba(255,255,255,.35);line-height:1.9}
+
+/* ── PRICING TABLE SCROLL WRAPPER ── */
+.ptable-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--g100)}
+.ptable-wrap .ptable{min-width:560px;border:none}
+
 /* ── RESPONSIVE ── */
+
+/* 1024px — checkout single column */
 @media(max-width:1024px){
   .chk-grid{grid-template-columns:1fr}
   .chk-summ{position:static}
 }
+
+/* 900px — tablet / large mobile */
 @media(max-width:900px){
   .nav-links{display:none}
-  .nav-inner,.wrap,.hero,.trust-strip,.sec,.svc-hero,.svc-detail-wrap,.order-wrap,.chk-wrap,footer{padding-left:24px;padding-right:24px}
-  .hero{padding-top:calc(var(--navh)+60px)}
+  .hamburger{display:flex}
+  .nav-inner{padding:0 24px}
+  .wrap,.hero,.trust-strip,.sec,.svc-hero,.svc-detail-wrap,.order-wrap,.chk-wrap,footer{padding-left:24px;padding-right:24px}
+  .hero{padding-top:calc(var(--navh)+60px);padding-bottom:60px}
+  .sec{padding-top:64px;padding-bottom:64px}
+  .svc-hero{padding-top:calc(var(--navh)+48px);padding-bottom:48px}
+  .svc-detail-wrap{padding-top:48px;padding-bottom:48px}
+  .order-wrap{padding-top:calc(var(--navh)+40px);padding-bottom:60px}
+  .chk-wrap{padding-top:calc(var(--navh)+40px);padding-bottom:60px}
   .svc-grid{grid-template-columns:1fr 1fr}
   .why-grid{grid-template-columns:1fr 1fr;gap:32px}
   .proc-grid{grid-template-columns:1fr;gap:36px}.proc-grid::before{display:none}
@@ -450,14 +516,72 @@ footer{background:var(--navy);padding:64px 48px 32px}
   .order-grid{grid-template-columns:1fr}
   .form-row{grid-template-columns:1fr}
   .cta-inner{flex-direction:column;gap:28px}
-  .trust-strip{padding:16px 24px}
-  .trust-item{padding:0 20px 0 0;margin-right:20px}
+  /* Trust strip: horizontal scroll on narrow tablets */
+  .trust-strip{padding:0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .trust-row{padding:16px 24px;flex-wrap:nowrap;width:max-content;gap:0}
+  .trust-item{flex-shrink:0}
   .cart-drawer{width:100vw}
+  /* Bigger touch targets */
+  .ci-qty-btn{width:36px;height:36px;font-size:16px}
+  .cart-close{padding:10px;font-size:20px}
 }
+
+/* 600px — mobile phones */
 @media(max-width:600px){
+  /* Nav: hide wordmark tagline & Get a Quote on small screens */
+  .logo-tag{display:none}
+  .btn-nav{display:none}
+  /* Grids */
   .svc-grid{grid-template-columns:1fr}
   .why-grid{grid-template-columns:1fr}
   .stripe-two{grid-template-columns:1fr}
+  /* Padding */
+  .sec{padding-top:48px;padding-bottom:48px}
+  .svc-detail-wrap{padding-top:40px;padding-bottom:40px}
+  .svc-row{padding:40px 0;gap:24px}
+  /* Confirm */
+  .confirm-inner h1{font-size:32px}
+  .confirm-wrap{padding:60px 24px}
+  /* Payment error panels: stack buttons vertically */
+  .psp-actions{flex-direction:column}
+  .btn-retry,.btn-retry-ghost{width:100%;text-align:center;justify-content:center;padding:13px 20px}
+  /* Service card: full-width View Details button */
+  .svc-card-foot .btn-ghost{width:100%;justify-content:center;min-height:44px}
+  /* iOS: prevent input zoom (must be ≥16px) */
+  .fgroup input,.fgroup select,.fgroup textarea{font-size:16px}
+  /* btn-ghost min touch target */
+  .btn-ghost{min-height:44px;align-items:center}
+  /* CTA band: full-width buttons */
+  .cta-right{width:100%}
+  .cta-right .btn-primary,.cta-right .btn-outline{width:100%;justify-content:center}
+  /* Toast: full width */
+  .toast{left:16px;right:16px;bottom:16px;width:auto}
+  /* Compliance badges: wrap */
+  .compliance-strip{flex-wrap:wrap;gap:10px}
+}
+
+/* 480px — smallest phones (iPhone SE, Android 360) */
+@media(max-width:480px){
+  :root{--navh:60px}
+  .nav-inner{padding:0 16px}
+  .wrap,.hero,.sec,.svc-hero,.svc-detail-wrap,.order-wrap,.chk-wrap,footer,.trust-row{padding-left:16px;padding-right:16px}
+  .hero h1{font-size:clamp(34px,8.5vw,44px)}
+  .hero-sub{font-size:14.5px}
+  .hero-ctas{flex-direction:column;align-items:stretch}
+  .hero-ctas .btn-primary,.hero-ctas .btn-outline{justify-content:center;width:100%}
+  .hero-note{font-size:11px}
+  .svc-card{padding:28px 20px}
+  .price-card{padding:24px 20px}
+  .price-main{font-size:34px}
+  .summ-card,.chk-summ{padding:20px}
+  .order-inner,.chk-inner{padding:0}
+  .mobile-nav-links{padding:24px 28px}
+  .mobile-nav-links a{font-size:24px;padding:14px 0}
+  .mobile-nav-foot{padding:24px 28px}
+  .foot-grid{gap:24px}
+  /* Table: reduce cell padding on very small screens */
+  .ptable thead th,.ptable tbody td{padding:12px 10px;font-size:12.5px}
+  .tdesc{font-size:10.5px}
 }
 </style>
 </head>
@@ -476,10 +600,19 @@ footer{background:var(--navy);padding:64px 48px 32px}
     <ul class="nav-links">
       <li><a href="#" onclick="go('home');return false">Home</a></li>
       <li><a href="#" onclick="go('services');return false">Services</a></li>
-      <li><a href="#" onclick="go('services');return false">Pricing</a></li>
+      <li><a href="#" onclick="go('pricing');return false">Pricing</a></li>
       <li><a href="#" onclick="goCta();return false">Contact</a></li>
     </ul>
     <div class="nav-right">
+      <!-- Currency selector -->
+      <select id="nav-currency" class="curr-select" onchange="setGlobalCurr(this.value)" aria-label="Select currency">
+        <option value="HKD">HKD</option>
+        <option value="USD">USD</option>
+      </select>
+      <!-- Hamburger (visible ≤900px) -->
+      <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Open navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
       <!-- Cart icon -->
       <button class="cart-btn" onclick="openCart()" title="View cart" aria-label="Shopping cart">
         <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
@@ -492,6 +625,20 @@ footer{background:var(--navy);padding:64px 48px 32px}
 
 <!-- ════════════════ CART OVERLAY ════════════════ -->
 <div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+
+<!-- ════════════════ MOBILE NAV ════════════════ -->
+<div class="mobile-nav" id="mobile-nav">
+  <div class="mobile-nav-links">
+    <a href="#" onclick="closeMobileNav();go('home');return false">Home</a>
+    <a href="#" onclick="closeMobileNav();go('services');return false">Services</a>
+    <a href="#" onclick="closeMobileNav();go('pricing');return false">Pricing</a>
+    <a href="#" onclick="closeMobileNav();goCta();return false">Contact</a>
+  </div>
+  <div class="mobile-nav-foot">
+    <button class="mn-cta" onclick="closeMobileNav();go('order')">Request a Quote →</button>
+    <p class="mn-contact">+852 2111 0270 &nbsp;·&nbsp; +852 2111 2030<br>info@ocean-apex.com</p>
+  </div>
+</div>
 
 <!-- ════════════════ CART DRAWER ════════════════ -->
 <div class="cart-drawer" id="cart-drawer">
@@ -565,9 +712,8 @@ footer{background:var(--navy);padding:64px 48px 32px}
           <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2z"/><path d="M12 22V12M2 7l10 5 10-5"/></svg></div>
           <h3>Company Incorporation</h3>
           <p>Full Hong Kong private company setup — CR registration, statutory documents, AML-compliant KYC. BVI, Cayman, and Singapore structures also available.</p>
-          <div class="svc-card-foot">
-            <span class="svc-price">HKD 8,000</span>
-            <button class="btn-atc" onclick="addToCart('incorporation')"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Add to Cart</button>
+          <div class="svc-card-foot" style="margin-top:auto">
+            <button class="btn-ghost" onclick="goToService('incorporation')" style="font-size:12px;padding:9px 18px">View Details →</button>
           </div>
         </div>
 
@@ -575,9 +721,8 @@ footer{background:var(--navy);padding:64px 48px 32px}
           <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M9 12h6M9 16h6M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z"/></svg></div>
           <h3>Annual Compliance</h3>
           <p>Ongoing company secretary retainer, annual return (NAR1) filing, statutory records maintenance, and board resolution preparation for continued good standing.</p>
-          <div class="svc-card-foot">
-            <span class="svc-price">HKD 2,500 / yr</span>
-            <button class="btn-atc" onclick="addToCart('secretary')"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Add to Cart</button>
+          <div class="svc-card-foot" style="margin-top:auto">
+            <button class="btn-ghost" onclick="goToService('secretary')" style="font-size:12px;padding:9px 18px">View Details →</button>
           </div>
         </div>
 
@@ -585,9 +730,8 @@ footer{background:var(--navy);padding:64px 48px 32px}
           <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
           <h3>Registered Office</h3>
           <p>Professional registered address in Sheung Wan with mail receipt, document scanning, and forwarding services — a statutory requirement for every HK company.</p>
-          <div class="svc-card-foot">
-            <span class="svc-price">HKD 4,000 / yr</span>
-            <button class="btn-atc" onclick="addToCart('address')"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Add to Cart</button>
+          <div class="svc-card-foot" style="margin-top:auto">
+            <button class="btn-ghost" onclick="goToService('address')" style="font-size:12px;padding:9px 18px">View Details →</button>
           </div>
         </div>
 
@@ -595,9 +739,8 @@ footer{background:var(--navy);padding:64px 48px 32px}
           <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
           <h3>Corporate Changes</h3>
           <p>Director and shareholder filings, share transfers, and significant controllers register updates submitted to the Companies Registry on your behalf.</p>
-          <div class="svc-card-foot">
-            <span class="svc-price">HKD 1,000 / filing</span>
-            <button class="btn-atc" onclick="addToCart('changes')"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Add to Cart</button>
+          <div class="svc-card-foot" style="margin-top:auto">
+            <button class="btn-ghost" onclick="goToService('changes')" style="font-size:12px;padding:9px 18px">View Details →</button>
           </div>
         </div>
 
@@ -605,9 +748,8 @@ footer{background:var(--navy);padding:64px 48px 32px}
           <div class="svc-icon"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
           <h3>Bank Account Assistance</h3>
           <p>Guided corporate bank account application, including document preparation, memorandum drafting, and liaison with relationship managers in Hong Kong.</p>
-          <div class="svc-card-foot">
-            <span class="svc-price">HKD 7,000</span>
-            <button class="btn-atc" onclick="addToCart('banking')"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Add to Cart</button>
+          <div class="svc-card-foot" style="margin-top:auto">
+            <button class="btn-ghost" onclick="goToService('banking')" style="font-size:12px;padding:9px 18px">View Details →</button>
           </div>
         </div>
 
@@ -660,67 +802,6 @@ footer{background:var(--navy);padding:64px 48px 32px}
     </div>
   </section>
 
-  <section class="sec">
-    <div class="wrap">
-      <div class="eyebrow">Fee Schedule</div>
-      <h2 class="sec-title">Transparent pricing,<br>fixed before work begins</h2>
-      <div class="gold-bar"></div>
-      <div class="curr-toggle">
-        <button class="curr-btn on" onclick="setCurr('HKD',this)">HKD</button>
-        <button class="curr-btn" onclick="setCurr('USD',this)">USD</button>
-      </div>
-      <table class="ptable">
-        <thead>
-          <tr><th>Service</th><th>Frequency</th><th>Fee</th><th class="td-action"></th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>New Company Incorporation</strong><div class="tdesc">HK Private Limited Company · full statutory setup</div></td>
-            <td class="tfreq">One-time</td>
-            <td class="tprice" data-hkd="HKD 8,000" data-usd="USD 1,026">HKD 8,000</td>
-            <td class="td-action"><button class="btn-atc" onclick="addToCart('incorporation')">+ Add to Cart</button></td>
-          </tr>
-          <tr>
-            <td><strong>Annual Company Secretary Retainer</strong><div class="tdesc">Statutory records, CR correspondence</div></td>
-            <td class="tfreq">Annual</td>
-            <td class="tprice" data-hkd="HKD 2,500" data-usd="USD 321">HKD 2,500</td>
-            <td class="td-action"><button class="btn-atc" onclick="addToCart('secretary')">+ Add to Cart</button></td>
-          </tr>
-          <tr>
-            <td><strong>Annual Return (NAR1) Filing</strong><div class="tdesc">Government statutory filing</div></td>
-            <td class="tfreq">Annual</td>
-            <td class="tprice" data-hkd="HKD 850" data-usd="USD 109">HKD 850</td>
-            <td class="td-action"><button class="btn-atc" onclick="addToCart('nar1')">+ Add to Cart</button></td>
-          </tr>
-          <tr>
-            <td><strong>Registered Office Address</strong><div class="tdesc">Sheung Wan, Hong Kong · mail &amp; forwarding</div></td>
-            <td class="tfreq">Annual</td>
-            <td class="tprice" data-hkd="HKD 4,000" data-usd="USD 513">HKD 4,000</td>
-            <td class="td-action"><button class="btn-atc" onclick="addToCart('address')">+ Add to Cart</button></td>
-          </tr>
-          <tr>
-            <td><strong>Corporate Changes</strong><div class="tdesc">Director / shareholder / SCR filings</div></td>
-            <td class="tfreq">Per filing</td>
-            <td class="tprice" data-hkd="HKD 1,000" data-usd="USD 128">HKD 1,000</td>
-            <td class="td-action"><button class="btn-atc" onclick="addToCart('changes')">+ Add to Cart</button></td>
-          </tr>
-          <tr>
-            <td><strong>Significant Controllers Register</strong><div class="tdesc">SCR initial setup &amp; preparation</div></td>
-            <td class="tfreq">One-time</td>
-            <td class="tprice" data-hkd="HKD 1,100" data-usd="USD 141">HKD 1,100</td>
-            <td class="td-action"><button class="btn-atc" onclick="addToCart('scr')">+ Add to Cart</button></td>
-          </tr>
-          <tr>
-            <td><strong>Bank Account Assistance</strong><div class="tdesc">HK corporate account application support</div></td>
-            <td class="tfreq">One-time</td>
-            <td class="tprice" data-hkd="HKD 7,000" data-usd="USD 897">HKD 7,000</td>
-            <td class="td-action"><button class="btn-atc" onclick="addToCart('banking')">+ Add to Cart</button></td>
-          </tr>
-        </tbody>
-      </table>
-      <p style="font-size:11.5px;color:var(--g300);margin-top:14px">All fees exclusive of government filing fees and disbursements. USD converted at HKD 7.80. Fees confirmed in writing prior to work commencing.</p>
-    </div>
-  </section>
 
   <div class="cta-band" id="contact">
     <div class="cta-inner">
@@ -772,6 +853,88 @@ footer{background:var(--navy);padding:64px 48px 32px}
 </div>
 
 <!-- ══════════════════════════════════════════════ -->
+<!-- PAGE: PRICING                                   -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="page-pricing" class="page">
+  <div class="svc-hero">
+    <div class="svc-hero-inner">
+      <div class="eyebrow light">Fee Schedule</div>
+      <h1>Transparent pricing,<br><em>fixed before work begins</em></h1>
+      <p>All fees confirmed in writing before any work commences. Government filing fees and disbursements billed separately.</p>
+    </div>
+  </div>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="ptable-wrap"><table class="ptable">
+        <thead>
+          <tr><th>Service</th><th>Frequency</th><th>Fee</th><th class="td-action"></th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>New Company Incorporation</strong><div class="tdesc">HK Private Limited Company · full statutory setup</div></td>
+            <td class="tfreq">One-time</td>
+            <td class="tprice" data-hkd="HKD 6,000" data-usd="USD 769">HKD 6,000</td>
+            <td class="td-action"><button class="btn-atc" onclick="addToCart('incorporation')">+ Add to Cart</button></td>
+          </tr>
+          <tr>
+            <td><strong>Annual Company Secretary Retainer</strong><div class="tdesc">Statutory records, CR correspondence</div></td>
+            <td class="tfreq">Annual</td>
+            <td class="tprice" data-hkd="HKD 4,105" data-usd="USD 526">HKD 4,105</td>
+            <td class="td-action"><button class="btn-atc" onclick="addToCart('secretary')">+ Add to Cart</button></td>
+          </tr>
+          <tr>
+            <td><strong>Annual Return (NAR1) Filing</strong><div class="tdesc">Government statutory filing</div></td>
+            <td class="tfreq">Annual</td>
+            <td class="tprice" data-hkd="HKD 850" data-usd="USD 109">HKD 850</td>
+            <td class="td-action"><button class="btn-atc" onclick="addToCart('nar1')">+ Add to Cart</button></td>
+          </tr>
+          <tr>
+            <td><strong>Registered Office Address</strong><div class="tdesc">Sheung Wan, Hong Kong · mail &amp; forwarding</div></td>
+            <td class="tfreq">Annual</td>
+            <td class="tprice" data-hkd="HKD 4,000" data-usd="USD 513">HKD 4,000</td>
+            <td class="td-action"><button class="btn-atc" onclick="addToCart('address')">+ Add to Cart</button></td>
+          </tr>
+          <tr>
+            <td><strong>Corporate Changes</strong><div class="tdesc">Director / shareholder / SCR filings</div></td>
+            <td class="tfreq">Per filing</td>
+            <td class="tprice" data-hkd="HKD 1,000" data-usd="USD 128">HKD 1,000</td>
+            <td class="td-action"><button class="btn-atc" onclick="addToCart('changes')">+ Add to Cart</button></td>
+          </tr>
+          <tr>
+            <td><strong>Significant Controllers Register</strong><div class="tdesc">SCR initial setup &amp; preparation</div></td>
+            <td class="tfreq">One-time</td>
+            <td class="tprice" data-hkd="HKD 1,100" data-usd="USD 141">HKD 1,100</td>
+            <td class="td-action"><button class="btn-atc" onclick="addToCart('scr')">+ Add to Cart</button></td>
+          </tr>
+          <tr>
+            <td><strong>Bank Account Assistance</strong><div class="tdesc">HK corporate account application support</div></td>
+            <td class="tfreq">One-time</td>
+            <td class="tprice" data-hkd="HKD 7,000" data-usd="USD 897">HKD 7,000</td>
+            <td class="td-action"><button class="btn-atc" onclick="addToCart('banking')">+ Add to Cart</button></td>
+          </tr>
+        </tbody>
+      </table></div>
+      <p style="font-size:11.5px;color:var(--g300);margin-top:12px">All fees exclusive of government filing fees and disbursements. Fees confirmed in writing prior to work commencing.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-inner">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <div class="nav-logo" style="cursor:default"><div class="logo-box">OA</div><div><div class="logo-name">Ocean Apex Consultancy Ltd.</div><div class="logo-tag">Company Secretary Services</div></div></div>
+          <p>Unit B, 5/F, Wing Sing Commercial Centre, 12–16 Wing Lok Street, Sheung Wan, Hong Kong</p>
+        </div>
+        <div class="foot-col"><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="go('services');return false">Services</a><a href="#" onclick="go('order');return false">Get a Quote</a></div>
+        <div class="foot-col"><h5>Contact</h5><a href="tel:+85221110270">+852 2111 0270</a><a href="tel:+85221112030">+852 2111 2030</a><a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a></div>
+      </div>
+      <div class="foot-bottom"><p>© 2025 Ocean Apex Consultancy Ltd. All rights reserved.</p><p>TCSP Licence TC008172 &nbsp;·&nbsp; Category A Licence A-B-24-01-05179</p></div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
 <!-- PAGE: SERVICES DETAIL                          -->
 <!-- ══════════════════════════════════════════════ -->
 <div id="page-services" class="page">
@@ -786,12 +949,12 @@ footer{background:var(--navy);padding:64px 48px 32px}
   <div class="svc-detail-wrap">
     <div class="svc-detail-inner">
 
-      <div class="svc-row">
+      <div class="svc-row" id="svc-incorporation">
         <div class="svc-left">
           <div class="eyebrow">Incorporation</div>
           <h2>New Company Formation</h2>
           <p>A complete Hong Kong private limited company setup, managed from name availability check through to Certificate of Incorporation. All Companies Registry correspondence handled; full first statutory documents produced.</p>
-          <p>Also available for BVI, Cayman Islands, and Singapore entities.</p>
+          <p>Also available for offshore companies such as British Virgin Islands (BVI), Cayman Islands, and Singapore entities.</p>
           <ul class="incl">
             <li>Company name availability check</li>
             <li>Articles of Association preparation</li>
@@ -804,9 +967,9 @@ footer{background:var(--navy);padding:64px 48px 32px}
         </div>
         <div>
           <div class="price-card">
-            <div class="price-main" id="p-inc">HKD 8,000</div>
+            <div class="price-main" id="p-inc">HKD 6,000</div>
             <div class="price-lbl">Fixed fee</div>
-            <p class="price-note">Government fees (CR HKD 1,720 + BR HKD 250) are additional disbursements billed separately.</p>
+            <p class="price-note">Government fees (CR HKD 1,720 + BR HKD 2350) are additional disbursements billed separately.</p>
             <div class="price-card-btns">
               <button class="btn-primary btn-full" onclick="addToCart('incorporation')">Add to Cart →</button>
               <button class="btn-ghost btn-full" onclick="go('order')" style="justify-content:center">Get a Custom Quote</button>
@@ -816,7 +979,7 @@ footer{background:var(--navy);padding:64px 48px 32px}
         </div>
       </div>
 
-      <div class="svc-row">
+      <div class="svc-row" id="svc-secretary">
         <div class="svc-left">
           <div class="eyebrow">Annual Retainer</div>
           <h2>Annual Compliance Package</h2>
@@ -832,9 +995,9 @@ footer{background:var(--navy);padding:64px 48px 32px}
         </div>
         <div>
           <div class="price-card">
-            <div class="price-main" id="p-sec">HKD 2,500</div>
+            <div class="price-main" id="p-sec">HKD 4,105</div>
             <div class="price-lbl">Per year</div>
-            <p class="price-note">Includes basic secretary retainer (HKD 2,000) and NAR1 filing (HKD 500) — billed together annually. Can be bundled with registered office.</p>
+            <p class="price-note">Includes Company secretarial fee and documents preparation (HKD 4,000) and NAR1 filing (HKD 105) — billed together annually. Can be bundled with registered office. BR Fee of HKD 2,350 excluded from package.</p>
             <div class="price-card-btns">
               <button class="btn-primary btn-full" onclick="addToCart('secretary')">Add to Cart →</button>
             </div>
@@ -842,7 +1005,7 @@ footer{background:var(--navy);padding:64px 48px 32px}
         </div>
       </div>
 
-      <div class="svc-row">
+      <div class="svc-row" id="svc-address">
         <div class="svc-left">
           <div class="eyebrow">Registered Address</div>
           <h2>Registered Office Address</h2>
@@ -866,7 +1029,7 @@ footer{background:var(--navy);padding:64px 48px 32px}
         </div>
       </div>
 
-      <div class="svc-row">
+      <div class="svc-row" id="svc-changes">
         <div class="svc-left">
           <div class="eyebrow">Corporate Changes</div>
           <h2>Director &amp; Shareholder Filings</h2>
@@ -891,7 +1054,7 @@ footer{background:var(--navy);padding:64px 48px 32px}
         </div>
       </div>
 
-      <div class="svc-row">
+      <div class="svc-row" id="svc-banking">
         <div class="svc-left">
           <div class="eyebrow">Banking Support</div>
           <h2>Bank Account Assistance</h2>
@@ -907,8 +1070,8 @@ footer{background:var(--navy);padding:64px 48px 32px}
         <div>
           <div class="price-card">
             <div class="price-main" id="p-bank">HKD 7,000</div>
-            <div class="price-lbl">Fixed fee</div>
-            <p class="price-note">Account approval is at the bank's sole discretion. This service covers the application and liaison process only.</p>
+            <div class="price-lbl">Fixed fee per bank account</div>
+            <p class="price-note">Account approval is at the bank's sole discretion. This service covers the application and liaison process only, clients are responsible for any account opening fees charged by banks.</p>
             <div class="price-card-btns">
               <button class="btn-primary btn-full" onclick="addToCart('banking')">Add to Cart →</button>
               <button class="btn-ghost btn-full" onclick="go('order')" style="justify-content:center">Get a Custom Quote</button>
@@ -1118,12 +1281,7 @@ footer{background:var(--navy);padding:64px 48px 32px}
             <div class="chk-summ">
               <h3>Order Summary</h3>
 
-              <div class="chk-curr-toggle">
-                <button class="chk-curr-btn on" onclick="setChkCurr('HKD',this)">HKD</button>
-                <button class="chk-curr-btn" onclick="setChkCurr('USD',this)">USD</button>
-              </div>
-
-              <div class="chk-summ-items" id="chk-summ-items"></div>
+<div class="chk-summ-items" id="chk-summ-items"></div>
 
               <div class="chk-divider"></div>
               <div class="chk-row">
@@ -1163,14 +1321,20 @@ footer{background:var(--navy);padding:64px 48px 32px}
           <div class="form-block">
             <h3>Services Required</h3>
             <p style="font-size:13px;color:var(--g500);margin-bottom:16px;line-height:1.6">Select all services you'd like a quote for. Our consultants will provide a single combined proposal.</p>
+
+            <!-- Jurisdiction notice -->
+            <div style="display:flex;gap:12px;padding:14px 16px;background:var(--gold-pale);border-left:3px solid var(--gold);margin-bottom:16px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C08A36" stroke-width="2" style="flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <p style="font-size:12.5px;color:var(--g800);line-height:1.7"><strong style="color:var(--navy)">Fees vary by jurisdiction.</strong> The fee schedule on our Pricing page applies to Hong Kong private limited company incorporation only. Charges for BVI, Cayman Islands, Singapore, and other offshore structures differ. Your consultant will provide a fixed quote tailored to your specific jurisdiction and requirements.</p>
+            </div>
+
             <div class="svc-check-list" id="svc-check-list">
               <label class="sci" onclick="updSumm()">
                 <input type="checkbox" value="incorporation">
                 <div class="sci-info">
-                  <span class="sci-name">New Company Incorporation (HK)</span>
-                  <span class="sci-desc">Full CR registration, KYC &amp; statutory documents</span>
+                  <span class="sci-name">New Company Incorporation</span>
+                  <span class="sci-desc">HK, BVI, Cayman Islands, Singapore &amp; other jurisdictions</span>
                 </div>
-                <span class="sci-price">HKD 8,000</span>
               </label>
               <label class="sci" onclick="updSumm()">
                 <input type="checkbox" value="secretary">
@@ -1178,7 +1342,6 @@ footer{background:var(--navy);padding:64px 48px 32px}
                   <span class="sci-name">Annual Company Secretary Retainer</span>
                   <span class="sci-desc">Statutory records, NAR1 filing &amp; CR correspondence</span>
                 </div>
-                <span class="sci-price">HKD 2,500 / yr</span>
               </label>
               <label class="sci" onclick="updSumm()">
                 <input type="checkbox" value="nar1">
@@ -1186,7 +1349,6 @@ footer{background:var(--navy);padding:64px 48px 32px}
                   <span class="sci-name">Annual Return (NAR1) Filing</span>
                   <span class="sci-desc">Government statutory annual return</span>
                 </div>
-                <span class="sci-price">HKD 850 / yr</span>
               </label>
               <label class="sci" onclick="updSumm()">
                 <input type="checkbox" value="address">
@@ -1194,7 +1356,6 @@ footer{background:var(--navy);padding:64px 48px 32px}
                   <span class="sci-name">Registered Office Address</span>
                   <span class="sci-desc">Sheung Wan address with mail receipt &amp; forwarding</span>
                 </div>
-                <span class="sci-price">HKD 4,000 / yr</span>
               </label>
               <label class="sci" onclick="updSumm()">
                 <input type="checkbox" value="changes">
@@ -1202,7 +1363,6 @@ footer{background:var(--navy);padding:64px 48px 32px}
                   <span class="sci-name">Corporate Changes</span>
                   <span class="sci-desc">Director / shareholder / SCR filings</span>
                 </div>
-                <span class="sci-price">HKD 1,000 / filing</span>
               </label>
               <label class="sci" onclick="updSumm()">
                 <input type="checkbox" value="scr">
@@ -1210,7 +1370,6 @@ footer{background:var(--navy);padding:64px 48px 32px}
                   <span class="sci-name">Significant Controllers Register Setup</span>
                   <span class="sci-desc">Initial SCR preparation &amp; registration</span>
                 </div>
-                <span class="sci-price">HKD 1,100</span>
               </label>
               <label class="sci" onclick="updSumm()">
                 <input type="checkbox" value="banking">
@@ -1218,7 +1377,6 @@ footer{background:var(--navy);padding:64px 48px 32px}
                   <span class="sci-name">Bank Account Assistance</span>
                   <span class="sci-desc">HK corporate account application &amp; liaison</span>
                 </div>
-                <span class="sci-price">HKD 7,000</span>
               </label>
             </div>
             <div class="fgroup" style="margin-top:20px">
@@ -1248,9 +1406,9 @@ footer{background:var(--navy);padding:64px 48px 32px}
               <label class="pay-opt" id="opt-bank" onclick="selPay('bank',event)"><input type="radio" name="pay" value="bank"><div><div class="pay-opt-lbl">🏦&ensp;Bank Transfer / Wire</div><div class="pay-opt-sub">USD or HKD wire to our Hong Kong account</div></div></label>
               <label class="pay-opt" id="opt-crypto" onclick="selPay('crypto',event)"><input type="radio" name="pay" value="crypto"><div><div class="pay-opt-lbl">₿&ensp;Cryptocurrency</div><div class="pay-opt-sub">USDT (TRC20/ERC20), Bitcoin, Ethereum</div></div></label>
             </div>
-            <div class="pay-detail" id="pd-card"><div class="stripe-note">A secure Stripe payment link will be emailed after your quote is approved. No card details required now.</div></div>
-            <div class="pay-detail" id="pd-bank"><div class="bank-box"><p><strong>Account Name:</strong> Ocean Apex Consultancy Limited<br><strong>Bank:</strong> [Your Bank Name]<br><strong>HKD Account No.:</strong> [Insert]<br><strong>USD Account No.:</strong> [Insert]<br><strong>SWIFT / BIC:</strong> [Insert]</p></div><p style="font-size:11.5px;color:var(--g300);margin-top:10px">Include your name and service in the reference. Send remittance to <strong>info@ocean-apex.com</strong>.</p></div>
-            <div class="pay-detail" id="pd-crypto"><div class="crypto-list"><div class="crypto-row"><span class="crypto-tag">USDT TRC20</span><span class="crypto-addr">[Insert TRC-20 wallet address]</span></div><div class="crypto-row"><span class="crypto-tag">USDT ERC20</span><span class="crypto-addr">[Insert ERC-20 wallet address]</span></div><div class="crypto-row"><span class="crypto-tag">BTC</span><span class="crypto-addr">[Insert Bitcoin wallet address]</span></div><div class="crypto-row"><span class="crypto-tag">ETH</span><span class="crypto-addr">[Insert Ethereum wallet address]</span></div></div></div>
+            <div class="pay-detail" id="pd-card"><div class="stripe-note">A secure Stripe payment link will be emailed to you once your quote has been approved. No card details are required at this stage.</div></div>
+            <div class="pay-detail" id="pd-bank"><div class="stripe-note">Our team will provide full bank transfer details — account name, account number, and SWIFT code — alongside your confirmed quote. No action needed now.</div></div>
+            <div class="pay-detail" id="pd-crypto"><div class="stripe-note">We accept USDT (TRC20 / ERC20), Bitcoin (BTC), and Ethereum (ETH). Wallet addresses will be provided with your confirmed quote. No transfer required at this stage.</div></div>
           </div>
           <button class="btn-primary" style="width:100%;justify-content:center;padding:18px;font-size:14px" onclick="submitEnquiry()">Submit Enquiry →</button>
           <p style="font-size:11.5px;color:var(--g300);margin-top:12px;text-align:center">By submitting you agree to our <a href="https://www.ocean-apex.com/tc" target="_blank" style="color:var(--gold)">Terms</a> and <a href="https://www.ocean-apex.com/privacy-policy" target="_blank" style="color:var(--gold)">Privacy Policy</a>.</p>
@@ -1258,9 +1416,12 @@ footer{background:var(--navy);padding:64px 48px 32px}
         <div>
           <div class="summ-card">
             <h3>Your Enquiry</h3>
-            <div id="summ-items"><div class="summ-item"><span class="summ-name" style="color:var(--g300)">No service selected</span><span class="summ-price" style="color:var(--g300)">—</span></div></div>
-            <div class="summ-total"><span class="summ-tlbl">Estimate from</span><span class="summ-tprice" id="summ-total">—</span></div>
-            <p class="summ-note">Exact fee confirmed in our written proposal.</p>
+            <div id="summ-items">
+              <div class="summ-item"><span class="summ-name" style="color:var(--g300)">No services selected</span></div>
+            </div>
+            <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--g100)">
+              <p style="font-size:12px;color:var(--g500);line-height:1.7">Fees are not estimated here as they vary by jurisdiction and scope. Your consultant will confirm a fixed, all-inclusive quote in writing within 24 hours.</p>
+            </div>
             <div class="summ-contact"><p class="summ-contact-lbl">Prefer to speak first?</p><p>+852 2111 0270<br>+852 2111 2030<br><a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a></p></div>
           </div>
         </div>
@@ -1352,8 +1513,8 @@ function initStripe() {
 // SERVICE CATALOGUE  (edit prices here)
 // ════════════════════════════════════════════════
 const catalog = {
-  incorporation: { name: 'New Company Incorporation (HK)', hkd: 8000,  usd: 1026, freq: 'one-time' },
-  secretary:     { name: 'Annual Company Secretary Retainer', hkd: 2500, usd: 321,  freq: '/yr' },
+  incorporation: { name: 'New Company Incorporation (HK)', hkd: 6000,  usd: 769, freq: 'one-time' },
+  secretary:     { name: 'Annual Company Secretary Retainer', hkd: 4105, usd: 526,  freq: '/yr' },
   nar1:          { name: 'Annual Return (NAR1) Filing',       hkd: 850,  usd: 109,  freq: '/yr' },
   address:       { name: 'Registered Office Address',         hkd: 4000, usd: 513,  freq: '/yr' },
   changes:       { name: 'Corporate Changes (filing)',         hkd: 1000, usd: 128,  freq: '/filing' },
@@ -1365,8 +1526,7 @@ const catalog = {
 // CART STATE
 // ════════════════════════════════════════════════
 let cart = []; // [{id, name, hkd, usd, freq, qty}]
-let cur = 'HKD';
-let chkCur = 'HKD';
+let cur = 'HKD'; // single global currency — driven by nav dropdown
 
 function addToCart(id) {
   const svc = catalog[id];
@@ -1480,7 +1640,30 @@ function showToast(msg) {
 // ════════════════════════════════════════════════
 // PAGE NAVIGATION
 // ════════════════════════════════════════════════
+// ════════════════════════════════════════════════
+// MOBILE NAV (hamburger menu)
+// ════════════════════════════════════════════════
+function toggleMobileNav() {
+  const nav = document.getElementById('mobile-nav');
+  const btn = document.getElementById('hamburger');
+  const open = nav.classList.toggle('open');
+  btn.classList.toggle('open', open);
+  btn.setAttribute('aria-expanded', String(open));
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+
+function closeMobileNav() {
+  const nav = document.getElementById('mobile-nav');
+  const btn = document.getElementById('hamburger');
+  if (!nav) return;
+  nav.classList.remove('open');
+  btn.classList.remove('open');
+  btn.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+}
+
 function go(id) {
+  closeMobileNav();
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
   window.scrollTo({ top: 0, behavior: 'instant' });
@@ -1488,6 +1671,14 @@ function go(id) {
     populateCheckout();
     initStripe();
   }
+}
+
+function goToService(id) {
+  go('services');
+  setTimeout(() => {
+    const el = document.getElementById('svc-' + id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 120);
 }
 
 function goCta() {
@@ -1522,7 +1713,7 @@ function populateCheckout() {
 }
 
 function renderChkSummary() {
-  const c = chkCur;
+  const c = cur;
   let html = '';
   cart.forEach(item => {
     const linePrice = (c === 'HKD' ? item.hkd : item.usd) * item.qty;
@@ -1540,12 +1731,6 @@ function renderChkSummary() {
   document.getElementById('pay-btn-text').textContent = 'Pay ' + totalStr;
 }
 
-function setChkCurr(c, btn) {
-  chkCur = c;
-  document.querySelectorAll('.chk-curr-btn').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-  renderChkSummary();
-}
 
 // ════════════════════════════════════════════════
 // FIELD VALIDATION
@@ -1775,8 +1960,8 @@ async function handlePayment() {
     //   method:  'POST',
     //   headers: { 'Content-Type': 'application/json' },
     //   body:    JSON.stringify({
-    //     amount:        getTotal(chkCur),
-    //     currency:      chkCur,
+    //     amount:        getTotal(cur),
+    //     currency:      cur,
     //     services:      cart.map(i => ({ id: i.id, name: i.name, qty: i.qty })),
     //     customerEmail: email,
     //     idempotencyKey: currentIdempotencyKey,
@@ -1828,7 +2013,7 @@ async function handlePayment() {
     document.getElementById('conf-payment').style.display = 'block';
     document.getElementById('conf-enquiry').style.display  = 'none';
     document.getElementById('confirm-msg').textContent =
-      'Thank you, ' + fname + '. Your payment for ' + fmtPrice(getTotal(chkCur), chkCur) +
+      'Thank you, ' + fname + '. Your payment for ' + fmtPrice(getTotal(cur), cur) +
       ' has been received. A written engagement letter and receipt will be sent to ' + email + ' within minutes.';
     document.getElementById('confirm-ref').textContent = 'Reference: ' + ref;
     cart = [];
@@ -1956,37 +2141,51 @@ function setPayBtnLoading(on) {
 // ─────────────────────────────────────────────────────────────────
 
 // ════════════════════════════════════════════════
-// CURRENCY TOGGLES (home pricing table)
+// GLOBAL CURRENCY  (nav dropdown drives everything)
 // ════════════════════════════════════════════════
 const svcsPagePrices = {
-  HKD: { inc:'HKD 8,000', sec:'HKD 2,500', addr:'HKD 4,000', chg:'HKD 1,000', bank:'HKD 7,000' },
-  USD: { inc:'USD 1,026', sec:'USD 321',   addr:'USD 513',   chg:'USD 128',   bank:'USD 897'   },
+  HKD: { inc:'HKD 6,000', sec:'HKD 4,105', addr:'HKD 4,000', chg:'HKD 1,000', bank:'HKD 7,000' },
+  USD: { inc:'USD 769', sec:'USD 526',   addr:'USD 513',   chg:'USD 128',   bank:'USD 897'   },
 };
 
-function setCurr(c, btn) {
+function setGlobalCurr(c) {
   cur = c;
-  document.querySelectorAll('.curr-btn').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
+
+  // Sync nav dropdown to match (in case called programmatically)
+  const sel = document.getElementById('nav-currency');
+  if (sel && sel.value !== c) sel.value = c;
+
+  // All tprice cells (pricing page table + anywhere else)
   document.querySelectorAll('.tprice').forEach(td => {
     td.textContent = td.dataset[c.toLowerCase()];
   });
+
+  // Service-page sticky price cards
   const p = svcsPagePrices[c];
-  if (document.getElementById('p-inc')) {
-    document.getElementById('p-inc').textContent = p.inc;
-    document.getElementById('p-sec').textContent = p.sec;
-    document.getElementById('p-addr').textContent = p.addr;
-    document.getElementById('p-chg').textContent = p.chg;
-    document.getElementById('p-bank').textContent = p.bank;
-  }
+  ['p-inc','p-sec','p-addr','p-chg','p-bank'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = [p.inc, p.sec, p.addr, p.chg, p.bank][i];
+  });
+
+  // Re-render cart drawer and checkout summary
   renderCart();
+  if (document.getElementById('page-checkout')?.classList.contains('active')) {
+    renderChkSummary();
+  }
+
+  // Re-render enquiry sidebar
+  updSumm();
 }
+
+// Legacy alias kept so any inline onclick="setCurr(...)" still works
+function setCurr(c) { setGlobalCurr(c); }
 
 // ════════════════════════════════════════════════
 // ENQUIRY PAGE helpers
 // ════════════════════════════════════════════════
 const svcData = {
-  incorporation:{ name:'New Company Incorporation (HK)', hkd:'HKD 8,000',    usd:'USD 1,026',   hkdNum:8000,  usdNum:1026 },
-  secretary:    { name:'Annual Company Secretary',       hkd:'HKD 2,500/yr', usd:'USD 321/yr',  hkdNum:2500,  usdNum:321  },
+  incorporation:{ name:'New Company Incorporation (HK)', hkd:'HKD 6,000',    usd:'USD 769',   hkdNum:6000,  usdNum:769 },
+  secretary:    { name:'Annual Company Secretary',       hkd:'HKD 4,105/yr', usd:'USD 526/yr',  hkdNum:4105,  usdNum:526  },
   nar1:         { name:'Annual Return (NAR1) Filing',    hkd:'HKD 850/yr',   usd:'USD 109/yr',  hkdNum:850,   usdNum:109  },
   address:      { name:'Registered Office Address',      hkd:'HKD 4,000/yr', usd:'USD 513/yr',  hkdNum:4000,  usdNum:513  },
   changes:      { name:'Corporate Changes (per filing)', hkd:'HKD 1,000',    usd:'USD 128',     hkdNum:1000,  usdNum:128  },
@@ -2004,25 +2203,20 @@ function updSumm() {
     });
 
     const items = document.getElementById('summ-items');
-    const tot   = document.getElementById('summ-total');
+    if (!items) return;
 
     if (checked.length === 0) {
-      items.innerHTML = '<div class="summ-item"><span class="summ-name" style="color:var(--g300)">No services selected</span><span class="summ-price" style="color:var(--g300)">—</span></div>';
-      tot.textContent = '—';
+      items.innerHTML = '<div class="summ-item"><span class="summ-name" style="color:var(--g300)">No services selected</span></div>';
       return;
     }
 
     let html = '';
-    let totalNum = 0;
     checked.forEach(cb => {
       const s = svcData[cb.value];
       if (!s) return;
-      const price = cur === 'HKD' ? s.hkd : s.usd;
-      totalNum += cur === 'HKD' ? s.hkdNum : s.usdNum;
-      html += `<div class="summ-item"><span class="summ-name">${s.name}</span><span class="summ-price">${price}</span></div>`;
+      html += `<div class="summ-item"><span class="summ-name">${s.name}</span></div>`;
     });
     items.innerHTML = html;
-    tot.textContent = cur + ' ' + totalNum.toLocaleString() + (checked.length > 1 ? '+' : '');
   }, 0);
 }
 
