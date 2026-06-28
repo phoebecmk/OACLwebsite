@@ -438,7 +438,7 @@ footer{background:var(--navy);padding:64px 48px 32px}
 .chk-empty p{font-size:14px;color:var(--g500);margin-bottom:28px}
 
 /* ── CONFIRM PAGE ── */
-.confirm-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 48px}
+.confirm-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:calc(var(--navh)+60px) 48px 60px}
 .confirm-inner{max-width:540px;text-align:center}
 .confirm-check{width:72px;height:72px;background:var(--gold);margin:0 auto 32px;display:flex;align-items:center;justify-content:center;color:var(--navy);font-size:30px;font-weight:700}
 .confirm-inner h1{font-family:var(--serif);font-size:44px;font-weight:400;color:var(--navy);margin-bottom:14px}
@@ -487,6 +487,9 @@ footer{background:var(--navy);padding:64px 48px 32px}
 /* ── PRICING TABLE SCROLL WRAPPER ── */
 .ptable-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--g100)}
 .ptable-wrap .ptable{min-width:560px;border:none}
+
+/* Prevent fixed nav from obscuring scroll targets */
+[id]{scroll-margin-top:calc(var(--navh) + 16px)}
 
 /* ── RESPONSIVE ── */
 
@@ -541,7 +544,7 @@ footer{background:var(--navy);padding:64px 48px 32px}
   .svc-row{padding:40px 0;gap:24px}
   /* Confirm */
   .confirm-inner h1{font-size:32px}
-  .confirm-wrap{padding:60px 24px}
+  .confirm-wrap{padding-left:24px;padding-right:24px}
   /* Payment error panels: stack buttons vertically */
   .psp-actions{flex-direction:column}
   .btn-retry,.btn-retry-ghost{width:100%;text-align:center;justify-content:center;padding:13px 20px}
@@ -564,7 +567,7 @@ footer{background:var(--navy);padding:64px 48px 32px}
 @media(max-width:480px){
   :root{--navh:60px}
   .nav-inner{padding:0 16px}
-  .wrap,.hero,.sec,.svc-hero,.svc-detail-wrap,.order-wrap,.chk-wrap,footer,.trust-row{padding-left:16px;padding-right:16px}
+  .wrap,.hero,.sec,.svc-hero,.svc-detail-wrap,.order-wrap,.chk-wrap,.confirm-wrap,footer,.trust-row{padding-left:16px;padding-right:16px}
   .hero h1{font-size:clamp(34px,8.5vw,44px)}
   .hero-sub{font-size:14.5px}
   .hero-ctas{flex-direction:column;align-items:stretch}
@@ -859,8 +862,8 @@ footer{background:var(--navy);padding:64px 48px 32px}
   <div class="svc-hero">
     <div class="svc-hero-inner">
       <div class="eyebrow light">Fee Schedule</div>
-      <h1>Transparent pricing,<br><em>fixed before work begins</em></h1>
-      <p>All fees confirmed in writing before any work commences. Government filing fees and disbursements billed separately.</p>
+      <h1><br>Transparent pricing,<br><em>fixed before work begins</em></h1>
+      <p>All fees confirmed in writing before any work commences. Government filing fees and disbursements billed separately.<br></p>
     </div>
   </div>
 
@@ -941,7 +944,7 @@ footer{background:var(--navy);padding:64px 48px 32px}
   <div class="svc-hero">
     <div class="svc-hero-inner">
       <div class="eyebrow light">Our Services</div>
-      <h1>End-to-end company<br>secretarial services for<br><em>global investors</em></h1>
+      <h1><br>End-to-end company<br>secretarial services for<br><em>global investors</em></h1>
       <p>From initial incorporation to annual compliance. Select any service below and add it directly to your cart.</p>
       <button class="btn-primary" onclick="openCart()">View Cart →</button>
     </div>
