@@ -1470,40 +1470,6 @@ footer {
   font-weight: 600;
 }
 
-.crypto-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.crypto-row {
-  background: var(--off);
-  padding: 14px 16px;
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-}
-
-.crypto-tag {
-  background: var(--navy);
-  color: var(--white);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  padding: 4px 8px;
-  white-space: nowrap;
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-
-.crypto-addr {
-  font-family: 'Courier New', monospace;
-  font-size: 11.5px;
-  color: var(--g500);
-  word-break: break-all;
-  line-height: 1.5;
-}
-
 .stripe-note {
   background: var(--off);
   padding: 16px;
@@ -3494,7 +3460,7 @@ footer {
         <div class="proc-step">
           <div class="proc-num">02</div>
           <h4>Pay Securely Online</h4>
-          <p>Complete payment via Stripe (card), bank transfer, or cryptocurrency. A written confirmation and engagement letter is issued immediately.</p>
+          <p>Complete payment via Stripe (card), our designated online payment company, or bank transfer. A written confirmation and engagement letter is issued immediately.</p>
         </div>
         <div class="proc-step">
           <div class="proc-num">03</div>
@@ -3549,7 +3515,7 @@ footer {
       </div>
       <div class="foot-bottom">
         <p>© 2025 Ocean Apex Consultancy Ltd. All rights reserved.</p>
-        <p>TCSP Licence TC008172 &nbsp;·&nbsp; Category A Licence A-B-24-01-05179</p>
+        <p>TCSP Licence TC008172 &nbsp;·&nbsp; </p>
       </div>
     </div>
   </footer>
@@ -3632,7 +3598,7 @@ footer {
         <div class="foot-col"><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="go('services');return false">Services</a><a href="#" onclick="go('order');return false">Get a Quote</a></div>
         <div class="foot-col"><h5>Contact</h5><a href="tel:+85221110270">+852 2111 0270</a><a href="tel:+85221112030">+852 2111 2030</a><a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a><a href="#" onclick="go('terms');return false">Terms &amp; Conditions</a><a href="#" onclick="go('privacy');return false">Privacy Policy</a></div>
       </div>
-      <div class="foot-bottom"><p>© 2025 Ocean Apex Consultancy Ltd. All rights reserved.</p><p>TCSP Licence TC008172 &nbsp;·&nbsp; Category A Licence A-B-24-01-05179</p></div>
+      <div class="foot-bottom"><p>© 2025 Ocean Apex Consultancy Ltd. All rights reserved.</p><p>TCSP Licence TC008172 &nbsp;·&nbsp;</p></div>
     </div>
   </footer>
 </div>
@@ -3793,7 +3759,7 @@ footer {
         <div class="foot-col"><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="openCart();return false">View Cart</a><a href="#" onclick="go('order');return false">Get a Quote</a></div>
         <div class="foot-col"><h5>Contact</h5><a href="tel:+85221110270">+852 2111 0270</a><a href="tel:+85221112030">+852 2111 2030</a><a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a><a href="#" onclick="go('terms');return false">Terms &amp; Conditions</a><a href="#" onclick="go('privacy');return false">Privacy Policy</a></div>
       </div>
-      <div class="foot-bottom"><p>© 2025 Ocean Apex Consultancy Ltd. All rights reserved.</p><p>TCSP Licence TC008172 &nbsp;·&nbsp; Category A Licence A-B-24-01-05179</p></div>
+      <div class="foot-bottom"><p>© 2025 Ocean Apex Consultancy Ltd. All rights reserved.</p><p>TCSP Licence TC008172 &nbsp;·&nbsp; </p></div>
     </div>
   </footer>
 </div>
@@ -4107,11 +4073,9 @@ footer {
             <div class="pay-opts">
               <label class="pay-opt" id="opt-card" onclick="selPay('card',event)"><input type="radio" name="pay" value="card"><div><div class="pay-opt-lbl">💳&ensp;Credit / Debit Card (Stripe)</div><div class="pay-opt-sub">Secure payment link sent after quote approval</div></div></label>
               <label class="pay-opt" id="opt-bank" onclick="selPay('bank',event)"><input type="radio" name="pay" value="bank"><div><div class="pay-opt-lbl">🏦&ensp;Bank Transfer / Wire</div><div class="pay-opt-sub">USD or HKD wire to our Hong Kong account</div></div></label>
-              <label class="pay-opt" id="opt-crypto" onclick="selPay('crypto',event)"><input type="radio" name="pay" value="crypto"><div><div class="pay-opt-lbl">₿&ensp;Cryptocurrency</div><div class="pay-opt-sub">USDT (TRC20/ERC20), Bitcoin, Ethereum</div></div></label>
             </div>
             <div class="pay-detail" id="pd-card"><div class="stripe-note">A secure Stripe payment link will be emailed to you once your quote has been approved. No card details are required at this stage.</div></div>
             <div class="pay-detail" id="pd-bank"><div class="stripe-note">Our team will provide full bank transfer details — account name, account number, and SWIFT code — alongside your confirmed quote. No action needed now.</div></div>
-            <div class="pay-detail" id="pd-crypto"><div class="stripe-note">We accept USDT (TRC20 / ERC20), Bitcoin (BTC), and Ethereum (ETH). Wallet addresses will be provided with your confirmed quote. No transfer required at this stage.</div></div>
           </div>
           <button class="btn-primary btn-full btn-lg" onclick="submitEnquiry()">Submit Enquiry →</button>
           <p class="fine-print u-text-center">By submitting you agree to our <a href="#" onclick="go('terms');return false" class="u-text-gold">Terms</a> and <a href="#" onclick="go('privacy');return false" class="u-text-gold">Privacy Policy</a>.</p>
@@ -4176,7 +4140,7 @@ footer {
       </div>
 
       <h2 id="t-1">1. Agreement to Terms</h2>
-      <p>These Terms and Conditions ("Terms") form a legally binding agreement between you and Ocean Apex Consultancy Ltd. ("Ocean Apex," "we," "us," or "our"), a company secretarial and corporate services provider licensed under Hong Kong's Trust or Company Service Provider ("TCSP") regime (Licence No. TC008172) and holding Category A Licence A-B-24-01-05179, with its registered office at Unit B, 5/F, Wing Sing Commercial Centre, 12–16 Wing Lok Street, Sheung Wan, Hong Kong.</p>
+      <p>These Terms and Conditions ("Terms") form a legally binding agreement between you and Ocean Apex Consultancy Ltd. ("Ocean Apex," "we," "us," or "our"), a company secretarial and corporate services provider licensed under Hong Kong's Trust or Company Service Provider ("TCSP") regime (Licence No. TC008172), with its registered office at Unit B, 5/F, Wing Sing Commercial Centre, 12–16 Wing Lok Street, Sheung Wan, Hong Kong.</p>
       <p>These Terms govern your access to and use of this website, including any page, enquiry form, shopping cart, or checkout function on it (collectively, the "Site"), as well as any company secretarial, incorporation, or related services you purchase or enquire about through the Site (the "Services").</p>
       <p>By accessing the Site, submitting an enquiry, adding a service to your cart, or completing a payment, you confirm that you have read, understood, and agree to be bound by these Terms. If you do not agree, you must discontinue use of the Site immediately.</p>
       <p>We may revise these Terms at any time by updating the "Last updated" date above. Continued use of the Site after changes are posted constitutes your acceptance of the revised Terms. We recommend reviewing this page periodically.</p>
@@ -4203,13 +4167,13 @@ footer {
 
       <h2 id="t-5">5. Orders, Pricing &amp; Payment</h2>
       <p>For Hong Kong incorporation and standard compliance services listed with a fixed fee, you may add one or more services to your shopping cart and complete payment directly through our checkout page. All prices are displayed in Hong Kong Dollars (HKD) or United States Dollars (USD) according to the currency selected in the site header, and the total charged will be in the currency shown at the time of payment.</p>
-      <p>Card payments are processed securely by Stripe, Inc., a PCI DSS Level 1 certified payment processor. We do not collect, transmit, or store your full card number, expiry date, or CVC on our own servers — these details are entered directly into Stripe's secure payment form. We may also accept payment by bank transfer or cryptocurrency for certain services; details of these methods will be provided separately and are not collected through the Site's checkout form.</p>
+      <p>Card payments are processed securely by Stripe, Inc., a PCI DSS Level 1 certified payment processor. We do not collect, transmit, or store your full card number, expiry date, or CVC on our own servers — these details are entered directly into Stripe's secure payment form. We may also accept payment by bank transfer for certain services; details of this method will be provided separately and are not collected through the Site's checkout form.</p>
       <p>Prices displayed on the Site exclude government filing fees, statutory disbursements, and third-party charges (such as Companies Registry or Business Registration fees), which are billed separately and disclosed to you in writing before being incurred. We reserve the right to correct pricing errors and to update fees at any time; changes will not affect orders already confirmed and paid for.</p>
       <p>A written engagement confirmation and payment receipt will be issued to the email address you provide promptly after a successful payment.</p>
 
       <h2 id="t-6">6. Custom Quotes</h2>
       <p>Where you submit an enquiry through our quote request form — whether for a non-Hong Kong jurisdiction, a bundled package, or any service outside our standard fixed-fee schedule — no fee is owed and no contract is formed until we issue a written quotation and you accept it. Submitting an enquiry does not reserve a price, obligate us to perform any service, or constitute an order.</p>
-      <p>Indicating a preferred payment method (card, bank transfer, or cryptocurrency) on the enquiry form records your preference only; we will provide full payment instructions, including any applicable bank account or wallet details, together with your confirmed written quotation.</p>
+      <p>Indicating a preferred payment method (card or bank transfer) on the enquiry form records your preference only; we will provide full payment instructions, including any applicable bank account details, together with your confirmed written quotation.</p>
 
       <h2 id="t-7">7. Client Due Diligence (KYC / AML)</h2>
       <p>As a TCSP licensed in Hong Kong, we are legally required under the Anti-Money Laundering and Counter-Terrorist Financing Ordinance (Cap. 615) ("AMLO") to conduct customer due diligence before providing company secretarial or incorporation services. This means that, before or shortly after your order or engagement is confirmed, we will require identity verification documents from you and any beneficial owners or directors involved, which may include a copy of a government-issued photo ID, proof of residential address, and source-of-funds information.</p>
@@ -4268,7 +4232,7 @@ footer {
         <p>Unit B, 5/F, Wing Sing Commercial Centre, 12–16 Wing Lok Street, Sheung Wan, Hong Kong</p>
         <p>Email: <a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a></p>
         <p>Phone: +852 2111 0270 &nbsp;·&nbsp; +852 2111 2030</p>
-        <p>TCSP Licence TC008172 &nbsp;·&nbsp; Category A Licence A-B-24-01-05179</p>
+        <p>TCSP Licence TC008172 &nbsp;·&nbsp;</p>
       </div>
     </div>
   </div>
@@ -4283,7 +4247,7 @@ footer {
         <div class="foot-col"><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="go('services');return false">Services</a><a href="#" onclick="go('order');return false">Get a Quote</a></div>
         <div class="foot-col"><h5>Contact</h5><a href="tel:+85221110270">+852 2111 0270</a><a href="tel:+85221112030">+852 2111 2030</a><a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a><a href="#" onclick="go('terms');return false">Terms &amp; Conditions</a><a href="#" onclick="go('privacy');return false">Privacy Policy</a></div>
       </div>
-      <div class="foot-bottom"><p>© 2025 Ocean Apex Consultancy Ltd. All rights reserved.</p><p>TCSP Licence TC008172 &nbsp;·&nbsp; Category A Licence A-B-24-01-05179</p></div>
+      <div class="foot-bottom"><p>© 2025 Ocean Apex Consultancy Ltd. All rights reserved.</p><p>TCSP Licence TC008172 &nbsp;·&nbsp; </p></div>
     </div>
   </footer>
 </div>
@@ -4422,7 +4386,7 @@ footer {
         <p>Unit B, 5/F, Wing Sing Commercial Centre, 12–16 Wing Lok Street, Sheung Wan, Hong Kong</p>
         <p>Email: <a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a></p>
         <p>Phone: +852 2111 0270 &nbsp;·&nbsp; +852 2111 2030</p>
-        <p>TCSP Licence TC008172 &nbsp;·&nbsp; Category A Licence A-B-24-01-05179</p>
+        <p>TCSP Licence TC008172 &nbsp;·&nbsp; </p>
       </div>
     </div>
   </div>
@@ -4437,7 +4401,7 @@ footer {
         <div class="foot-col"><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="go('services');return false">Services</a><a href="#" onclick="go('order');return false">Get a Quote</a></div>
         <div class="foot-col"><h5>Contact</h5><a href="tel:+85221110270">+852 2111 0270</a><a href="tel:+85221112030">+852 2111 2030</a><a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a><a href="#" onclick="go('terms');return false">Terms &amp; Conditions</a><a href="#" onclick="go('privacy');return false">Privacy Policy</a></div>
       </div>
-      <div class="foot-bottom"><p>© 2025 Ocean Apex Consultancy Ltd. All rights reserved.</p><p>TCSP Licence TC008172 &nbsp;·&nbsp; Category A Licence A-B-24-01-05179</p></div>
+      <div class="foot-bottom"><p>© 2025 Ocean Apex Consultancy Ltd. All rights reserved.</p><p>TCSP Licence TC008172 &nbsp;·&nbsp; </p></div>
     </div>
   </footer>
 </div>
