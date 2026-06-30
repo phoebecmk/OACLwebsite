@@ -491,6 +491,40 @@ footer{background:var(--navy);padding:64px 48px 32px}
 /* Prevent fixed nav from obscuring scroll targets */
 [id]{scroll-margin-top:calc(var(--navh) + 16px)}
 
+
+/* ── LEGAL PAGES (Terms & Privacy) ── */
+.legal-wrap{padding:72px 48px 96px}
+.legal-inner{max-width:820px;margin:0 auto}
+.legal-meta{font-size:12.5px;color:var(--g300);margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid var(--g100)}
+.legal-toc{background:var(--off);padding:28px 32px;margin-bottom:48px;border-left:3px solid var(--gold)}
+.legal-toc-title{font-size:10.5px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.legal-toc ol{margin:0;padding-left:18px;columns:2;column-gap:32px}
+.legal-toc li{font-size:12.5px;margin-bottom:8px;break-inside:avoid}
+.legal-toc a{color:var(--navy);text-decoration:none}
+.legal-toc a:hover{color:var(--gold)}
+.legal-inner h2{font-family:var(--serif);font-size:26px;font-weight:500;color:var(--navy);margin-top:48px;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--g100)}
+.legal-inner h2:first-of-type{margin-top:0}
+.legal-inner h3{font-family:var(--sans);font-size:14px;font-weight:700;color:var(--navy);margin-top:24px;margin-bottom:10px;letter-spacing:.2px}
+.legal-inner p{font-size:14px;line-height:1.85;color:var(--g800);margin-bottom:16px}
+.legal-inner p.lead{font-size:14.5px;color:var(--g500)}
+.legal-inner ul,.legal-inner ol{padding-left:22px;margin-bottom:18px}
+.legal-inner li{font-size:14px;line-height:1.8;color:var(--g800);margin-bottom:8px}
+.legal-inner strong{color:var(--navy);font-weight:600}
+.legal-inner a{color:var(--gold);text-decoration:none}
+.legal-inner a:hover{text-decoration:underline}
+.legal-callout{background:var(--gold-pale);border-left:3px solid var(--gold);padding:16px 20px;margin:20px 0;font-size:13.5px;color:var(--g800);line-height:1.75}
+.legal-callout strong{color:var(--navy)}
+.legal-table{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13px}
+.legal-table th{background:var(--off);padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--g500);border-bottom:2px solid var(--g100)}
+.legal-table td{padding:10px 14px;border-bottom:1px solid var(--g100);color:var(--g800)}
+.legal-contact-box{background:var(--off);padding:28px 32px;margin-top:16px}
+.legal-contact-box p{margin-bottom:6px}
+@media(max-width:600px){
+  .legal-wrap{padding:48px 16px 64px}
+  .legal-toc ol{columns:1}
+  .legal-inner h2{font-size:22px}
+}
+
 /* ── RESPONSIVE ── */
 
 /* 1024px — checkout single column */
@@ -843,8 +877,8 @@ footer{background:var(--navy);padding:64px 48px 32px}
           <a href="tel:+85221112030">+852 2111 2030</a>
           <a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a>
           <a href="#" onclick="go('order');return false">Request a Quote</a>
-          <a href="https://www.ocean-apex.com/tc" target="_blank">Terms &amp; Conditions</a>
-          <a href="https://www.ocean-apex.com/privacy-policy" target="_blank">Privacy Policy</a>
+          <a href="#" onclick="go('terms');return false">Terms &amp; Conditions</a>
+          <a href="#" onclick="go('privacy');return false">Privacy Policy</a>
         </div>
       </div>
       <div class="foot-bottom">
@@ -930,7 +964,7 @@ footer{background:var(--navy);padding:64px 48px 32px}
           <p>Unit B, 5/F, Wing Sing Commercial Centre, 12–16 Wing Lok Street, Sheung Wan, Hong Kong</p>
         </div>
         <div class="foot-col"><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="go('services');return false">Services</a><a href="#" onclick="go('order');return false">Get a Quote</a></div>
-        <div class="foot-col"><h5>Contact</h5><a href="tel:+85221110270">+852 2111 0270</a><a href="tel:+85221112030">+852 2111 2030</a><a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a></div>
+        <div class="foot-col"><h5>Contact</h5><a href="tel:+85221110270">+852 2111 0270</a><a href="tel:+85221112030">+852 2111 2030</a><a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a><a href="#" onclick="go('terms');return false">Terms &amp; Conditions</a><a href="#" onclick="go('privacy');return false">Privacy Policy</a></div>
       </div>
       <div class="foot-bottom"><p>© 2025 Ocean Apex Consultancy Ltd. All rights reserved.</p><p>TCSP Licence TC008172 &nbsp;·&nbsp; Category A Licence A-B-24-01-05179</p></div>
     </div>
@@ -1091,7 +1125,7 @@ footer{background:var(--navy);padding:64px 48px 32px}
       <div class="foot-grid">
         <div class="foot-brand"><div class="nav-logo" style="cursor:default"><div class="logo-box">OA</div><div><div class="logo-name">Ocean Apex Consultancy Ltd.</div><div class="logo-tag">Company Secretary Services</div></div></div><p>Unit B, 5/F, Wing Sing Commercial Centre, 12–16 Wing Lok Street, Sheung Wan, Hong Kong</p></div>
         <div class="foot-col"><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="openCart();return false">View Cart</a><a href="#" onclick="go('order');return false">Get a Quote</a></div>
-        <div class="foot-col"><h5>Contact</h5><a href="tel:+85221110270">+852 2111 0270</a><a href="tel:+85221112030">+852 2111 2030</a><a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a></div>
+        <div class="foot-col"><h5>Contact</h5><a href="tel:+85221110270">+852 2111 0270</a><a href="tel:+85221112030">+852 2111 2030</a><a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a><a href="#" onclick="go('terms');return false">Terms &amp; Conditions</a><a href="#" onclick="go('privacy');return false">Privacy Policy</a></div>
       </div>
       <div class="foot-bottom"><p>© 2025 Ocean Apex Consultancy Ltd. All rights reserved.</p><p>TCSP Licence TC008172 &nbsp;·&nbsp; Category A Licence A-B-24-01-05179</p></div>
     </div>
@@ -1247,7 +1281,7 @@ footer{background:var(--navy);padding:64px 48px 32px}
               </button>
 
               <p class="pay-legal">
-                By paying you agree to our <a href="https://www.ocean-apex.com/tc" target="_blank">Terms &amp; Conditions</a> and <a href="https://www.ocean-apex.com/privacy-policy" target="_blank">Privacy Policy</a>.
+                By paying you agree to our <a href="#" onclick="go('terms');return false">Terms &amp; Conditions</a> and <a href="#" onclick="go('privacy');return false">Privacy Policy</a>.
                 A written engagement letter and receipt will be emailed immediately upon payment confirmation.
               </p>
 
@@ -1414,7 +1448,7 @@ footer{background:var(--navy);padding:64px 48px 32px}
             <div class="pay-detail" id="pd-crypto"><div class="stripe-note">We accept USDT (TRC20 / ERC20), Bitcoin (BTC), and Ethereum (ETH). Wallet addresses will be provided with your confirmed quote. No transfer required at this stage.</div></div>
           </div>
           <button class="btn-primary" style="width:100%;justify-content:center;padding:18px;font-size:14px" onclick="submitEnquiry()">Submit Enquiry →</button>
-          <p style="font-size:11.5px;color:var(--g300);margin-top:12px;text-align:center">By submitting you agree to our <a href="https://www.ocean-apex.com/tc" target="_blank" style="color:var(--gold)">Terms</a> and <a href="https://www.ocean-apex.com/privacy-policy" target="_blank" style="color:var(--gold)">Privacy Policy</a>.</p>
+          <p style="font-size:11.5px;color:var(--g300);margin-top:12px;text-align:center">By submitting you agree to our <a href="#" onclick="go('terms');return false" style="color:var(--gold)">Terms</a> and <a href="#" onclick="go('privacy');return false" style="color:var(--gold)">Privacy Policy</a>.</p>
         </div>
         <div>
           <div class="summ-card">
@@ -1431,6 +1465,315 @@ footer{background:var(--navy);padding:64px 48px 32px}
       </div>
     </div>
   </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- PAGE: TERMS & CONDITIONS                        -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="page-terms" class="page">
+  <div class="svc-hero">
+    <div class="svc-hero-inner">
+      <div class="eyebrow light">Legal</div>
+      <h1>Terms &amp; <em>Conditions</em></h1>
+      <p>The terms governing your use of this website and any services purchased or enquired about through it.</p>
+    </div>
+  </div>
+
+  <div class="legal-wrap">
+    <div class="legal-inner">
+      <p class="legal-meta">Last updated: 29 June 2026 &nbsp;·&nbsp; Ocean Apex Consultancy Ltd. (TCSP Licence TC008172)</p>
+
+      <div class="legal-toc">
+        <div class="legal-toc-title">Contents</div>
+        <ol>
+          <li><a href="#t-1">Agreement to Terms</a></li>
+          <li><a href="#t-2">Eligibility</a></li>
+          <li><a href="#t-3">Our Services</a></li>
+          <li><a href="#t-4">Jurisdiction-Specific Fees</a></li>
+          <li><a href="#t-5">Orders, Pricing &amp; Payment</a></li>
+          <li><a href="#t-6">Custom Quotes</a></li>
+          <li><a href="#t-7">Client Due Diligence (KYC / AML)</a></li>
+          <li><a href="#t-8">Refunds &amp; Cancellations</a></li>
+          <li><a href="#t-9">Intellectual Property Rights</a></li>
+          <li><a href="#t-10">Prohibited Uses</a></li>
+          <li><a href="#t-11">Third-Party Websites &amp; Services</a></li>
+          <li><a href="#t-12">Disclaimer of Warranties</a></li>
+          <li><a href="#t-13">Limitation of Liability</a></li>
+          <li><a href="#t-14">Indemnification</a></li>
+          <li><a href="#t-15">Termination</a></li>
+          <li><a href="#t-16">Electronic Communications</a></li>
+          <li><a href="#t-17">Governing Law &amp; Dispute Resolution</a></li>
+          <li><a href="#t-18">Modifications to These Terms</a></li>
+          <li><a href="#t-19">Severability &amp; Miscellaneous</a></li>
+          <li><a href="#t-20">Contact Us</a></li>
+        </ol>
+      </div>
+
+      <h2 id="t-1">1. Agreement to Terms</h2>
+      <p>These Terms and Conditions ("Terms") form a legally binding agreement between you and Ocean Apex Consultancy Ltd. ("Ocean Apex," "we," "us," or "our"), a company secretarial and corporate services provider licensed under Hong Kong's Trust or Company Service Provider ("TCSP") regime (Licence No. TC008172) and holding Category A Licence A-B-24-01-05179, with its registered office at Unit B, 5/F, Wing Sing Commercial Centre, 12–16 Wing Lok Street, Sheung Wan, Hong Kong.</p>
+      <p>These Terms govern your access to and use of this website, including any page, enquiry form, shopping cart, or checkout function on it (collectively, the "Site"), as well as any company secretarial, incorporation, or related services you purchase or enquire about through the Site (the "Services").</p>
+      <p>By accessing the Site, submitting an enquiry, adding a service to your cart, or completing a payment, you confirm that you have read, understood, and agree to be bound by these Terms. If you do not agree, you must discontinue use of the Site immediately.</p>
+      <p>We may revise these Terms at any time by updating the "Last updated" date above. Continued use of the Site after changes are posted constitutes your acceptance of the revised Terms. We recommend reviewing this page periodically.</p>
+
+      <h2 id="t-2">2. Eligibility</h2>
+      <p>The Site and Services are intended for use by businesses, professionals, and individuals acting in a business capacity who are at least 18 years of age and have the legal capacity to enter into binding contracts. By using the Site, you represent and warrant that:</p>
+      <ul>
+        <li>you are at least 18 years old;</li>
+        <li>you have the authority to act on behalf of any company, trust, or entity for which you are instructing us;</li>
+        <li>all information you provide to us is true, accurate, current, and complete; and</li>
+        <li>your use of the Site and engagement of our Services will comply with all applicable laws and regulations in your jurisdiction.</li>
+      </ul>
+      <p>The Site is not directed at, and we do not knowingly collect personal information from, children under the age of 18.</p>
+
+      <h2 id="t-3">3. Our Services</h2>
+      <p>Ocean Apex provides company secretarial and corporate compliance services, including but not limited to Hong Kong private company incorporation, annual company secretary retainers, statutory filings (including Annual Return / NAR1), registered office address services, Significant Controllers Register (SCR) setup, director and shareholder change filings, and bank account application assistance. Service descriptions, inclusions, and indicative fees are set out on the relevant Services and Pricing pages of the Site.</p>
+      <p>We also provide incorporation and corporate services for offshore jurisdictions, including the British Virgin Islands, the Cayman Islands, and Singapore, on a custom-quote basis as described in Section 6 below.</p>
+
+      <h2 id="t-4">4. Jurisdiction-Specific Fees</h2>
+      <div class="legal-callout">
+        <strong>Important:</strong> The fixed fee schedule published on our Pricing page applies exclusively to Hong Kong private limited company incorporation and related Hong Kong statutory compliance services. Fees for BVI, Cayman Islands, Singapore, and other offshore or foreign jurisdictions differ materially from the published Hong Kong rates and are not estimated on the Site.
+      </div>
+      <p>Where you require services relating to a jurisdiction other than Hong Kong, you must submit a custom quote enquiry. We will provide a fixed, written quotation specific to that jurisdiction and your circumstances before any chargeable work begins or any payment is requested.</p>
+
+      <h2 id="t-5">5. Orders, Pricing &amp; Payment</h2>
+      <p>For Hong Kong incorporation and standard compliance services listed with a fixed fee, you may add one or more services to your shopping cart and complete payment directly through our checkout page. All prices are displayed in Hong Kong Dollars (HKD) or United States Dollars (USD) according to the currency selected in the site header, and the total charged will be in the currency shown at the time of payment.</p>
+      <p>Card payments are processed securely by Stripe, Inc., a PCI DSS Level 1 certified payment processor. We do not collect, transmit, or store your full card number, expiry date, or CVC on our own servers — these details are entered directly into Stripe's secure payment form. We may also accept payment by bank transfer or cryptocurrency for certain services; details of these methods will be provided separately and are not collected through the Site's checkout form.</p>
+      <p>Prices displayed on the Site exclude government filing fees, statutory disbursements, and third-party charges (such as Companies Registry or Business Registration fees), which are billed separately and disclosed to you in writing before being incurred. We reserve the right to correct pricing errors and to update fees at any time; changes will not affect orders already confirmed and paid for.</p>
+      <p>A written engagement confirmation and payment receipt will be issued to the email address you provide promptly after a successful payment.</p>
+
+      <h2 id="t-6">6. Custom Quotes</h2>
+      <p>Where you submit an enquiry through our quote request form — whether for a non-Hong Kong jurisdiction, a bundled package, or any service outside our standard fixed-fee schedule — no fee is owed and no contract is formed until we issue a written quotation and you accept it. Submitting an enquiry does not reserve a price, obligate us to perform any service, or constitute an order.</p>
+      <p>Indicating a preferred payment method (card, bank transfer, or cryptocurrency) on the enquiry form records your preference only; we will provide full payment instructions, including any applicable bank account or wallet details, together with your confirmed written quotation.</p>
+
+      <h2 id="t-7">7. Client Due Diligence (KYC / AML)</h2>
+      <p>As a TCSP licensed in Hong Kong, we are legally required under the Anti-Money Laundering and Counter-Terrorist Financing Ordinance (Cap. 615) ("AMLO") to conduct customer due diligence before providing company secretarial or incorporation services. This means that, before or shortly after your order or engagement is confirmed, we will require identity verification documents from you and any beneficial owners or directors involved, which may include a copy of a government-issued photo ID, proof of residential address, and source-of-funds information.</p>
+      <p>We are not able to complete incorporation, filing, or any service requiring submission to the Hong Kong Companies Registry or a bank until satisfactory due diligence has been completed. We may suspend or decline to proceed with any order if required identification documents are not provided or if our due diligence checks raise concerns, and in such cases will discuss available options, including a refund where appropriate, in accordance with Section 8.</p>
+
+      <h2 id="t-8">8. Refunds &amp; Cancellations</h2>
+      <p>Because our Services involve regulatory filings and engagement of professional time, refund eligibility depends on the stage work has reached:</p>
+      <ul>
+        <li><strong>Before work begins</strong> (e.g. before a name search or filing has been submitted): a full refund, less any payment processing fees already incurred, is available on request.</li>
+        <li><strong>After a filing or application has been submitted</strong> to the Companies Registry, a bank, or another third party: fees already paid for that specific service are non-refundable, as government and third-party charges are generally non-recoverable once incurred. Any remaining unworked portion of a bundled order may still be refunded.</li>
+        <li><strong>Annual retainer services</strong> (company secretary, registered office) may be cancelled with notice prior to the next renewal date; fees already paid for the current service period are non-refundable.</li>
+      </ul>
+      <p>To request a refund or cancellation, contact us using the details in Section 20. We aim to respond to all refund requests within 5 business days.</p>
+
+      <h2 id="t-9">9. Intellectual Property Rights</h2>
+      <p>Unless otherwise indicated, the Site and all content on it — including text, graphics, logos, the Ocean Apex name and mark, layout, and underlying code — is owned by or licensed to Ocean Apex Consultancy Ltd. and is protected by copyright, trademark, and other intellectual property laws. You may view and print pages of the Site for your own personal or internal business reference in connection with engaging our Services, but you may not reproduce, republish, distribute, or create derivative works from the Site's content for any other purpose without our prior written consent.</p>
+
+      <h2 id="t-10">10. Prohibited Uses</h2>
+      <p>You agree not to: use the Site for any unlawful purpose; attempt to gain unauthorized access to any part of the Site, our systems, or another user's data; interfere with or disrupt the Site's security features, checkout process, or payment systems; submit false, fraudulent, or stolen identity or payment information; use automated tools (bots, scrapers) to access or extract data from the Site; or use the Site to compete with us or for any purpose other than engaging our genuine company secretarial enquiries.</p>
+      <p>We reserve the right to suspend or terminate access to the Site, decline an order, or refuse to provide Services to anyone we reasonably believe has violated these Terms or applicable law, including reporting suspected fraudulent or unlawful activity to the relevant authorities.</p>
+
+      <h2 id="t-11">11. Third-Party Websites &amp; Services</h2>
+      <p>The Site may link to or rely on third-party services, including our payment processor Stripe, and may reference external resources such as the Hong Kong Companies Registry. We do not control and are not responsible for the content, security, or privacy practices of third-party websites or services. Your use of any third-party service is governed by that provider's own terms and privacy policy.</p>
+
+      <h2 id="t-12">12. Disclaimer of Warranties</h2>
+      <p>The Site is provided on an "as is" and "as available" basis. To the fullest extent permitted by law, we disclaim all warranties, express or implied, including implied warranties of merchantability, fitness for a particular purpose, and non-infringement. We do not warrant that the Site will be uninterrupted, secure, or error-free, or that any defects will be corrected.</p>
+      <p>We make every effort to ensure pricing, service descriptions, and other information on the Site are accurate, but errors, typographical mistakes, or omissions may occur. We reserve the right to correct any such errors and to update information on the Site at any time without prior notice.</p>
+
+      <h2 id="t-13">13. Limitation of Liability</h2>
+      <p>To the fullest extent permitted by applicable law, Ocean Apex Consultancy Ltd. and its directors, employees, and agents shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including loss of profits, revenue, or data, arising out of or relating to your use of the Site or the Services, even if we have been advised of the possibility of such damages.</p>
+      <p>Our total aggregate liability to you for any claim arising from or relating to the Services shall not exceed the total fees actually paid by you to us for the specific service giving rise to the claim. Nothing in these Terms limits or excludes liability that cannot lawfully be limited or excluded, including liability for fraud or for death or personal injury caused by our negligence.</p>
+
+      <h2 id="t-14">14. Indemnification</h2>
+      <p>You agree to defend, indemnify, and hold harmless Ocean Apex Consultancy Ltd., its officers, employees, and agents from any claim, loss, liability, or expense (including reasonable legal fees) arising from: your breach of these Terms; your violation of any law or third-party right; or any inaccurate, false, or misleading information you provide to us in connection with an order, enquiry, or due diligence request.</p>
+
+      <h2 id="t-15">15. Termination</h2>
+      <p>We may suspend or terminate your access to the Site, or decline to proceed with any order or engagement, at our discretion, including where required by law, regulatory obligation, or our internal compliance policies, or where due diligence cannot be satisfactorily completed. Provisions of these Terms which by their nature should survive termination (including intellectual property, disclaimers, limitation of liability, and indemnification) will continue to apply.</p>
+
+      <h2 id="t-16">16. Electronic Communications</h2>
+      <p>By using the Site, submitting an enquiry, or completing a purchase, you consent to receive communications from us electronically, including order confirmations, engagement letters, receipts, and service-related notices sent to the email address you provide. You agree that such electronic communications satisfy any legal requirement that such communications be in writing.</p>
+
+      <h2 id="t-17">17. Governing Law &amp; Dispute Resolution</h2>
+      <p>These Terms and any dispute arising out of or in connection with them or the Services shall be governed by and construed in accordance with the laws of the Hong Kong Special Administrative Region, without regard to its conflict of law principles.</p>
+      <p>The parties agree to first attempt to resolve any dispute informally by contacting us using the details in Section 20. If a dispute cannot be resolved informally within 30 days, the parties submit to the exclusive jurisdiction of the courts of the Hong Kong Special Administrative Region.</p>
+
+      <h2 id="t-18">18. Modifications to These Terms</h2>
+      <p>We may update these Terms from time to time to reflect changes in our Services, applicable law, or business practices. The "Last updated" date at the top of this page will indicate when the Terms were last revised. Material changes will be highlighted on the Site. Your continued use of the Site following any update constitutes acceptance of the revised Terms.</p>
+
+      <h2 id="t-19">19. Severability &amp; Miscellaneous</h2>
+      <p>If any provision of these Terms is found to be unlawful, void, or unenforceable, that provision shall be deemed severable and shall not affect the validity and enforceability of the remaining provisions. Our failure to enforce any right or provision of these Terms shall not constitute a waiver of that right or provision. These Terms, together with our Privacy Policy, constitute the entire agreement between you and Ocean Apex Consultancy Ltd. regarding use of the Site.</p>
+
+      <h2 id="t-20">20. Contact Us</h2>
+      <p>If you have any questions about these Terms, please contact us:</p>
+      <div class="legal-contact-box">
+        <p><strong>Ocean Apex Consultancy Ltd.</strong></p>
+        <p>Unit B, 5/F, Wing Sing Commercial Centre, 12–16 Wing Lok Street, Sheung Wan, Hong Kong</p>
+        <p>Email: <a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a></p>
+        <p>Phone: +852 2111 0270 &nbsp;·&nbsp; +852 2111 2030</p>
+        <p>TCSP Licence TC008172 &nbsp;·&nbsp; Category A Licence A-B-24-01-05179</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="foot-inner">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <div class="nav-logo" style="cursor:default"><div class="logo-box">OA</div><div><div class="logo-name">Ocean Apex Consultancy Ltd.</div><div class="logo-tag">Company Secretary Services</div></div></div>
+          <p>Unit B, 5/F, Wing Sing Commercial Centre, 12–16 Wing Lok Street, Sheung Wan, Hong Kong</p>
+        </div>
+        <div class="foot-col"><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="go('services');return false">Services</a><a href="#" onclick="go('order');return false">Get a Quote</a></div>
+        <div class="foot-col"><h5>Contact</h5><a href="tel:+85221110270">+852 2111 0270</a><a href="tel:+85221112030">+852 2111 2030</a><a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a><a href="#" onclick="go('terms');return false">Terms &amp; Conditions</a><a href="#" onclick="go('privacy');return false">Privacy Policy</a></div>
+      </div>
+      <div class="foot-bottom"><p>© 2025 Ocean Apex Consultancy Ltd. All rights reserved.</p><p>TCSP Licence TC008172 &nbsp;·&nbsp; Category A Licence A-B-24-01-05179</p></div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- PAGE: PRIVACY POLICY                            -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="page-privacy" class="page">
+  <div class="svc-hero">
+    <div class="svc-hero-inner">
+      <div class="eyebrow light">Legal</div>
+      <h1>Privacy <em>Policy</em></h1>
+      <p>How Ocean Apex Consultancy Ltd. collects, uses, and protects your personal data.</p>
+    </div>
+  </div>
+
+  <div class="legal-wrap">
+    <div class="legal-inner">
+      <p class="legal-meta">Last updated: 29 June 2026 &nbsp;·&nbsp; Ocean Apex Consultancy Ltd. (TCSP Licence TC008172)</p>
+
+      <p class="lead">Ocean Apex Consultancy Ltd. ("Ocean Apex," "we," "us," or "our") respects your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your personal data when you visit this website, submit a service enquiry, or purchase a service through our checkout (collectively, the "Services"). We are a Hong Kong company and this notice is prepared with reference to Hong Kong's Personal Data (Privacy) Ordinance (Cap. 486) ("PDPO"), while also addressing the expectations of visitors from the European Economic Area, United Kingdom, and United States, given our client base spans these regions.</p>
+
+      <div class="legal-toc">
+        <div class="legal-toc-title">Contents</div>
+        <ol>
+          <li><a href="#p-1">Information We Collect</a></li>
+          <li><a href="#p-2">Identity Verification (KYC/AML) Data</a></li>
+          <li><a href="#p-3">How We Use Your Information</a></li>
+          <li><a href="#p-4">Legal Bases for Processing</a></li>
+          <li><a href="#p-5">Cookies &amp; Tracking Technologies</a></li>
+          <li><a href="#p-6">Payment Processing</a></li>
+          <li><a href="#p-7">When We Share Your Information</a></li>
+          <li><a href="#p-8">International Data Transfers</a></li>
+          <li><a href="#p-9">Data Retention</a></li>
+          <li><a href="#p-10">How We Protect Your Information</a></li>
+          <li><a href="#p-11">Children's Privacy</a></li>
+          <li><a href="#p-12">Your Privacy Rights</a></li>
+          <li><a href="#p-13">EEA / UK Visitors</a></li>
+          <li><a href="#p-14">California Residents</a></li>
+          <li><a href="#p-15">Third-Party Websites</a></li>
+          <li><a href="#p-16">Changes to This Policy</a></li>
+          <li><a href="#p-17">Contact Us</a></li>
+        </ol>
+      </div>
+
+      <h2 id="p-1">1. Information We Collect</h2>
+      <h3>Information you provide directly</h3>
+      <p>We collect personal data that you voluntarily provide when you:</p>
+      <ul>
+        <li>submit a service enquiry or quote request form;</li>
+        <li>add a service to your cart and complete checkout;</li>
+        <li>contact us by email, phone, or any contact form on the Site.</li>
+      </ul>
+      <p>This may include your full name, email address, phone number, company or organisation name, country of residence, billing details, and any information you choose to include in free-text notes describing your requirements (such as proposed company names, shareholder structure, or jurisdiction preferences).</p>
+
+      <h3>Information collected automatically</h3>
+      <p>When you visit the Site, we and our service providers may automatically collect certain technical information, including your IP address, browser type and version, device type, operating system, referring URL, pages viewed, and the date and time of your visit. This information helps us operate, secure, and improve the Site, and does not by itself identify you personally.</p>
+
+      <h2 id="p-2">2. Identity Verification (KYC/AML) Data</h2>
+      <div class="legal-callout">
+        As a licensed Trust or Company Service Provider, we are legally required under Hong Kong's Anti-Money Laundering and Counter-Terrorist Financing Ordinance (Cap. 615) to verify the identity of clients and beneficial owners before providing incorporation or company secretarial services.
+      </div>
+      <p>Where you proceed with an order or engagement, we will request identity verification documents, which may include a copy of a government-issued passport or identity card, proof of residential address (such as a recent utility bill or bank statement), and, where applicable, source-of-funds or source-of-wealth information for beneficial owners and directors. This category of information is collected, stored, and retained strictly in accordance with our statutory obligations under Hong Kong law, and is not used for any marketing purpose.</p>
+
+      <h2 id="p-3">3. How We Use Your Information</h2>
+      <p>We process your personal data to:</p>
+      <ul>
+        <li>respond to enquiries and provide fixed or custom quotations;</li>
+        <li>process orders, payments, and deliver the company secretarial Services you request;</li>
+        <li>conduct mandatory client due diligence and ongoing AML/CTF monitoring as a licensed TCSP;</li>
+        <li>communicate with you regarding your order, engagement, or account status, including sending engagement letters, receipts, and compliance reminders (e.g. annual return due dates);</li>
+        <li>maintain the security, integrity, and proper functioning of the Site;</li>
+        <li>comply with our legal and regulatory obligations, including reporting obligations to the Hong Kong Companies Registry, banks, or regulatory authorities where required; and</li>
+        <li>improve our Services and the Site, including through aggregated, non-identifying analytics.</li>
+      </ul>
+      <p>We do not sell your personal data to third parties, and we do not use your identity verification documents for targeted advertising.</p>
+
+      <h2 id="p-4">4. Legal Bases for Processing</h2>
+      <p>Under the PDPO, we collect and use personal data only for purposes that are directly related to our function as a company secretarial service provider, and we take reasonable steps to ensure data is accurate and not excessive. Where applicable to visitors from jurisdictions that recognise a "legal basis" framework (such as the EEA/UK), we rely on the following: performance of a contract (to provide the Services you request); compliance with a legal obligation (such as AML/CTF due diligence and Companies Registry filings); your consent (for optional communications, which you may withdraw at any time); and our legitimate interests (such as Site security and service improvement), balanced against your rights and interests.</p>
+
+      <h2 id="p-5">5. Cookies &amp; Tracking Technologies</h2>
+      <p>The Site uses minimal cookies and similar technologies necessary for core functionality, such as remembering items in your shopping cart and your selected display currency during your session. We do not currently use third-party advertising or cross-site tracking cookies. If this changes, we will update this Policy and, where required by law, request your consent.</p>
+
+      <h2 id="p-6">6. Payment Processing</h2>
+      <p>Card payments made through our checkout are processed by Stripe, Inc., a PCI DSS Level 1 certified payment processor. When you enter payment details at checkout, this information is transmitted directly to Stripe and is not received, stored, or processed by Ocean Apex's own servers. Stripe's use of your payment information is governed by Stripe's own privacy policy, available at <a href="https://stripe.com/privacy" target="_blank">stripe.com/privacy</a>. We receive only confirmation of payment status, transaction reference, and the billing name/email you provide for receipt purposes.</p>
+
+      <h2 id="p-7">7. When We Share Your Information</h2>
+      <p>We disclose personal data only where necessary and to the following categories of recipients:</p>
+      <ul>
+        <li><strong>Government and regulatory bodies</strong> — including the Hong Kong Companies Registry, Inland Revenue Department, and relevant regulators, as required to incorporate companies, make statutory filings, or comply with AML/CTF obligations;</li>
+        <li><strong>Banks and financial institutions</strong> — where you have requested bank account application assistance, with your knowledge and for that specific purpose;</li>
+        <li><strong>Payment processors</strong> — namely Stripe, for the purpose of processing your payment;</li>
+        <li><strong>Professional service providers</strong> — such as our IT hosting providers, who process data on our behalf under confidentiality obligations and do not use it for their own purposes; and</li>
+        <li><strong>Legal and law enforcement authorities</strong> — where disclosure is required by law, court order, or regulatory request.</li>
+      </ul>
+      <p>We do not share your personal data with third parties for their own independent marketing purposes.</p>
+
+      <h2 id="p-8">8. International Data Transfers</h2>
+      <p>As we serve clients based in the United States, Europe, and other regions outside Hong Kong, your personal data may be transferred to, stored, and processed in Hong Kong and other jurisdictions where our service providers operate (including jurisdictions used by Stripe for payment processing). Where personal data originating from the EEA or UK is transferred outside those regions, we take reasonable steps to ensure an appropriate level of protection consistent with applicable data protection law.</p>
+
+      <h2 id="p-9">9. Data Retention</h2>
+      <p>We retain personal data, including identity verification documents collected for AML/CTF purposes, for as long as necessary to fulfil the purposes described in this Policy and to comply with our statutory obligations. Under Hong Kong AML/CTF requirements, client due diligence records are generally retained for a minimum of five years following the end of the business relationship. General enquiry and marketing communication data not connected to an active engagement is retained only as long as reasonably necessary, after which it is securely deleted or anonymised.</p>
+
+      <h2 id="p-10">10. How We Protect Your Information</h2>
+      <p>We implement appropriate technical and organisational measures to protect personal data against unauthorised access, alteration, disclosure, or destruction, including encrypted data transmission (TLS), restricted internal access to client due diligence files, and the use of PCI DSS-compliant third-party payment processing so that card data never reaches our own systems. However, no method of transmission over the internet or electronic storage is completely secure, and we cannot guarantee absolute security.</p>
+
+      <h2 id="p-11">11. Children's Privacy</h2>
+      <p>Our Services are intended for businesses and individuals acting in a professional or commercial capacity and are not directed at children. We do not knowingly collect personal data from individuals under the age of 18. If we become aware that we have inadvertently collected such data, we will take reasonable steps to delete it promptly.</p>
+
+      <h2 id="p-12">12. Your Privacy Rights</h2>
+      <p>Under the PDPO, you have the right to:</p>
+      <ul>
+        <li>check whether we hold personal data about you and request access to it;</li>
+        <li>request correction of inaccurate personal data;</li>
+        <li>be informed of the purposes for which your data is used and the classes of persons to whom it may be disclosed; and</li>
+        <li>request that we cease using your data for direct marketing, if applicable.</li>
+      </ul>
+      <p>To exercise any of these rights, contact us using the details in Section 17. We may need to verify your identity before processing your request, and certain requests may be subject to exceptions under applicable law (for example, where data must be retained to meet our AML/CTF or other legal obligations).</p>
+
+      <h2 id="p-13">13. EEA / UK Visitors</h2>
+      <p>If you are located in the European Economic Area or United Kingdom, you may additionally have rights under the GDPR or UK GDPR, including the right to data portability, the right to restrict or object to certain processing, and the right to lodge a complaint with your local data protection supervisory authority. We will honour these rights to the extent they apply to our processing of your data as described in this Policy.</p>
+
+      <h2 id="p-14">14. California Residents</h2>
+      <p>If you are a California resident, you have the right to request information about the categories of personal data we have collected and disclosed for a business purpose, and to request deletion of your personal data, subject to certain legal exceptions (such as data we must retain for AML/CTF compliance). We do not sell personal data as defined under the California Consumer Privacy Act. To exercise these rights, contact us using the details in Section 17.</p>
+
+      <h2 id="p-15">15. Third-Party Websites</h2>
+      <p>The Site may contain links to third-party websites or reference third-party services (such as Stripe or the Hong Kong Companies Registry). We are not responsible for the privacy practices of any third-party website, and we encourage you to review the privacy policy of any external site you visit.</p>
+
+      <h2 id="p-16">16. Changes to This Policy</h2>
+      <p>We may update this Privacy Policy from time to time to reflect changes in our practices, Services, or legal requirements. The "Last updated" date at the top of this page indicates when it was last revised. We encourage you to review this Policy periodically. Material changes will be highlighted on the Site.</p>
+
+      <h2 id="p-17">17. Contact Us</h2>
+      <p>If you have questions, concerns, or requests regarding this Privacy Policy or our handling of your personal data, please contact us:</p>
+      <div class="legal-contact-box">
+        <p><strong>Ocean Apex Consultancy Ltd.</strong></p>
+        <p>Unit B, 5/F, Wing Sing Commercial Centre, 12–16 Wing Lok Street, Sheung Wan, Hong Kong</p>
+        <p>Email: <a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a></p>
+        <p>Phone: +852 2111 0270 &nbsp;·&nbsp; +852 2111 2030</p>
+        <p>TCSP Licence TC008172 &nbsp;·&nbsp; Category A Licence A-B-24-01-05179</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="foot-inner">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <div class="nav-logo" style="cursor:default"><div class="logo-box">OA</div><div><div class="logo-name">Ocean Apex Consultancy Ltd.</div><div class="logo-tag">Company Secretary Services</div></div></div>
+          <p>Unit B, 5/F, Wing Sing Commercial Centre, 12–16 Wing Lok Street, Sheung Wan, Hong Kong</p>
+        </div>
+        <div class="foot-col"><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="go('services');return false">Services</a><a href="#" onclick="go('order');return false">Get a Quote</a></div>
+        <div class="foot-col"><h5>Contact</h5><a href="tel:+85221110270">+852 2111 0270</a><a href="tel:+85221112030">+852 2111 2030</a><a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a><a href="#" onclick="go('terms');return false">Terms &amp; Conditions</a><a href="#" onclick="go('privacy');return false">Privacy Policy</a></div>
+      </div>
+      <div class="foot-bottom"><p>© 2025 Ocean Apex Consultancy Ltd. All rights reserved.</p><p>TCSP Licence TC008172 &nbsp;·&nbsp; Category A Licence A-B-24-01-05179</p></div>
+    </div>
+  </footer>
 </div>
 
 <!-- ══════════════════════════════════════════════ -->
