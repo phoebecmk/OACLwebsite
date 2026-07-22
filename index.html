@@ -27,6 +27,8 @@
 -->
 <!-- Stripe.js — must load before any Stripe calls; loaded from Stripe CDN for PCI compliance -->
 <script src="https://js.stripe.com/v3/"></script>
+<!-- Google reCAPTCHA v3 — invisible, score-based; loaded with render=sitekey for programmatic execute() per https://developers.google.com/recaptcha/docs/v3 -->
+<script src="https://www.google.com/recaptcha/api.js?render=6Lfo-T0tAAAAAAVdG3I-Qqr-OGTjIJi-smOhPxgd"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -2064,6 +2066,56 @@ footer {
 .pay-btn-text {
 }
 
+.btn-primary.is-loading {
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.btn-primary .btn-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(10, 22, 40, 0.25);
+  border-top-color: var(--navy);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: none;
+}
+
+.btn-primary.is-loading .btn-spinner {
+  display: inline-block;
+}
+
+.btn-primary.is-loading .btn-label {
+  display: none;
+}
+
+.recaptcha-note {
+  font-size: 10.5px;
+  color: var(--g300);
+  line-height: 1.6;
+}
+
+.recaptcha-note a {
+  color: var(--g300);
+  text-decoration: underline;
+}
+
+.recaptcha-note a:hover {
+  color: var(--gold);
+}
+
+.recaptcha-error {
+  display: none;
+  font-size: 12px;
+  color: var(--red);
+  margin-top: 10px;
+  text-align: center;
+}
+
+.recaptcha-error.show {
+  display: block;
+}
+
 .pay-legal {
   font-size: 11px;
   color: var(--g300);
@@ -2875,6 +2927,290 @@ footer {
   line-height: 2;
 }
 
+
+/* ── ABOUT PAGE ── */
+.leader-card {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 56px;
+  align-items: start;
+}
+
+.leader-photo {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: var(--navy-mid);
+  border: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-size: 56px;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+.leader-name {
+  font-family: var(--serif);
+  font-size: 34px;
+  font-weight: 400;
+  color: var(--navy);
+  margin-bottom: 4px;
+  line-height: 1.1;
+}
+
+.leader-title {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 18px;
+}
+
+.leader-bio {
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--g500);
+}
+
+.leader-stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--g100);
+}
+
+.lstat-num {
+  font-family: var(--serif);
+  font-size: 36px;
+  font-weight: 400;
+  color: var(--navy);
+  line-height: 1;
+  display: block;
+}
+
+.lstat-lbl {
+  font-size: 11px;
+  color: var(--g300);
+  letter-spacing: 0.3px;
+  margin-top: 4px;
+  display: block;
+}
+
+.entity-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: var(--g100);
+  margin-top: 8px;
+}
+
+.entity-card {
+  background: var(--white);
+  padding: 36px;
+  border-top: 3px solid transparent;
+  transition: border-top-color 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.entity-card:hover {
+  border-top-color: var(--gold);
+}
+
+.entity-card--active {
+  border-top-color: var(--gold);
+}
+
+.entity-year {
+  display: inline-block;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(192, 138, 54, 0.35);
+  padding: 3px 10px;
+  margin-bottom: 16px;
+  width: fit-content;
+}
+
+.entity-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: var(--gold);
+  color: var(--navy);
+  padding: 2px 8px;
+  margin-left: 8px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+
+.entity-card h3 {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--navy);
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.entity-card p {
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: var(--g500);
+  margin-bottom: 18px;
+}
+
+.entity-services {
+  list-style: none;
+  margin-bottom: 24px;
+  flex: 1;
+}
+
+.entity-services li {
+  font-size: 12.5px;
+  color: var(--g500);
+  padding: 6px 0;
+  border-bottom: 1px solid var(--g100);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.entity-services li::before {
+  content: '';
+  width: 3px;
+  height: 3px;
+  background: var(--gold);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.entity-link {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gold);
+  text-decoration: none;
+  letter-spacing: 0.3px;
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.entity-link:hover {
+  text-decoration: underline;
+}
+
+.about-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-bottom: 72px;
+}
+
+.astat {
+  padding: 0 0 0 32px;
+  border-left: 2px solid rgba(192, 138, 54, 0.3);
+}
+
+.astat-num {
+  font-family: var(--serif);
+  font-size: 52px;
+  font-weight: 300;
+  color: var(--gold);
+  line-height: 1;
+  display: block;
+}
+
+.about-intro-text {
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--g500);
+  max-width: 720px;
+  margin-bottom: 0;
+}
+
+.astat-lbl {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.5;
+  margin-top: 6px;
+  display: block;
+}
+
+.commitment-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px 64px;
+}
+
+.commitment-item {
+  border-left: 2px solid var(--gold);
+  padding-left: 22px;
+}
+
+.commitment-item h4 {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+.commitment-item p {
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+
+/* ── LANGUAGE CAPABILITIES ── */
+.lang-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--g100);
+}
+
+.lang-row-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--g300);
+  margin-right: 4px;
+}
+
+.lang-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--navy);
+  background: var(--white);
+  border: 1px solid var(--g100);
+  padding: 5px 14px;
+}
+
+.lang-tag-flag {
+  font-size: 15px;
+  line-height: 1;
+}
+
+/* ── PATH ROUTING ── */
 /* ── RESPONSIVE ── */
 
 /* 1024px — checkout single column */
@@ -3013,6 +3349,25 @@ footer {
     width: 100vw;
   }
 
+  .leader-card {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .entity-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+  }
+
+  .commitment-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
   /* Bigger touch targets */
 
   .ci-qty-btn {
@@ -3149,6 +3504,15 @@ footer {
     gap: 10px;
   }
 
+  .leader-stats {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .about-stats {
+    grid-template-columns: 1fr;
+  }
+
 }
 
 /* 480px — smallest phones (iPhone SE, Android 360) */
@@ -3268,6 +3632,7 @@ footer {
     </a>
     <ul class="nav-links">
       <li><a href="#" onclick="go('home');return false">Home</a></li>
+      <li><a href="#" onclick="go('about');return false">About</a></li>
       <li><a href="#" onclick="go('services');return false">Services</a></li>
       <li><a href="#" onclick="go('pricing');return false">Pricing</a></li>
       <li><a href="#" onclick="goCta();return false">Contact</a></li>
@@ -3299,6 +3664,7 @@ footer {
 <div class="mobile-nav" id="mobile-nav">
   <div class="mobile-nav-links">
     <a href="#" onclick="closeMobileNav();go('home');return false">Home</a>
+    <a href="#" onclick="closeMobileNav();go('about');return false">About</a>
     <a href="#" onclick="closeMobileNav();go('services');return false">Services</a>
     <a href="#" onclick="closeMobileNav();go('pricing');return false">Pricing</a>
     <a href="#" onclick="closeMobileNav();goCta();return false">Contact</a>
@@ -3595,7 +3961,7 @@ footer {
           <div class="nav-logo nav-logo--static"><div class="logo-box">OA</div><div><div class="logo-name">Ocean Apex Consultancy Ltd.</div><div class="logo-tag">Company Secretary Services</div></div></div>
           <p>Unit B, 5/F, Wing Sing Commercial Centre, 12–16 Wing Lok Street, Sheung Wan, Hong Kong</p>
         </div>
-        <div class="foot-col"><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="go('services');return false">Services</a><a href="#" onclick="go('order');return false">Get a Quote</a></div>
+        <div class="foot-col"><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="go('about');return false">About</a><a href="#" onclick="go('services');return false">Services</a><a href="#" onclick="go('order');return false">Get a Quote</a></div>
         <div class="foot-col"><h5>Contact</h5><a href="tel:+85221110270">+852 2111 0270</a><a href="tel:+85221112030">+852 2111 2030</a><a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a><a href="#" onclick="go('terms');return false">Terms &amp; Conditions</a><a href="#" onclick="go('privacy');return false">Privacy Policy</a></div>
       </div>
       <div class="foot-bottom"><p>© 2025 Ocean Apex Consultancy Ltd. All rights reserved.</p><p>TCSP Licence TC008172 &nbsp;·&nbsp;</p></div>
@@ -4050,21 +4416,21 @@ footer {
             </div>
             <div class="fgroup u-mt-6">
               <label>Notes &amp; Requirements</label>
-              <textarea placeholder="Describe your requirements — company name, directors, shareholder structure, preferred bank, jurisdiction (HK / BVI / Cayman / Singapore), or any other detail."></textarea>
+              <textarea id="enq-notes" placeholder="Describe your requirements — company name, directors, shareholder structure, preferred bank, jurisdiction (HK / BVI / Cayman / Singapore), or any other detail."></textarea>
             </div>
           </div>
           <div class="form-block">
             <h3>Your Details</h3>
             <div class="form-row">
               <div class="fgroup"><label>First Name</label><input type="text" id="enq-fname" placeholder="John"></div>
-              <div class="fgroup"><label>Last Name</label><input type="text" placeholder="Smith"></div>
+              <div class="fgroup"><label>Last Name</label><input type="text" id="enq-lname" placeholder="Smith"></div>
             </div>
             <div class="fgroup"><label>Email Address</label><input type="email" id="enq-email" placeholder="john.smith@company.com"></div>
             <div class="form-row">
-              <div class="fgroup"><label>Phone / WhatsApp</label><input type="tel" placeholder="+1 555 000 0000"></div>
+              <div class="fgroup"><label>Phone / WhatsApp</label><input type="tel" id="enq-phone" placeholder="+1 555 000 0000"></div>
               <div class="fgroup">
                 <label>Country of Residence</label>
-                <select><option value="">Select country…</option><option>United States</option><option>United Kingdom</option><option>Germany</option><option>France</option><option>Netherlands</option><option>Switzerland</option><option>Australia</option><option>Singapore</option><option>Hong Kong</option><option>Other</option></select>
+                <select id="enq-country"><option value="">Select country…</option><option>United States</option><option>United Kingdom</option><option>Germany</option><option>France</option><option>Netherlands</option><option>Switzerland</option><option>Australia</option><option>Singapore</option><option>Hong Kong</option><option>Other</option></select>
               </div>
             </div>
           </div>
@@ -4077,8 +4443,13 @@ footer {
             <div class="pay-detail" id="pd-card"><div class="stripe-note">A secure Stripe payment link will be emailed to you once your quote has been approved. No card details are required at this stage.</div></div>
             <div class="pay-detail" id="pd-bank"><div class="stripe-note">Our team will provide full bank transfer details — account name, account number, and SWIFT code — alongside your confirmed quote. No action needed now.</div></div>
           </div>
-          <button class="btn-primary btn-full btn-lg" onclick="submitEnquiry()">Submit Enquiry →</button>
+          <button class="btn-primary btn-full btn-lg" id="enq-submit-btn" onclick="submitEnquiry()">
+            <span class="btn-label">Submit Enquiry →</span>
+            <span class="btn-spinner"></span>
+          </button>
+          <p id="recaptcha-error" class="recaptcha-error">Verification failed. Please try again.</p>
           <p class="fine-print u-text-center">By submitting you agree to our <a href="#" onclick="go('terms');return false" class="u-text-gold">Terms</a> and <a href="#" onclick="go('privacy');return false" class="u-text-gold">Privacy Policy</a>.</p>
+          <p class="recaptcha-note u-text-center">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms of Service</a> apply.</p>
         </div>
         <div>
           <div class="summ-card">
@@ -4095,6 +4466,220 @@ footer {
       </div>
     </div>
   </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- PAGE: ABOUT US                                  -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="page-about" class="page">
+
+  <div class="svc-hero">
+    <div class="svc-hero-inner">
+      <div class="eyebrow light">Ocean Apex Group</div>
+      <h1>Navigate Complexity.<br><em>Achieve Global Success.</em></h1>
+      <p>A premier consortium of specialised companies founded in Hong Kong, built on over 30 years of collective expertise in global commerce, corporate services, and personal advancement.</p>
+      <button class="btn-primary" onclick="go('order')">Work With Us →</button>
+    </div>
+  </div>
+
+  <!-- ── WHO WE ARE ── -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="eyebrow">Who We Are</div>
+      <h2 class="sec-title">A trusted platform for<br>international business</h2>
+      <div class="gold-bar"></div>
+      <p class="about-intro-text">
+        Ocean Apex Group is a premier consortium of specialised companies established in Hong Kong. Founded by CEO Mary Wong alongside a dedicated team and strategic overseas partners, we provide comprehensive business solutions for clients navigating the complexities of global commerce and personal advancement. Our three core entities operate synergistically under the Ocean Apex Group umbrella, each licensed and regulated within its respective field.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── LEADERSHIP ── -->
+  <section class="sec sec-why">
+    <div class="wrap">
+      <div class="eyebrow">Our Leadership</div>
+      <h2 class="sec-title">Guided by experience,<br>driven by results</h2>
+      <div class="gold-bar"></div>
+      <div class="leader-card">
+        <div>
+          <div class="leader-photo">MW</div>
+        </div>
+        <div>
+          <div class="leader-name">Mary Wong</div>
+          <div class="leader-title">Chief Executive Officer &amp; Founder</div>
+          <p class="leader-bio">
+            Mary brings over 30 years of hands-on experience in management, marketing, and corporate services across Asia, North America, and Europe. Her entrepreneurial journey began in 1996 with an immigration firm in Vancouver, Canada — an experience that shaped her deep understanding of the complexities individuals and businesses face when crossing borders.
+          </p>
+          <p class="leader-bio">
+            Guided by her faith and a commitment to practical problem-solving, Mary established the Ocean Apex Group to deliver tailored, multi-disciplinary solutions through a dynamic team of 5–15 professionals and a global network of strategic partners.
+          </p>
+          <div class="leader-stats">
+            <div>
+              <span class="lstat-num">30+</span>
+              <span class="lstat-lbl">Years of experience</span>
+            </div>
+            <div>
+              <span class="lstat-num">1996</span>
+              <span class="lstat-lbl">Year established</span>
+            </div>
+            <div>
+              <span class="lstat-num">3</span>
+              <span class="lstat-lbl">Licensed entities</span>
+            </div>
+            <div>
+              <span class="lstat-num">4+</span>
+              <span class="lstat-lbl">Continents served</span>
+            </div>
+          </div>
+          <div class="lang-row">
+            <span class="lang-row-label">Team Languages</span>
+            <span class="lang-tag"><span class="lang-tag-flag">🇬🇧</span>English</span>
+            <span class="lang-tag"><span class="lang-tag-flag">🇭🇰</span>Cantonese</span>
+            <span class="lang-tag"><span class="lang-tag-flag">🇨🇳</span>Mandarin</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── THREE ENTITIES ── -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="eyebrow">Our Expertise Across Sectors</div>
+      <h2 class="sec-title">Three specialised entities,<br>one trusted group</h2>
+      <div class="gold-bar"></div>
+      <p class="sec-lead">Each company operates under its own regulatory licence, delivering expert services within a defined domain — and collaborating to offer clients a seamless, end-to-end experience.</p>
+
+      <div class="entity-grid">
+
+        <!-- Ocean Apex Limited -->
+        <div class="entity-card">
+          <div class="entity-year">Est. 2005</div>
+          <h3>Ocean Apex Limited</h3>
+          <p>Your trusted partner in global sourcing and commodity trading. We connect businesses with reliable suppliers across China and international markets, handling the full import/export lifecycle.</p>
+          <ul class="entity-services">
+            <li>Frozen poultry, meat, fruits &amp; vegetables</li>
+            <li>Sugar, beans &amp; bulk commodities</li>
+            <li>Licensed Food Importer / Distributor (HK)</li>
+            <li>HK wholesaler &amp; retailer supply</li>
+            <li>South America &amp; Asia bulk export</li>
+            <li>Property trading &amp; rentals (Ocean Apex Realty)</li>
+          </ul>
+          <a href="https://www.ocean-apex.com/core-expertise/ocean-apex-ltd" target="_blank" rel="noopener" class="entity-link">Learn More →</a>
+        </div>
+
+        <!-- Ocean Apex Consultancy — active/current site -->
+        <div class="entity-card entity-card--active">
+          <div class="entity-year">Est. 2010 <span class="entity-badge">This Site</span></div>
+          <h3>Ocean Apex Consultancy Ltd.</h3>
+          <p>We streamline global business operations through licensed company secretarial services, strategic sourcing, and corporate compliance — backed by TCSP and AML regulatory frameworks.</p>
+          <ul class="entity-services">
+            <li>HK &amp; offshore company incorporation</li>
+            <li>Annual company secretary retainer</li>
+            <li>TCSP licensed (TC008172) · AML compliant</li>
+            <li>Machinery, equipment &amp; electronics sourcing</li>
+            <li>Export to USA, Europe, South America, SEA</li>
+            <li>Registered precious metals dealer</li>
+          </ul>
+          <button class="entity-link" onclick="go('services')">View Our Services →</button>
+        </div>
+
+        <!-- Ocean Apex Group Limited -->
+        <div class="entity-card">
+          <div class="entity-year">Est. 2024</div>
+          <h3>Ocean Apex Group Limited</h3>
+          <p>Essential financial and relocation services for businesses and individuals, combining Hong Kong accounting expertise with a comprehensive global immigration advisory practice.</p>
+          <ul class="entity-services">
+            <li>HK corporate &amp; personal accounting</li>
+            <li>Taxation planning &amp; due diligence</li>
+            <li>HK Investment Immigration</li>
+            <li>Skilled Worker Visas (HK, China, India, Nepal)</li>
+            <li>European Golden Visas &amp; Croatia permits</li>
+            <li>USA, Canada &amp; Panama investment immigration</li>
+          </ul>
+          <a href="https://www.ocean-apex.com/core-expertise/ocean-apex-group-ltd" target="_blank" rel="noopener" class="entity-link">Learn More →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── NUMBERS ── -->
+  <section class="sec sec-process">
+    <div class="wrap">
+      <div class="eyebrow light">By the Numbers</div>
+      <h2 class="sec-title light">A track record built<br>on consistent delivery</h2>
+      <div class="gold-bar"></div>
+
+      <div class="about-stats">
+        <div class="astat">
+          <span class="astat-num">30+</span>
+          <span class="astat-lbl">Years of collective expertise across corporate services, trading &amp; immigration</span>
+        </div>
+        <div class="astat">
+          <span class="astat-num">3</span>
+          <span class="astat-lbl">Licensed &amp; regulated entities operating under the Ocean Apex Group</span>
+        </div>
+        <div class="astat">
+          <span class="astat-num">20+</span>
+          <span class="astat-lbl">Countries served across Asia, Europe, the Americas &amp; the Middle East</span>
+        </div>
+        <div class="astat">
+          <span class="astat-num">4</span>
+          <span class="astat-lbl">Regulatory licences held — TCSP, Food Import, Estate Agent, Precious Metals</span>
+        </div>
+      </div>
+
+      <div class="commitment-grid">
+        <div class="commitment-item">
+          <h4>Licensed &amp; Regulated</h4>
+          <p>Every entity operates under the relevant Hong Kong regulatory framework. Compliance is not a checkbox — it is the foundation of everything we do.</p>
+        </div>
+        <div class="commitment-item">
+          <h4>Long-Term Partnership</h4>
+          <p>We build enduring relationships, not transactional engagements. Our clients return because we deliver results and remain accountable long after the initial instruction.</p>
+        </div>
+        <div class="commitment-item">
+          <h4>Cross-Border Expertise</h4>
+          <p>From sourcing negotiations in China to immigration pathways in Croatia, we manage complexity across jurisdictions with a single, consistent team.</p>
+        </div>
+        <div class="commitment-item">
+          <h4>Integrity in Every Detail</h4>
+          <p>Guided by professional ethics and personal conviction, we conduct every engagement with transparency, diligence, and genuine care for our clients' outcomes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ── -->
+  <div class="cta-band">
+    <div class="cta-inner">
+      <div class="cta-left">
+        <div class="eyebrow light">Partner With Us</div>
+        <h2>Ready to navigate your<br>next global challenge?</h2>
+        <p>Whether you need a company incorporated, a shipment sourced, or an immigration pathway mapped — our team is ready to help.</p>
+      </div>
+      <div class="cta-right">
+        <button class="btn-primary" onclick="go('order')">Request a Quote →</button>
+        <a href="mailto:info@ocean-apex.com" class="btn-outline">info@ocean-apex.com</a>
+        <p class="cta-contact">+852 2111 0270 &nbsp;·&nbsp; +852 2111 2030</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="foot-inner">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <div class="nav-logo nav-logo--static"><div class="logo-box">OA</div><div><div class="logo-name">Ocean Apex Consultancy Ltd.</div><div class="logo-tag">Company Secretary Services</div></div></div>
+          <p>Unit B, 5/F, Wing Sing Commercial Centre, 12–16 Wing Lok Street, Sheung Wan, Hong Kong</p>
+        </div>
+        <div class="foot-col"><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="go('about');return false">About</a><a href="#" onclick="go('services');return false">Services</a><a href="#" onclick="go('order');return false">Get a Quote</a></div>
+        <div class="foot-col"><h5>Contact</h5><a href="tel:+85221110270">+852 2111 0270</a><a href="tel:+85221112030">+852 2111 2030</a><a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a><a href="#" onclick="go('terms');return false">Terms &amp; Conditions</a><a href="#" onclick="go('privacy');return false">Privacy Policy</a></div>
+      </div>
+      <div class="foot-bottom"><p>© 2025 Ocean Apex Consultancy Ltd. All rights reserved.</p><p>TCSP Licence TC008172 &nbsp;·&nbsp; Category A Licence A-B-24-01-05179</p></div>
+    </div>
+  </footer>
 </div>
 
 <!-- ══════════════════════════════════════════════ -->
@@ -4244,7 +4829,7 @@ footer {
           <div class="nav-logo nav-logo--static"><div class="logo-box">OA</div><div><div class="logo-name">Ocean Apex Consultancy Ltd.</div><div class="logo-tag">Company Secretary Services</div></div></div>
           <p>Unit B, 5/F, Wing Sing Commercial Centre, 12–16 Wing Lok Street, Sheung Wan, Hong Kong</p>
         </div>
-        <div class="foot-col"><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="go('services');return false">Services</a><a href="#" onclick="go('order');return false">Get a Quote</a></div>
+        <div class="foot-col"><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="go('about');return false">About</a><a href="#" onclick="go('services');return false">Services</a><a href="#" onclick="go('order');return false">Get a Quote</a></div>
         <div class="foot-col"><h5>Contact</h5><a href="tel:+85221110270">+852 2111 0270</a><a href="tel:+85221112030">+852 2111 2030</a><a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a><a href="#" onclick="go('terms');return false">Terms &amp; Conditions</a><a href="#" onclick="go('privacy');return false">Privacy Policy</a></div>
       </div>
       <div class="foot-bottom"><p>© 2025 Ocean Apex Consultancy Ltd. All rights reserved.</p><p>TCSP Licence TC008172 &nbsp;·&nbsp; </p></div>
@@ -4398,7 +4983,7 @@ footer {
           <div class="nav-logo nav-logo--static"><div class="logo-box">OA</div><div><div class="logo-name">Ocean Apex Consultancy Ltd.</div><div class="logo-tag">Company Secretary Services</div></div></div>
           <p>Unit B, 5/F, Wing Sing Commercial Centre, 12–16 Wing Lok Street, Sheung Wan, Hong Kong</p>
         </div>
-        <div class="foot-col"><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="go('services');return false">Services</a><a href="#" onclick="go('order');return false">Get a Quote</a></div>
+        <div class="foot-col"><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="go('about');return false">About</a><a href="#" onclick="go('services');return false">Services</a><a href="#" onclick="go('order');return false">Get a Quote</a></div>
         <div class="foot-col"><h5>Contact</h5><a href="tel:+85221110270">+852 2111 0270</a><a href="tel:+85221112030">+852 2111 2030</a><a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a><a href="#" onclick="go('terms');return false">Terms &amp; Conditions</a><a href="#" onclick="go('privacy');return false">Privacy Policy</a></div>
       </div>
       <div class="foot-bottom"><p>© 2025 Ocean Apex Consultancy Ltd. All rights reserved.</p><p>TCSP Licence TC008172 &nbsp;·&nbsp; </p></div>
@@ -4448,6 +5033,16 @@ footer {
 // ⚠️  Replace with your actual Stripe Publishable Key before going live.
 // Get it from: https://dashboard.stripe.com/apikeys
 const STRIPE_PK = 'pk_test_REPLACE_WITH_YOUR_PUBLISHABLE_KEY';
+
+// ════════════════════════════════════════════════
+// GOOGLE RECAPTCHA V3 CONFIGURATION
+// ════════════════════════════════════════════════
+// Site key is public by design and safe to ship in client-side code.
+// The matching SECRET key must only ever live on your server — never here.
+// Get both from: https://www.google.com/recaptcha/admin
+const RECAPTCHA_SITE_KEY = '6Lfo-T0tAAAAAAVdG3I-Qqr-OGTjIJi-smOhPxgd';
+const RECAPTCHA_ACTION = 'submit_enquiry';
+const RECAPTCHA_LOAD_TIMEOUT_MS = 8000; // fail gracefully if blocked (ad-blockers, offline)
 
 let stripe, cardElement;
 
@@ -4638,16 +5233,65 @@ function closeMobileNav() {
   document.body.style.overflow = '';
 }
 
-function go(id) {
+// ════════════════════════════════════════════════
+// URL PATH ROUTING
+// Each routable page maps to a clean URL path.
+// Vercel's catch-all route (vercel.json) serves index.html
+// for all paths, and this JS then activates the right page.
+// Checkout and Confirm are excluded because they depend on
+// in-memory cart/payment state that doesn't survive a reload.
+// ════════════════════════════════════════════════
+const PAGE_ROUTES = {
+  'home':     '/',
+  'about':    '/about-us',
+  'services': '/services',
+  'pricing':  '/pricing',
+  'order':    '/get-a-quote',
+  'terms':    '/terms-and-conditions',
+  'privacy':  '/privacy-policy',
+};
+
+// Reverse lookup: URL path -> page id
+const ROUTE_PAGES = Object.fromEntries(
+  Object.entries(PAGE_ROUTES).map(([id, path]) => [path, id])
+);
+
+function activatePage(id) {
   closeMobileNav();
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
+  const el = document.getElementById('page-' + id);
+  if (el) el.classList.add('active');
   window.scrollTo({ top: 0, behavior: 'instant' });
   if (id === 'checkout') {
     populateCheckout();
     initStripe();
   }
 }
+
+function go(id) {
+  activatePage(id);
+  // Push a new history entry with the clean URL path when navigating
+  // to a routable page — so the address bar and Back button work correctly.
+  const path = PAGE_ROUTES[id];
+  if (path && window.location.pathname !== path) {
+    history.pushState({ page: id }, '', path);
+  }
+}
+
+/** Called on initial page load and on browser back/forward navigation. */
+function routeFromPath() {
+  // Normalise: strip trailing slash except for root
+  const raw  = window.location.pathname;
+  const path = raw.length > 1 ? raw.replace(/\/$/, '') : raw;
+  const id   = ROUTE_PAGES[path] || 'home';
+  activatePage(id);
+}
+
+// Restore correct page when user hits Back or Forward
+window.addEventListener('popstate', routeFromPath);
+
+// Activate the correct page on initial load (handles direct URL entry and refresh)
+routeFromPath();
 
 function goToService(id) {
   go('services');
@@ -5196,16 +5840,134 @@ function updSumm() {
   }, 0);
 }
 
-function submitEnquiry() {
-  const fname = (document.getElementById('enq-fname')?.value || '').trim();
-  // Show the enquiry-received state on the confirm page
-  document.getElementById('conf-payment').classList.add('is-hidden');
-  document.getElementById('conf-enquiry').classList.remove('is-hidden');
-  if (fname) {
-    document.getElementById('enquiry-msg').textContent =
-      'Thank you, ' + fname + '. We\'ve received your request and a consultant will reach out to you with a fixed fee proposal within 24 business hours.';
+// ════════════════════════════════════════════════
+// RECAPTCHA V3 + ENQUIRY SUBMISSION
+// ════════════════════════════════════════════════
+function setEnquiryBtnLoading(on) {
+  const btn = document.getElementById('enq-submit-btn');
+  if (!btn) return;
+  btn.disabled = on;
+  btn.classList.toggle('is-loading', on);
+}
+
+function showRecaptchaError(msg) {
+  const el = document.getElementById('recaptcha-error');
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add('show');
+}
+
+function hideRecaptchaError() {
+  const el = document.getElementById('recaptcha-error');
+  if (el) el.classList.remove('show');
+}
+
+/** Collect every field from the enquiry form into a plain object. */
+function collectEnquiryData() {
+  const services = [...document.querySelectorAll('#svc-check-list .sci input[type=checkbox]:checked')]
+    .map(cb => cb.value);
+  const paymentRadio = document.querySelector('input[name="pay"]:checked');
+  return {
+    firstName:         (document.getElementById('enq-fname')?.value   || '').trim(),
+    lastName:          (document.getElementById('enq-lname')?.value   || '').trim(),
+    email:             (document.getElementById('enq-email')?.value   || '').trim(),
+    phone:             (document.getElementById('enq-phone')?.value   || '').trim(),
+    country:           (document.getElementById('enq-country')?.value || '').trim(),
+    services,
+    notes:             (document.getElementById('enq-notes')?.value   || '').trim(),
+    paymentPreference: paymentRadio?.value || '',
+  };
+}
+
+/** Basic client-side guard — full validation is repeated server-side. */
+function validateEnquiryData(data) {
+  if (!data.firstName) return 'Please enter your first name.';
+  if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email)) {
+    return 'Please enter a valid email address.';
   }
-  go('confirm');
+  if (!data.services.length) return 'Please select at least one service.';
+  return null; // valid
+}
+
+function submitEnquiry() {
+  hideRecaptchaError();
+
+  // Collect and validate before even calling reCAPTCHA
+  const data = collectEnquiryData();
+  const validationError = validateEnquiryData(data);
+  if (validationError) {
+    showRecaptchaError(validationError);
+    return;
+  }
+
+  setEnquiryBtnLoading(true);
+
+  // Graceful timeout if reCAPTCHA is blocked (ad-blocker, offline, etc.)
+  let settled = false;
+  const timeoutId = setTimeout(() => {
+    if (settled) return;
+    settled = true;
+    setEnquiryBtnLoading(false);
+    showRecaptchaError('Verification could not load. Please disable any ad-blocker for this site and try again, or contact us directly at info@ocean-apex.com.');
+  }, RECAPTCHA_LOAD_TIMEOUT_MS);
+
+  if (typeof grecaptcha === 'undefined') {
+    clearTimeout(timeoutId);
+    settled = true;
+    setEnquiryBtnLoading(false);
+    showRecaptchaError('Verification could not load. Please disable any ad-blocker for this site and try again.');
+    return;
+  }
+
+  grecaptcha.ready(function () {
+    grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: RECAPTCHA_ACTION }).then(function (token) {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timeoutId);
+      data.recaptchaToken = token;
+      submitEnquiryToServer(data);
+    }).catch(function () {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timeoutId);
+      setEnquiryBtnLoading(false);
+      showRecaptchaError('Verification failed. Please try again.');
+    });
+  });
+}
+
+async function submitEnquiryToServer(data) {
+  try {
+    const res = await fetch('/api/submit-enquiry', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+
+    const json = await res.json().catch(() => ({}));
+
+    if (!res.ok || !json.success) {
+      setEnquiryBtnLoading(false);
+      showRecaptchaError(json.error || 'Submission failed. Please try again or contact us directly at info@ocean-apex.com.');
+      return;
+    }
+
+    // Success — show confirmation screen
+    const fname = data.firstName;
+    document.getElementById('conf-payment').classList.add('is-hidden');
+    document.getElementById('conf-enquiry').classList.remove('is-hidden');
+    if (fname) {
+      document.getElementById('enquiry-msg').textContent =
+        'Thank you, ' + fname + '. We\u2019ve received your enquiry and will reach out with a fixed fee proposal within 24 business hours. A confirmation has been sent to ' + data.email + '.';
+    }
+    setEnquiryBtnLoading(false);
+    go('confirm');
+
+  } catch (err) {
+    // Network failure — server unreachable
+    setEnquiryBtnLoading(false);
+    showRecaptchaError('Network error. Please check your connection and try again, or contact us at info@ocean-apex.com.');
+  }
 }
 
 function selPay(method, e) {

@@ -1,0 +1,57 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/submit-enquiry.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/submit-enquiry",
+      "dest": "/api/submit-enquiry.js"
+    },
+    {
+      "src": "/about-us",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/services",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/pricing",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/get-a-quote",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/terms-and-conditions",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/privacy-policy",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options",   "value": "nosniff" },
+        { "key": "X-Frame-Options",           "value": "DENY" },
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" }
+      ]
+    }
+  ]
+}
