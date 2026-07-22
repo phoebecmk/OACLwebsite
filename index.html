@@ -5028,6 +5028,22 @@ footer {
 <!-- ═══════════════════════════════════ JAVASCRIPT ═══════════════════════════════════ -->
 <script>
 // ════════════════════════════════════════════════
+// GITHUB PAGES SPA REDIRECT RESTORE
+// When 404.html catches a missing path (e.g. /about-us on refresh),
+// it saves that path to sessionStorage and sends the browser to /.
+// This snippet runs first, restores the intended path into the
+// browser's address bar via replaceState, and then routeFromPath()
+// at the bottom of this script reads it and activates the right page.
+// ════════════════════════════════════════════════
+(function () {
+  var redirect = sessionStorage.getItem('spa_redirect');
+  if (redirect) {
+    sessionStorage.removeItem('spa_redirect');
+    history.replaceState(null, null, redirect);
+  }
+}());
+
+// ════════════════════════════════════════════════
 // STRIPE CONFIGURATION
 // ════════════════════════════════════════════════
 // ⚠️  Replace with your actual Stripe Publishable Key before going live.

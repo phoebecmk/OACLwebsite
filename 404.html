@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ocean Apex Consultancy Ltd.</title>
+  <style>
+    body {
+      margin: 0;
+      background: #0a1628;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 13px;
+    }
+  </style>
+  <script>
+    /**
+     * GitHub Pages SPA redirect — Ocean Apex Consultancy Ltd.
+     *
+     * GitHub Pages serves this file whenever a path (e.g. /about-us) has no
+     * matching physical file. We save the requested path to sessionStorage
+     * and redirect to the site root. index.html then restores the path via
+     * history.replaceState before activating the correct page — so the user
+     * sees the right URL without any visible flash or redirect.
+     */
+    (function () {
+      var path = window.location.pathname;
+      // Only redirect if we're on a sub-path, not the root itself
+      if (path && path !== '/') {
+        sessionStorage.setItem('spa_redirect', path);
+      }
+      // Replace so this 404 page is not added to browser history
+      window.location.replace('/');
+    }());
+  </script>
+</head>
+<body>
+  <p>Redirecting…</p>
+  <noscript>
+    <p>JavaScript is required. <a href="/" style="color:#c08a36;">Return to home</a>.</p>
+  </noscript>
+</body>
+</html>
