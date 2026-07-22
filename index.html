@@ -5115,6 +5115,48 @@ const catalog = {
 let cart = []; // [{id, name, hkd, usd, freq, qty}]
 let cur = 'HKD'; // single global currency — driven by nav dropdown
 
+// ════════════════════════════════════════════════
+// CART PERSISTENCE (localStorage)
+// Only the service id and qty are stored — prices are always
+// re-applied from the catalog on load, so stale or tampered
+// price data in storage has no effect.
+// ════════════════════════════════════════════════
+function saveCartToStorage() {
+  try {
+    localStorage.setItem('oac_cart', JSON.stringify(
+      cart.map(function (item) { return { id: item.id, qty: item.qty }; })
+    ));
+  } catch (e) {
+    // localStorage unavailable (private-browsing quota, etc.) — fail silently
+  }
+}
+
+function loadCartFromStorage() {
+  try {
+    var raw = localStorage.getItem('oac_cart');
+    if (!raw) return;
+    var items = JSON.parse(raw);
+    if (!Array.isArray(items)) return;
+    cart = items
+      .filter(function (item) {
+        return item.id &&
+               catalog[item.id] &&
+               Number.isInteger(item.qty) &&
+               item.qty > 0;
+      })
+      .map(function (item) {
+        // Spread fresh catalog data so prices are always current
+        return Object.assign({ id: item.id, qty: Math.min(item.qty, 99) }, catalog[item.id]);
+      });
+  } catch (e) {
+    cart = []; // corrupt or unreadable — start fresh
+  }
+}
+
+function clearCartStorage() {
+  try { localStorage.removeItem('oac_cart'); } catch (e) {}
+}
+
 function addToCart(id) {
   const svc = catalog[id];
   if (!svc) return;
@@ -5127,12 +5169,14 @@ function addToCart(id) {
   renderCart();
   showToast('Added: ' + svc.name.split(' ').slice(0,3).join(' ') + '…');
   updateBadge();
+  saveCartToStorage();
 }
 
 function removeFromCart(id) {
   cart = cart.filter(i => i.id !== id);
   renderCart();
   updateBadge();
+  saveCartToStorage();
 }
 
 function changeQty(id, delta) {
@@ -5141,6 +5185,7 @@ function changeQty(id, delta) {
   item.qty = Math.max(1, item.qty + delta);
   renderCart();
   updateBadge();
+  saveCartToStorage();
 }
 
 function getTotal(currency) {
@@ -5263,6 +5308,7 @@ const PAGE_ROUTES = {
   'services': '/services',
   'pricing':  '/pricing',
   'order':    '/get-a-quote',
+  'checkout': '/checkout',
   'terms':    '/terms-and-conditions',
   'privacy':  '/privacy-policy',
 };
@@ -5305,6 +5351,11 @@ function routeFromPath() {
 
 // Restore correct page when user hits Back or Forward
 window.addEventListener('popstate', routeFromPath);
+
+// Load persisted cart before routing — ensures the checkout page
+// sees the correct cart immediately on refresh or direct URL entry.
+loadCartFromStorage();
+updateBadge();
 
 // Activate the correct page on initial load (handles direct URL entry and refresh)
 routeFromPath();
@@ -5653,6 +5704,7 @@ async function handlePayment() {
       ' has been received. A written engagement letter and receipt will be sent to ' + email + ' within minutes.';
     document.getElementById('confirm-ref').textContent = 'Reference: ' + ref;
     cart = [];
+    clearCartStorage();  // wipe persisted cart — payment is complete
     updateBadge();
     renderCart();
     setPayBtnLoading(false);
