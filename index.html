@@ -5332,11 +5332,16 @@ function activatePage(id) {
 
 function go(id) {
   activatePage(id);
-  // Push a new history entry with the clean URL path when navigating
-  // to a routable page — so the address bar and Back button work correctly.
-  const path = PAGE_ROUTES[id];
-  if (path && window.location.pathname !== path) {
-    history.pushState({ page: id }, '', path);
+  // Keep the address bar in sync with the active page.
+  // replaceState when already on the correct path (avoids duplicate history
+  // entries); pushState for genuine cross-page navigation.
+  var path = PAGE_ROUTES[id];
+  if (path) {
+    if (window.location.pathname === path) {
+      history.replaceState({ page: id }, '', path);
+    } else {
+      history.pushState({ page: id }, '', path);
+    }
   }
 }
 
@@ -5378,7 +5383,10 @@ function goCta() {
 
 function goCheckout() {
   closeCart();
-  go('checkout');
+  activatePage('checkout');
+  // Always push /checkout explicitly — don't rely on go()'s equality
+  // condition, which can silently skip pushState in edge cases.
+  history.pushState({ page: 'checkout' }, '', PAGE_ROUTES['checkout'] || '/checkout');
 }
 
 // ════════════════════════════════════════════════
