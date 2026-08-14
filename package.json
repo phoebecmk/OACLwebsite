@@ -1,0 +1,13 @@
+{
+  "name": "ocean-apex-consultancy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ocean Apex Consultancy website with serverless enquiry API",
+  "type": "module",
+  "dependencies": {
+    "resend": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=18.x"
+  }
+}
