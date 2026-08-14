@@ -2095,6 +2095,13 @@ footer {
   line-height: 1.6;
 }
 
+/* Hide the floating bottom-right badge.
+   Google permits this when the reCAPTCHA disclosure text is shown inline,
+   which it is — see the .recaptcha-note paragraph above the submit button. */
+.grecaptcha-badge {
+  visibility: hidden;
+}
+
 .recaptcha-note a {
   color: var(--g300);
   text-decoration: underline;
@@ -3634,12 +3641,11 @@ footer {
       <li><a href="#" onclick="go('home');return false">Home</a></li>
       <li><a href="#" onclick="go('about');return false">About</a></li>
       <li><a href="#" onclick="go('services');return false">Services</a></li>
-      <li><a href="#" onclick="go('pricing');return false">Pricing</a></li>
       <li><a href="#" onclick="goCta();return false">Contact</a></li>
     </ul>
     <div class="nav-right">
       <!-- Currency selector -->
-      <select id="nav-currency" class="curr-select" onchange="setGlobalCurr(this.value)" aria-label="Select currency">
+      <select id="nav-currency" class="curr-select pricing-only is-hidden" onchange="setGlobalCurr(this.value)" aria-label="Select currency">
         <option value="HKD">HKD</option>
         <option value="USD">USD</option>
       </select>
@@ -3648,7 +3654,7 @@ footer {
         <span></span><span></span><span></span>
       </button>
       <!-- Cart icon -->
-      <button class="cart-btn" onclick="openCart()" title="View cart" aria-label="Shopping cart">
+      <button class="cart-btn pricing-only is-hidden" onclick="openCart()" title="View cart" aria-label="Shopping cart">
         <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
         <span class="cart-badge" id="cart-badge">0</span>
       </button>
@@ -3666,7 +3672,6 @@ footer {
     <a href="#" onclick="closeMobileNav();go('home');return false">Home</a>
     <a href="#" onclick="closeMobileNav();go('about');return false">About</a>
     <a href="#" onclick="closeMobileNav();go('services');return false">Services</a>
-    <a href="#" onclick="closeMobileNav();go('pricing');return false">Pricing</a>
     <a href="#" onclick="closeMobileNav();goCta();return false">Contact</a>
   </div>
   <div class="mobile-nav-foot">
@@ -3715,12 +3720,11 @@ footer {
   <section class="hero">
     <div class="hero-vline"></div>
     <div class="hero-content">
-      <div class="eyebrow light"><br><br>TCSP Licensed · Company Secretarial Services</div>
+      <div class="eyebrow light"><br>TCSP Licensed · Company Secretarial Services</div>
       <h1>Your Compliance<br>Foundation<br>in <em>Hong Kong</em></h1>
       <p class="hero-sub">TCSP-licensed company secretarial services for international investors and SMEs establishing a presence in Hong Kong and offshore jurisdictions.</p>
       <div class="hero-ctas">
         <button class="btn-primary" onclick="go('services')">Explore Services</button>
-        <button class="btn-outline" onclick="openCart()">View Cart</button>
       </div>
       <p class="hero-note">3–7 day incorporation turnaround &nbsp;·&nbsp; BVI, Cayman & Singapore entities available</p>
     </div>
@@ -3977,8 +3981,7 @@ footer {
     <div class="svc-hero-inner">
       <div class="eyebrow light">Our Services</div>
       <h1><br>End-to-end company<br>secretarial services for<br><em>global investors</em></h1>
-      <p>From initial incorporation to annual compliance. Select any service below and add it directly to your cart.</p>
-      <button class="btn-primary" onclick="openCart()">View Cart →</button>
+      <p>From initial incorporation to annual compliance. Explore each service below and request a quote tailored to your requirements.</p>
     </div>
   </div>
   <div class="svc-detail-wrap">
@@ -4002,12 +4005,10 @@ footer {
         </div>
         <div>
           <div class="price-card">
-            <div class="price-main" id="p-inc">HKD 6,000</div>
-            <div class="price-lbl">Fixed fee</div>
+
             <p class="price-note">Government fees for Hong Kong incorporated company 2026/27 (CR HKD 1,720 + BR HKD 2350) are additional disbursements billed separately.</p>
             <div class="price-card-btns">
-              <button class="btn-primary btn-full" onclick="addToCart('incorporation')">Add to Cart →</button>
-              <button class="btn-ghost btn-full" onclick="go('order')">Get a Custom Quote</button>
+              <button class="btn-ghost btn-full" onclick="go('order')" style="justify-content:center">Request a Quote</button>
             </div>
           </div>
           <p class="turnaround">Turnaround: 3–7 business days from KYC completion</p>
@@ -4030,11 +4031,10 @@ footer {
         </div>
         <div>
           <div class="price-card">
-            <div class="price-main" id="p-sec">HKD 4,105</div>
-            <div class="price-lbl">Per year</div>
+
             <p class="price-note">Includes Company secretarial fee and documents preparation (HKD 4,000) and NAR1 filing (HKD 105) — billed together annually. Can be bundled with registered office. BR Fee of HKD 2,350 excluded from package.</p>
             <div class="price-card-btns">
-              <button class="btn-primary btn-full" onclick="addToCart('secretary')">Add to Cart →</button>
+              <button class="btn-ghost btn-full" onclick="go('order')" style="justify-content:center">Request a Quote</button>
             </div>
           </div>
         </div>
@@ -4054,11 +4054,10 @@ footer {
         </div>
         <div>
           <div class="price-card">
-            <div class="price-main" id="p-addr">HKD 4,000</div>
-            <div class="price-lbl">Per year</div>
+
             <p class="price-note">Can be bundled with annual secretary retainer at a reduced combined rate. Contact us for bundle pricing.</p>
             <div class="price-card-btns">
-              <button class="btn-primary btn-full" onclick="addToCart('address')">Add to Cart →</button>
+              <button class="btn-ghost btn-full" onclick="go('order')" style="justify-content:center">Request a Quote</button>
             </div>
           </div>
         </div>
@@ -4079,11 +4078,10 @@ footer {
         </div>
         <div>
           <div class="price-card">
-            <div class="price-main" id="p-chg">HKD 1,000</div>
-            <div class="price-lbl">Per filing</div>
+
             <p class="price-note">Price is per filing. Add multiple to your cart if you need several changes processed simultaneously.</p>
             <div class="price-card-btns">
-              <button class="btn-primary btn-full" onclick="addToCart('changes')">Add to Cart →</button>
+              <button class="btn-ghost btn-full" onclick="go('order')" style="justify-content:center">Request a Quote</button>
             </div>
           </div>
         </div>
@@ -4104,12 +4102,10 @@ footer {
         </div>
         <div>
           <div class="price-card">
-            <div class="price-main" id="p-bank">HKD 7,000</div>
-            <div class="price-lbl">Fixed fee per bank account</div>
+
             <p class="price-note">Account approval is at the bank's sole discretion. This service covers the application and liaison process only, clients are responsible for any account opening fees charged by banks.</p>
             <div class="price-card-btns">
-              <button class="btn-primary btn-full" onclick="addToCart('banking')">Add to Cart →</button>
-              <button class="btn-ghost btn-full" onclick="go('order')">Get a Custom Quote</button>
+              <button class="btn-ghost btn-full" onclick="go('order')" style="justify-content:center">Request a Quote</button>
             </div>
           </div>
         </div>
@@ -4122,7 +4118,7 @@ footer {
     <div class="foot-inner">
       <div class="foot-grid">
         <div class="foot-brand"><div class="nav-logo nav-logo--static"><div class="logo-box">OA</div><div><div class="logo-name">Ocean Apex Consultancy Ltd.</div><div class="logo-tag">Company Secretary Services</div></div></div><p>Unit B, 5/F, Wing Sing Commercial Centre, 12–16 Wing Lok Street, Sheung Wan, Hong Kong</p></div>
-        <div class="foot-col"><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="openCart();return false">View Cart</a><a href="#" onclick="go('order');return false">Get a Quote</a></div>
+        <div class="foot-col"><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="go('order');return false">Get a Quote</a></div>
         <div class="foot-col"><h5>Contact</h5><a href="tel:+85221110270">+852 2111 0270</a><a href="tel:+85221112030">+852 2111 2030</a><a href="mailto:info@ocean-apex.com">info@ocean-apex.com</a><a href="#" onclick="go('terms');return false">Terms &amp; Conditions</a><a href="#" onclick="go('privacy');return false">Privacy Policy</a></div>
       </div>
       <div class="foot-bottom"><p>© 2025 Ocean Apex Consultancy Ltd. All rights reserved.</p><p>TCSP Licence TC008172 &nbsp;·&nbsp; </p></div>
@@ -4476,7 +4472,7 @@ footer {
   <div class="svc-hero">
     <div class="svc-hero-inner">
       <div class="eyebrow light">Ocean Apex Group</div>
-      <h1><br>Navigate Complexity.<br><em>Achieve Global Success.</em></h1>
+      <h1>Navigate Complexity.<br><em>Achieve Global Success.</em></h1>
       <p>A premier consortium of specialised companies founded in Hong Kong, built on over 30 years of collective expertise in global commerce, corporate services, and personal advancement.</p>
       <button class="btn-primary" onclick="go('order')">Work With Us →</button>
     </div>
@@ -5325,6 +5321,14 @@ function activatePage(id) {
   const el = document.getElementById('page-' + id);
   if (el) el.classList.add('active');
   window.scrollTo({ top: 0, behavior: 'instant' });
+
+  // Cart and currency controls are visible only on the Pricing page
+  var onPricing = id === 'pricing';
+  document.querySelectorAll('.pricing-only').forEach(function (ctrl) {
+    ctrl.classList.toggle('is-hidden', !onPricing);
+  });
+  if (!onPricing) closeCart(); // close cart if user navigates away
+
   if (id === 'checkout') {
     populateCheckout();
     initStripe();
