@@ -5060,21 +5060,6 @@ const RECAPTCHA_SITE_KEY = '6Lfo-T0tAAAAAAVdG3I-Qqr-OGTjIJi-smOhPxgd';
 const RECAPTCHA_ACTION = 'submit_enquiry';
 const RECAPTCHA_LOAD_TIMEOUT_MS = 8000; // fail gracefully if blocked (ad-blockers, offline)
 
-// ════════════════════════════════════════════════
-// ENQUIRY API (Vercel serverless function)
-// ════════════════════════════════════════════════
-// The website lives on GitHub Pages (static files only — cannot run server code).
-// The enquiry form POSTs to this separate Vercel URL, which runs the Node.js
-// function that verifies reCAPTCHA and sends emails via Resend.
-//
-// After deploying api/submit-enquiry.js to Vercel, replace the placeholder
-// below with your actual Vercel project URL.  It looks like:
-//   https://ocean-apex-api.vercel.app          ← if you name the project ocean-apex-api
-//   https://my-project-abc123.vercel.app       ← Vercel auto-generated name
-// You can also set a custom subdomain later (e.g. https://api.ocean-apex.com).
-//
-// Do NOT include a trailing slash.
-const ENQUIRY_API_URL = 'https://oac-lwebsite-fd1zevtbq-phoebecmks-projects.vercel.app';
 
 let stripe, cardElement;
 
@@ -6030,7 +6015,7 @@ function submitEnquiry() {
 
 async function submitEnquiryToServer(data) {
   try {
-    const res = await fetch(ENQUIRY_API_URL + '/api/submit-enquiry', {
+    const res = await fetch('/api/submit-enquiry', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
